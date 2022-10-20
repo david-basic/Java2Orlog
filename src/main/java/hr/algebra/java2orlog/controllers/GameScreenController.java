@@ -143,11 +143,13 @@ public class GameScreenController implements Initializable {
         playerTwoAllDice.forEach(d -> d.getDiceButton().setDisable(true));
 
     }
+
     private void setCoinImages(Image imgCoin, ImageView imgCoinPlayerContainer) {
         imgCoinPlayerContainer.setImage(imgCoin);
         imgCoinPlayerContainer.setDisable(false);
         imgCoinPlayerContainer.setVisible(true);
     }
+
     //region Dice definition
     private void defineAllDice() {
         if (roundCount == 1) {
@@ -156,6 +158,7 @@ public class GameScreenController implements Initializable {
         playerDiceDefine(playerOneAllDice, btnPlayerOneTrayDice1, btnPlayerOneTrayDice2, btnPlayerOneTrayDice3, btnPlayerOneTrayDice4, btnPlayerOneTrayDice5, btnPlayerOneTrayDice6);
         playerDiceDefine(playerTwoAllDice, btnPlayerTwoTrayDice1, btnPlayerTwoTrayDice2, btnPlayerTwoTrayDice3, btnPlayerTwoTrayDice4, btnPlayerTwoTrayDice5, btnPlayerTwoTrayDice6);
     }
+
     private void defineAllDiceSymbols() {
         die1Symbols.add(DiceSymbols.Axe);
         die1Symbols.add(DiceSymbols.Axe);
@@ -199,6 +202,7 @@ public class GameScreenController implements Initializable {
         die6Symbols.add(DiceSymbols.Helmet_S);
         die6Symbols.add(DiceSymbols.Hand);
     }
+
     private void playerDiceDefine(List<DiceDetails> player, Button btnDice1, Button btnDice2, Button btnDice3, Button btnDice4, Button btnDice5, Button btnDice6) {
         player.add(new DiceDetails(btnDice1, die1Symbols, false, false));
         player.add(new DiceDetails(btnDice2, die2Symbols, false, false));
@@ -207,6 +211,7 @@ public class GameScreenController implements Initializable {
         player.add(new DiceDetails(btnDice5, die5Symbols, false, false));
         player.add(new DiceDetails(btnDice6, die6Symbols, false, false));
     }
+
     //endregion
     private void roundSetup(List<DiceDetails> Dice) {
         for (var d : Dice) {
@@ -222,6 +227,7 @@ public class GameScreenController implements Initializable {
             }
         }
     }
+
     private void setButtonImage(Button button, List<DiceSymbols> symbols) {
 //        ImageView diceImage = new ImageView(getClass().getResource("/" + symbols.get(0).toString().trim() + ".jpg").toExternalForm()); // isto kao ovo ispod
         ImageView diceImage = new ImageView(Objects.requireNonNull(getClass().getResource("/" + symbols.get(0).toString().trim() + ".jpg")).toExternalForm());
@@ -230,6 +236,7 @@ public class GameScreenController implements Initializable {
         button.setPadding(new Insets(0, 0, 0, 0));
         button.setGraphic(diceImage);
     }
+
     private void setDiceButtonVisible(Button btnDice) {
         btnDice.setVisible(true);
     }
@@ -264,6 +271,7 @@ public class GameScreenController implements Initializable {
             }
         }
     }
+
     private void fillNotChosenDiceList(List<DiceDetails> allDice) {
         allDice.forEach(d ->
                 {
@@ -273,6 +281,7 @@ public class GameScreenController implements Initializable {
                 }
         );
     }
+
     private void shuffleDiceSymbols(List<DiceDetails> Dice) {
         for (var d : Dice) {
             List<DiceSymbols> symbolsCollection = new ArrayList<>(d.getDiceSymbols());
@@ -282,6 +291,7 @@ public class GameScreenController implements Initializable {
             d.setDiceSymbols(symbolsCollection);
         }
     }
+
     private void setAllDiceButtonsInCollectionEnabled(List<DiceDetails> Dice) {
         for (var d : Dice) {
             if (!d.getIsChosenFromDiceTray()) {
@@ -289,6 +299,7 @@ public class GameScreenController implements Initializable {
             }
         }
     }
+
     private void setDiceButtonEnabled(Button btnDice) {
         btnDice.setDisable(false);
     }
@@ -428,6 +439,7 @@ public class GameScreenController implements Initializable {
         notChosenDice.clear();
         rollCount++;
     }
+
     private void sendAllRemainingNotChosenDiceToCenter(List<DiceDetails> diceCollection) {
         for (var d : diceCollection) {
             if (!d.getIsChosenFromDiceTray()) {
@@ -436,6 +448,7 @@ public class GameScreenController implements Initializable {
             }
         }
     }
+
     private void fillCenterWithSymbols(HBox hbCentralContainer, List<DiceDetails> diceCollection) {
         diceCollection.forEach(d -> {
             if (d.getCanBeSentToCenter()) {
@@ -451,6 +464,7 @@ public class GameScreenController implements Initializable {
             d.setCanBeSentToCenter(false);
         });
     }
+
     private void roundResolve() {
         btnRollDicePlayerOne.setVisible(false);
         btnRollDicePlayerTwo.setVisible(false);
@@ -580,6 +594,7 @@ public class GameScreenController implements Initializable {
             }
         }
     }
+
     private void setupNewRound() {
         roundCount++;
         if (roundCount % 2 == 0) { // ako je sljedeca runda parna igra prvi u rundi P2
@@ -612,10 +627,12 @@ public class GameScreenController implements Initializable {
         resetSymbolCounters();
         rollCount = 0;
     }
+
     private Boolean checkIfTheGameJustEnded(int playerOneTotalDamageTaken, int playerTwoTotalDamageTaken) {
         // game ends when one or both players die or when the round count reaches max
         return playerOneTotalDamageTaken >= 15 || playerTwoTotalDamageTaken >= 15 || roundCount == 6;
     }
+
     private void recordWins(int playerOneTotalDamageTaken, int playerTwoTotalDamageTaken, PlayerDetails player1, PlayerDetails player2) {
         if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
             player1.recordADraw();
@@ -647,6 +664,7 @@ public class GameScreenController implements Initializable {
             // TODO: 19/10/2022 mozda u CurrentGameDetails spremati bitne neke detalje o igri
         }
     }
+
     private void setupDiceForNewRound() {
         playerOneAllDice.forEach(d -> d.setCanBeSentToCenter(false));
         playerOneAllDice.forEach(d -> d.setIsChosenFromDiceTray(false));
@@ -662,6 +680,7 @@ public class GameScreenController implements Initializable {
         hbPlayerOneChosenDice.getChildren().clear();
         hbPlayerTwoChosenDice.getChildren().clear();
     }
+
     private void resetSymbolCounters() {
         cntAxeP1 = 0;
         cntArrowP1 = 0;
@@ -683,6 +702,7 @@ public class GameScreenController implements Initializable {
         cntHandP2 = 0;
         cntHand_SP2 = 0;
     }
+
     private void setupNewGame() {
         roundCount = 0;
         rollCount = 0;
@@ -705,6 +725,7 @@ public class GameScreenController implements Initializable {
 
         setupDiceForNewRound();
     }
+
     private void FeatureNotYetImplementedAlert() {
         Alert featureNotImplemented = new Alert(Alert.AlertType.INFORMATION);
         featureNotImplemented.setTitle("WIP");
@@ -729,6 +750,7 @@ public class GameScreenController implements Initializable {
             fillCenterWithSymbols(hbPlayerTwoChosenDice, playerTwoAllDice);
         }
     }
+
     private void setButtonInvisibleAndTagItAsChosen(List<DiceDetails> allDice, Button clickedButton) {
         clickedButton.setVisible(false);
         for (var d : allDice) {
@@ -747,9 +769,5 @@ public class GameScreenController implements Initializable {
         // TODO: 20/10/2022 implement god powers
     }
 
-
-
-
-
-
+    // test
 }

@@ -324,11 +324,14 @@ public class GameScreenController implements Initializable {
 
             roundResolve(); // end the round or the game
 
-            Alert newRoundAlert = new Alert(Alert.AlertType.INFORMATION);
-            newRoundAlert.setTitle("ROUND END");
-            newRoundAlert.setHeaderText(null);
-            newRoundAlert.setContentText("Round " + (roundCount + 1) + "/6 is about to start!");
-            newRoundAlert.showAndWait();
+            newRoundAlert();
+            if (!playingIsDone){
+                Alert newRoundAlert = new Alert(Alert.AlertType.INFORMATION);
+                newRoundAlert.setTitle("ROUND END");
+                newRoundAlert.setHeaderText(null);
+                newRoundAlert.setContentText("Round " + (roundCount + 1) + "/6 is about to start!");
+                newRoundAlert.showAndWait();
+            }
 
             setupNewRound();
         } else {
@@ -375,11 +378,7 @@ public class GameScreenController implements Initializable {
                     } else { // ako nema diceva u P1 i nema Diceva u P2 kada je P1 stisnuo end kraj runde ili igre
                         roundResolve();
 
-                        Alert newRoundAlert = new Alert(Alert.AlertType.INFORMATION);
-                        newRoundAlert.setTitle("ROUND END");
-                        newRoundAlert.setHeaderText(null);
-                        newRoundAlert.setContentText("Round " + (roundCount + 1) + "/6 is about to start!");
-                        newRoundAlert.showAndWait();
+                        newRoundAlert();
 
                         setupNewRound();
                     }
@@ -447,6 +446,7 @@ public class GameScreenController implements Initializable {
         notChosenDice.clear();
         rollCount++;
     }
+
 
     private void sendAllRemainingNotChosenDiceToCenter(List<DiceDetails> diceCollection) {
         for (var d : diceCollection) {
@@ -600,6 +600,16 @@ public class GameScreenController implements Initializable {
             if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) {
                 recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerOneDetails(), LoginController.getPlayerTwoDetails());
             }
+        }
+    }
+
+    private void newRoundAlert() {
+        if (!playingIsDone){
+            Alert newRoundAlert = new Alert(Alert.AlertType.INFORMATION);
+            newRoundAlert.setTitle("ROUND END");
+            newRoundAlert.setHeaderText(null);
+            newRoundAlert.setContentText("Round " + (roundCount + 1) + "/6 is about to start!");
+            newRoundAlert.showAndWait();
         }
     }
 

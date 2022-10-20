@@ -740,6 +740,13 @@ public class GameScreenController implements Initializable {
     }
 
 
+    @FXML
+    private void clickOnGodPower(ActionEvent actionEvent) {
+        Button clickedGodPower = (Button) actionEvent.getSource();
+
+        // TODO: 20/10/2022 implement god powers
+    }
+
 
 
 

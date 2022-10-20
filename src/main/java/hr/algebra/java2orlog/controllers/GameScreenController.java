@@ -714,6 +714,31 @@ public class GameScreenController implements Initializable {
     }
 
 
+    @FXML
+    public void diceChosen(ActionEvent actionEvent) {
+        Button clickedButton = (Button) actionEvent.getSource();
+
+        if (playerOneTurn) {
+
+            setButtonInvisibleAndTagItAsChosen(playerOneAllDice, clickedButton);
+
+            fillCenterWithSymbols(hbPlayerOneChosenDice, playerOneAllDice);
+        } else {
+            setButtonInvisibleAndTagItAsChosen(playerTwoAllDice, clickedButton);
+
+            fillCenterWithSymbols(hbPlayerTwoChosenDice, playerTwoAllDice);
+        }
+    }
+    private void setButtonInvisibleAndTagItAsChosen(List<DiceDetails> allDice, Button clickedButton) {
+        clickedButton.setVisible(false);
+        for (var d : allDice) {
+            if (d.getDiceButton().equals(clickedButton)) {
+                d.setIsChosenFromDiceTray(true);
+                d.setCanBeSentToCenter(true);
+            }
+        }
+    }
+
 
 
 

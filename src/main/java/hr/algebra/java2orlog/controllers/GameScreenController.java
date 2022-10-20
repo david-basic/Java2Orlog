@@ -769,5 +769,5 @@ public class GameScreenController implements Initializable {
         // TODO: 20/10/2022 implement god powers
     }
 
-    // test
+
 }

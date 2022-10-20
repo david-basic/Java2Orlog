@@ -12,6 +12,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginController {
     //region FXML elements
@@ -30,12 +32,16 @@ public class LoginController {
 
     private static PlayerDetails playerOneDetails;
     private static PlayerDetails playerTwoDetails;
+    private static List<PlayerDetails> playerDetailsCollection = new ArrayList<>();
 
     public static PlayerDetails getPlayerOneDetails() {
         return playerOneDetails;
     }
     public static PlayerDetails getPlayerTwoDetails() {
         return playerTwoDetails;
+    }
+    public static List<PlayerDetails> getPlayerDetailsCollection() {
+        return new ArrayList<>(playerDetailsCollection);
     }
 
     public void startGame(){
@@ -59,6 +65,9 @@ public class LoginController {
 
         playerOneDetails = new PlayerDetails(playerOneName);
         playerTwoDetails = new PlayerDetails(playerTwoName);
+
+        playerDetailsCollection.add(playerOneDetails);
+        playerDetailsCollection.add(playerTwoDetails);
 
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("gameScreenView.fxml"));
         Scene scene = null;

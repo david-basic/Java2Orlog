@@ -40,6 +40,8 @@ public class GameScreenController implements Initializable {
     private int playerOneTotalDamageTaken = 0;
     private int playerTwoTotalDamageTaken = 0;
 
+    private static List<PlayerDetails> playerDetails = new ArrayList<>();
+
     private List<DiceDetails> notChosenDice = new ArrayList<>();
     private List<DiceDetails> playerOneAllDice = new ArrayList<>();
     private List<DiceDetails> playerTwoAllDice = new ArrayList<>();
@@ -757,6 +759,7 @@ public class GameScreenController implements Initializable {
         featureNotImplemented.showAndWait();
     }
     private void openResultsView(){
+
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
         Scene scene = null;
         try {

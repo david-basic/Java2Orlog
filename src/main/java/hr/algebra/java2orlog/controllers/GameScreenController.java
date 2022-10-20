@@ -30,7 +30,7 @@ import java.util.*;
 public class GameScreenController implements Initializable {
     //region Fields
     private Boolean playerOneTurn;
-    private Boolean playingIsDone;
+    private boolean playingIsDone = false;
     private int cntAxeP1 = 0, cntShieldP1 = 0, cntShield_SP1 = 0, cntHelmetP1 = 0, cntHelmet_SP1 = 0, cntArrowP1 = 0, cntArrow_SP1 = 0, cntHandP1 = 0, cntHand_SP1 = 0;
     private int cntAxeP2 = 0, cntShieldP2 = 0, cntShield_SP2 = 0, cntHelmetP2 = 0, cntHelmet_SP2 = 0, cntArrowP2 = 0, cntArrow_SP2 = 0, cntHandP2 = 0, cntHand_SP2 = 0;
     private int rollCount = 0;
@@ -327,15 +327,10 @@ public class GameScreenController implements Initializable {
             roundResolve(); // end the round or the game
 
             newRoundAlert();
-            if (!playingIsDone){
-                Alert newRoundAlert = new Alert(Alert.AlertType.INFORMATION);
-                newRoundAlert.setTitle("ROUND END");
-                newRoundAlert.setHeaderText(null);
-                newRoundAlert.setContentText("Round " + (roundCount + 1) + "/6 is about to start!");
-                newRoundAlert.showAndWait();
-            }
 
-            setupNewRound();
+            if (!playingIsDone) {
+                setupNewRound();
+            }
         } else {
 
             notChosenDice.clear();
@@ -382,7 +377,9 @@ public class GameScreenController implements Initializable {
 
                         newRoundAlert();
 
-                        setupNewRound();
+                        if (!playingIsDone) {
+                            setupNewRound();
+                        }
                     }
                 }
             } else { // P2 turn
@@ -425,13 +422,11 @@ public class GameScreenController implements Initializable {
                     } else { // ako nema u P2 trayu i nema u P1 trayu kada P2 stisne end Kraj runde ili igre
                         roundResolve();
 
-                        Alert newRoundAlert = new Alert(Alert.AlertType.INFORMATION);
-                        newRoundAlert.setTitle("ROUND END");
-                        newRoundAlert.setHeaderText(null);
-                        newRoundAlert.setContentText("Round " + (roundCount + 1) + "/6 is about to start!");
-                        newRoundAlert.showAndWait();
+                        newRoundAlert();
 
-                        setupNewRound();
+                        if (!playingIsDone) {
+                            setupNewRound();
+                        }
                     }
                 }
             }
@@ -606,7 +601,7 @@ public class GameScreenController implements Initializable {
     }
 
     private void newRoundAlert() {
-        if (!playingIsDone){
+        if (!playingIsDone) {
             Alert newRoundAlert = new Alert(Alert.AlertType.INFORMATION);
             newRoundAlert.setTitle("ROUND END");
             newRoundAlert.setHeaderText(null);
@@ -758,7 +753,8 @@ public class GameScreenController implements Initializable {
         featureNotImplemented.setContentText("Feature not yet implemented. WIP!");
         featureNotImplemented.showAndWait();
     }
-    private void openResultsView(){
+
+    private void openResultsView() {
 
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
         Scene scene = null;

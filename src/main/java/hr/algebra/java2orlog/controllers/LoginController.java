@@ -88,4 +88,26 @@ public class LoginController {
         gameScreenStage.setX((screenBounds.getWidth() - gameScreenStage.getWidth()) / 2);
         gameScreenStage.setY((screenBounds.getHeight() - gameScreenStage.getHeight()) / 2);
     }
+
+    @FXML
+    private void openResultsView(){
+        FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 600, 400);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Stage resultsScreenStage = OrlogApplication.getMainStage();
+        resultsScreenStage.setResizable(false);
+        resultsScreenStage.setTitle("Results");
+        resultsScreenStage.setScene(scene);
+        resultsScreenStage.show();
+
+        // with this you set the screen dead center in the visual area
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        resultsScreenStage.setX((screenBounds.getWidth() - resultsScreenStage.getWidth()) / 2);
+        resultsScreenStage.setY((screenBounds.getHeight() - resultsScreenStage.getHeight()) / 2);
+    }
 }

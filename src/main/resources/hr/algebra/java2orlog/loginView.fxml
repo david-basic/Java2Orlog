@@ -55,7 +55,7 @@
                     <Font name="Century Gothic" size="12.0" />
                 </font>
             </TextField>
-            <Button layoutX="339.0" layoutY="321.0" mnemonicParsing="false" onAction="#startGame" prefHeight="78.0" prefWidth="188.0" text=" Start game">
+            <Button layoutX="235.0" layoutY="321.0" mnemonicParsing="false" onAction="#startGame" prefHeight="78.0" prefWidth="188.0" text=" Start game">
                 <font>
                     <Font name="Century Gothic" size="24.0" />
                 </font>
@@ -70,6 +70,11 @@
                     <Font name="Century Gothic" size="12.0" />
                 </font>
             </Label>
+         <Button fx:id="btnLeaderboard" layoutX="444.0" layoutY="321.0" mnemonicParsing="false" onAction="#openResultsView" prefHeight="78.0" prefWidth="188.0" text="Leaderboard">
+            <font>
+               <Font name="Century Gothic" size="24.0" />
+            </font>
+         </Button>
         </AnchorPane>
     </center>
 </BorderPane>

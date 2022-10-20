@@ -42,5 +42,30 @@
             </TableView>
          </children>
       </StackPane>
+      <Button fx:id="btnLoginSCreen" layoutX="84.0" layoutY="284.0" mnemonicParsing="false" onAction="#returnToLoginView" prefHeight="57.0" prefWidth="141.0" text="Return to Login">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Label layoutX="57.0" layoutY="228.0" text="Want to have a go at the game?">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="256.0" text="Click below to go to the login screen and enjoy!">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnMovesPlayed" layoutX="360.0" layoutY="284.0" mnemonicParsing="false" onAction="#openMovesPlayerView" prefHeight="57.0" prefWidth="141.0" text="Moves played">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Label layoutX="311.0" layoutY="256.0" text="To check last game's moves, click below!">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

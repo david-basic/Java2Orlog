@@ -62,7 +62,6 @@ public class LoginController {
 
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("gameScreenView.fxml"));
         Scene scene = null;
-
         try {
             scene = new Scene(fxmlLoader.load(), 1720, 880);
         } catch (IOException e) {

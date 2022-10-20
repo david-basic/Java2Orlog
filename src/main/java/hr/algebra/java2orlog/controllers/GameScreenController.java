@@ -1,12 +1,16 @@
 package hr.algebra.java2orlog.controllers;
 
+import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.DiceDetails;
 import hr.algebra.java2orlog.models.DiceSymbols;
 import hr.algebra.java2orlog.models.PlayerDetails;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -16,13 +20,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 public class GameScreenController implements Initializable {
     //region Fields
     private Boolean playerOneTurn;
+    private Boolean playingIsDone;
     private int cntAxeP1 = 0, cntShieldP1 = 0, cntShield_SP1 = 0, cntHelmetP1 = 0, cntHelmet_SP1 = 0, cntArrowP1 = 0, cntArrow_SP1 = 0, cntHandP1 = 0, cntHand_SP1 = 0;
     private int cntAxeP2 = 0, cntShieldP2 = 0, cntShield_SP2 = 0, cntHelmetP2 = 0, cntHelmet_SP2 = 0, cntArrowP2 = 0, cntArrow_SP2 = 0, cntHandP2 = 0, cntHand_SP2 = 0;
     private int rollCount = 0;
@@ -662,6 +670,11 @@ public class GameScreenController implements Initializable {
             // TODO: 19/10/2022 ovdje otvori high score view gdje ce biti ispisani samo kao text jedno ispod drugog u tablici nekoj player1 vs player2 i score u formatu X:Y
             // TODO: 19/10/2022 ili ako tablice imaju vec implementirani neki filter po stupcima mozemo definirati stupce PlayerName|Wins|Draws|Losses <---<---<--- cool ideja
             // TODO: 19/10/2022 mozda u CurrentGameDetails spremati bitne neke detalje o igri
+
+            playingIsDone = true;
+
+            openResultsView();
+
         }
     }
 
@@ -732,6 +745,26 @@ public class GameScreenController implements Initializable {
         featureNotImplemented.setHeaderText("WIP");
         featureNotImplemented.setContentText("Feature not yet implemented. WIP!");
         featureNotImplemented.showAndWait();
+    }
+    private void openResultsView(){
+        FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 600, 400);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Stage resultsScreenStage = OrlogApplication.getMainStage();
+        resultsScreenStage.setResizable(false);
+        resultsScreenStage.setTitle("Results");
+        resultsScreenStage.setScene(scene);
+        resultsScreenStage.show();
+
+        // with this you set the screen dead center in the visual area
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        resultsScreenStage.setX((screenBounds.getWidth() - resultsScreenStage.getWidth()) / 2);
+        resultsScreenStage.setY((screenBounds.getHeight() - resultsScreenStage.getHeight()) / 2);
     }
 
 

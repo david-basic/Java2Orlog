@@ -44,135 +44,102 @@ public class MoveDetails {
     public Integer getRoundNumber() {
         return roundNumber;
     }
-
     public void setRoundNumber(Integer roundNumber) {
         this.roundNumber = roundNumber;
     }
-
     public Integer getTurnNumber() {
         return turnNumber;
     }
-
     public void setTurnNumber(Integer turnNumber) {
         this.turnNumber = turnNumber;
     }
-
     public String getPlayerOnTurnName() {
         return playerOnTurnName;
     }
-
     public void setPlayerOnTurnName(String playerOnTurnName) {
         this.playerOnTurnName = playerOnTurnName;
     }
-
     public String getPlayer1Name() {
         return player1Name;
     }
-
     public void setPlayer1Name(String player1Name) {
         this.player1Name = player1Name;
     }
-
     public String getPlayer2Name() {
         return player2Name;
     }
-
     public void setPlayer2Name(String player2Name) {
         this.player2Name = player2Name;
     }
-
     public List<DiceSymbols> getSymbolsPlayerPlayed() {
         return symbolsPlayerPlayed;
     }
-
     public void setSymbolsPlayerPlayed(List<DiceSymbols> symbolsPlayerPlayed) {
         this.symbolsPlayerPlayed = symbolsPlayerPlayed;
     }
-
     public List<DiceSymbols> getSymbolsPlayerOnTurnDidntPlay() {
         return symbolsPlayerOnTurnDidntPlay;
     }
-
     public void setSymbolsPlayerOnTurnDidntPlay(List<DiceSymbols> symbolsPlayerOnTurnDidntPlay) {
         this.symbolsPlayerOnTurnDidntPlay = symbolsPlayerOnTurnDidntPlay;
     }
-
     public Boolean getTurnOver() {
         return isTurnOver;
     }
-
     public void setTurnOver(Boolean turnOver) {
         isTurnOver = turnOver;
     }
-
     public Integer getPlayer1DamageTaken() {
         return player1DamageTaken;
     }
-
     public void setPlayer1DamageTaken(Integer player1DamageTaken) {
         this.player1DamageTaken = player1DamageTaken;
     }
-
     public Integer getPlayer2DamageTaken() {
         return player2DamageTaken;
     }
-
     public void setPlayer2DamageTaken(Integer player2DamageTaken) {
         this.player2DamageTaken = player2DamageTaken;
     }
-
     public Integer getPlayer1CurrentCoins() {
         return player1CurrentCoins;
     }
-
     public void setPlayer1CurrentCoins(Integer player1CurrentCoins) {
         this.player1CurrentCoins = player1CurrentCoins;
     }
-
     public Integer getPlayer2CurrentCoins() {
         return player2CurrentCoins;
     }
-
     public void setPlayer2CurrentCoins(Integer player2CurrentCoins) {
         this.player2CurrentCoins = player2CurrentCoins;
     }
-
     public String getPlayer1GodFavorUsed() {
         return player1GodFavorUsed;
     }
-
     public void setPlayer1GodFavorUsed(String player1GodFavorUsed) {
         this.player1GodFavorUsed = player1GodFavorUsed;
     }
-
     public String getPlayer2GodFavorUsed() {
         return player2GodFavorUsed;
     }
-
     public void setPlayer2GodFavorUsed(String player2GodFavorUsed) {
         this.player2GodFavorUsed = player2GodFavorUsed;
     }
-
     public Boolean getRoundOver() {
         return isRoundOver;
     }
-
     public void setRoundOver(Boolean roundOver) {
         isRoundOver = roundOver;
     }
-
     public Boolean getGameOver() {
         return isGameOver;
     }
-
     public void setGameOver(Boolean gameOver) {
         isGameOver = gameOver;
     }
-
     public String getWinnerNameOrDraw() {
         return winnerNameOrDraw;
     }
-
     public void setWinnerNameOrDraw(String winnerNameOrDraw) {
         this.winnerNameOrDraw = winnerNameOrDraw;
     }

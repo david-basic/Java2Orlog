@@ -1140,7 +1140,7 @@ public class GameScreenController implements Initializable {
         Button clickedGodFavorBtn = (Button) actionEvent.getSource();
 
         // if you don't have coins for a certain clicked favor return
-        if (clickedGodFavorBtn.equals(btnThorP1)  && playerOneCoinCount < 8) {
+        if (clickedGodFavorBtn.equals(btnThorP1) && playerOneCoinCount < 8) {
             notEnoughCoinAlert();
             return;
         } else if (clickedGodFavorBtn.equals(btnHelP1) && playerOneCoinCount < 12) {
@@ -1149,7 +1149,7 @@ public class GameScreenController implements Initializable {
         } else if (clickedGodFavorBtn.equals(btnIdunP1) && playerOneCoinCount < 10) {
             notEnoughCoinAlert();
             return;
-        } else if (clickedGodFavorBtn.equals(btnThorP2)  && playerTwoCoinCount < 8) {
+        } else if (clickedGodFavorBtn.equals(btnThorP2) && playerTwoCoinCount < 8) {
             notEnoughCoinAlert();
             return;
         } else if (clickedGodFavorBtn.equals(btnHelP2) && playerTwoCoinCount < 12) {

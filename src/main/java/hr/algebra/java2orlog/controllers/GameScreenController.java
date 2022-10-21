@@ -3,6 +3,7 @@ package hr.algebra.java2orlog.controllers;
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.DiceDetails;
 import hr.algebra.java2orlog.models.DiceSymbols;
+import hr.algebra.java2orlog.models.MoveDetails;
 import hr.algebra.java2orlog.models.PlayerDetails;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,7 +42,7 @@ public class GameScreenController implements Initializable {
     private int playerTwoTotalDamageTaken = 0;
 
     private static List<PlayerDetails> playerDetails = new ArrayList<>();
-
+    private static List<MoveDetails> playerMoves = new ArrayList<>();
     private List<DiceDetails> notChosenDice = new ArrayList<>();
     private List<DiceDetails> playerOneAllDice = new ArrayList<>();
     private List<DiceDetails> playerTwoAllDice = new ArrayList<>();
@@ -151,7 +152,6 @@ public class GameScreenController implements Initializable {
         roundSetup(playerTwoAllDice);
         playerOneAllDice.forEach(d -> d.getDiceButton().setDisable(true));
         playerTwoAllDice.forEach(d -> d.getDiceButton().setDisable(true));
-
     }
 
     private void setCoinImages(Image imgCoin, ImageView imgCoinPlayerContainer) {
@@ -317,6 +317,39 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void endTurn() {
+
+        List<DiceDetails> playerOnTurnDice = new ArrayList<>();
+        if (playerOneTurn) {
+            playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+        }
+
+        List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+        List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+        for (var d : playerOnTurnDice) {
+            if (d.getIsChosenFromDiceTray()) {
+                symbolsPlayed.add(d.getDiceSymbols().get(0));
+            }else{
+                symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+            }
+        }
+        playerMoves.add(new MoveDetails(
+                roundCount,
+                rollCount,
+                lblPlayerOneName.toString(),
+                lblPlayerTwoName.toString(),
+                symbolsPlayed, symbolsNotPlayed,
+                playerOneTotalDamageTaken,
+                playerTwoTotalDamageTaken,
+                playerOneCoinCount,
+                playerTwoCoinCount,
+                "None",
+                "None",
+                false,
+                false,
+                "To be determined"
+                ));
+
+
         if (rollCount == 8) { // ako je rollcount jednak 8 kada se stisne end turn
 
             sendAllRemainingNotChosenDiceToCenter(playerOneAllDice);
@@ -592,7 +625,43 @@ public class GameScreenController implements Initializable {
             lblPlayerTwoCoins.setText(p2Coins);
             //endregion
 
-            // TODO: 18/10/2022  nakon sto se dodijeli novac mozes usat god powerse ako je useru ostalo novaca tokom runde i dodijelit damage novi ako se taj power usa
+            // TODO: 18/10/2022  nakon sto se dodijeli novac mozes usat god favorse ako je useru ostalo novaca tokom runde i dodijelit damage novi ako se taj power usa
+
+
+
+            List<DiceDetails> playerOnTurnDice = new ArrayList<>();
+            if (playerOneTurn) {
+                playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+            }
+
+            List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+            List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+            for (var d : playerOnTurnDice) {
+                if (d.getIsChosenFromDiceTray()) {
+                    symbolsPlayed.add(d.getDiceSymbols().get(0));
+                }else{
+                    symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+                }
+            }
+            playerMoves.add(new MoveDetails(
+                    roundCount,
+                    rollCount,
+                    lblPlayerOneName.toString(),
+                    lblPlayerTwoName.toString(),
+                    symbolsPlayed,
+                    symbolsNotPlayed,
+                    playerOneTotalDamageTaken,
+                    playerTwoTotalDamageTaken,
+                    playerOneCoinCount,
+                    playerTwoCoinCount,
+                    "None",
+                    "None",
+                    true,
+                    false,
+                    "To be determined"
+                    ));
+
+
 
             if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) {
                 recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerOneDetails(), LoginController.getPlayerTwoDetails());
@@ -650,15 +719,56 @@ public class GameScreenController implements Initializable {
 
     private void recordWins(int playerOneTotalDamageTaken, int playerTwoTotalDamageTaken, PlayerDetails player1, PlayerDetails player2) {
         if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
-            player1.setNumberOfDraws(player1.getNumberOfDraws()+1);
-            player2.setNumberOfDraws(player2.getNumberOfDraws()+1);
+            player1.setNumberOfDraws(player1.getNumberOfDraws() + 1);
+            player2.setNumberOfDraws(player2.getNumberOfDraws() + 1);
         } else if (playerOneTotalDamageTaken >= 15) { // P2 wins
-            player2.setNumberOfWins(player1.getNumberOfWins()+1);
-            player1.setNumberOfLost(player2.getNumberOfLost()+1);
+            player2.setNumberOfWins(player1.getNumberOfWins() + 1);
+            player1.setNumberOfLost(player2.getNumberOfLost() + 1);
         } else { // P1 wins
-            player1.setNumberOfWins(player1.getNumberOfWins()+1);
-            player2.setNumberOfLost(player1.getNumberOfLost()+1);
+            player1.setNumberOfWins(player1.getNumberOfWins() + 1);
+            player2.setNumberOfLost(player1.getNumberOfLost() + 1);
         }
+
+
+        List<DiceDetails> playerOnTurnDice = new ArrayList<>();
+        if (playerOneTurn) {
+            playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+        }
+        List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+        List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+        for (var d : playerOnTurnDice) {
+            if (d.getIsChosenFromDiceTray()) {
+                symbolsPlayed.add(d.getDiceSymbols().get(0));
+            }else{
+                symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+            }
+        }
+        String winnerOrDraw;
+        if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
+            winnerOrDraw = "Draw";
+        } else if (playerOneTotalDamageTaken >= 15) { // P2 wins
+            winnerOrDraw = lblPlayerTwoName.toString();
+        } else { // P1 wins
+            winnerOrDraw = lblPlayerOneName.toString();
+        }
+        playerMoves.add(new MoveDetails(
+                roundCount,
+                rollCount,
+                lblPlayerOneName.toString(),
+                lblPlayerTwoName.toString(),
+                symbolsPlayed,
+                symbolsNotPlayed,
+                playerOneTotalDamageTaken,
+                playerTwoTotalDamageTaken,
+                playerOneCoinCount,
+                playerTwoCoinCount,
+                "None",
+                "None",
+                true,
+                true,
+                winnerOrDraw
+        ));
+
 
         Alert startNewGameAlert = new Alert(Alert.AlertType.CONFIRMATION);
         startNewGameAlert.setTitle("GAME OVER");
@@ -673,6 +783,8 @@ public class GameScreenController implements Initializable {
             currentScoreAlert.setContentText(player1.getNumberOfWins().toString() + " : " + player2.getNumberOfWins().toString());
             currentScoreAlert.showAndWait();
 
+            playerMoves.clear(); // TODO: 21/10/2022 this clears player moves since a new game has started
+
             setupNewGame();
         } else {
             FeatureNotYetImplementedAlert();
@@ -681,6 +793,11 @@ public class GameScreenController implements Initializable {
             // TODO: 19/10/2022 mozda u CurrentGameDetails spremati bitne neke detalje o igri
 
             playingIsDone = true;
+
+
+//
+//            playerMoves.add(new MoveDetails())
+
 
             openResultsView();
 
@@ -811,6 +928,10 @@ public class GameScreenController implements Initializable {
         Button clickedGodPower = (Button) actionEvent.getSource();
 
         // TODO: 20/10/2022 implement god powers
+    }
+
+    public static List<MoveDetails> getPlayerMovesCollection() {
+        return playerMoves;
     }
 
 }

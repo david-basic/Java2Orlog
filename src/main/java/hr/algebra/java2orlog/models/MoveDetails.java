@@ -5,12 +5,12 @@ import java.util.List;
 public class MoveDetails {
     private Integer roundNumber;
     private Integer turnNumber;
-    private String playerOnTurnName;
+//    private String playerOnTurnName;
     private String player1Name;
     private String player2Name;
-    private List<DiceSymbols> symbolsPlayerPlayed;
+    private List<DiceSymbols> symbolsPlayerOnTurnPlayed;
     private List<DiceSymbols> symbolsPlayerOnTurnDidntPlay;
-    private Boolean isTurnOver;
+//    private Boolean isTurnOver;
     private Integer player1DamageTaken;
     private Integer player2DamageTaken;
     private Integer player1CurrentCoins;
@@ -21,15 +21,15 @@ public class MoveDetails {
     private Boolean isGameOver;
     private String winnerNameOrDraw;
 
-    public MoveDetails(Integer roundNumber, Integer turnNumber, String playerOnTurnName, String player1Name, String player2Name, List<DiceSymbols> symbolsPlayerPlayed, List<DiceSymbols> symbolsPlayerOnTurnDidntPlay, Boolean isTurnOver, Integer player1DamageTaken, Integer player2DamageTaken, Integer player1CurrentCoins, Integer player2CurrentCoins, String player1GodFavorUsed, String player2GodFavorUsed, Boolean isRoundOver, Boolean isGameOver, String winnerNameOrDraw) {
+    public MoveDetails(Integer roundNumber, Integer turnNumber, String player1Name, String player2Name, List<DiceSymbols> symbolsPlayerOnTurnPlayed, List<DiceSymbols> symbolsPlayerOnTurnDidntPlay, Integer player1DamageTaken, Integer player2DamageTaken, Integer player1CurrentCoins, Integer player2CurrentCoins, String player1GodFavorUsed, String player2GodFavorUsed, Boolean isRoundOver, Boolean isGameOver, String winnerNameOrDraw) {
         this.roundNumber = roundNumber;
         this.turnNumber = turnNumber;
-        this.playerOnTurnName = playerOnTurnName;
+//        this.playerOnTurnName = playerOnTurnName;
         this.player1Name = player1Name;
         this.player2Name = player2Name;
-        this.symbolsPlayerPlayed = symbolsPlayerPlayed;
+        this.symbolsPlayerOnTurnPlayed = symbolsPlayerOnTurnPlayed;
         this.symbolsPlayerOnTurnDidntPlay = symbolsPlayerOnTurnDidntPlay;
-        this.isTurnOver = isTurnOver;
+//        this.isTurnOver = isTurnOver;
         this.player1DamageTaken = player1DamageTaken;
         this.player2DamageTaken = player2DamageTaken;
         this.player1CurrentCoins = player1CurrentCoins;
@@ -53,12 +53,12 @@ public class MoveDetails {
     public void setTurnNumber(Integer turnNumber) {
         this.turnNumber = turnNumber;
     }
-    public String getPlayerOnTurnName() {
-        return playerOnTurnName;
-    }
-    public void setPlayerOnTurnName(String playerOnTurnName) {
-        this.playerOnTurnName = playerOnTurnName;
-    }
+//    public String getPlayerOnTurnName() {
+//        return playerOnTurnName;
+//    }
+//    public void setPlayerOnTurnName(String playerOnTurnName) {
+//        this.playerOnTurnName = playerOnTurnName;
+//    }
     public String getPlayer1Name() {
         return player1Name;
     }
@@ -71,11 +71,11 @@ public class MoveDetails {
     public void setPlayer2Name(String player2Name) {
         this.player2Name = player2Name;
     }
-    public List<DiceSymbols> getSymbolsPlayerPlayed() {
-        return symbolsPlayerPlayed;
+    public List<DiceSymbols> getSymbolsPlayerOnTurnPlayed() {
+        return symbolsPlayerOnTurnPlayed;
     }
-    public void setSymbolsPlayerPlayed(List<DiceSymbols> symbolsPlayerPlayed) {
-        this.symbolsPlayerPlayed = symbolsPlayerPlayed;
+    public void setSymbolsPlayerOnTurnPlayed(List<DiceSymbols> symbolsPlayerOnTurnPlayed) {
+        this.symbolsPlayerOnTurnPlayed = symbolsPlayerOnTurnPlayed;
     }
     public List<DiceSymbols> getSymbolsPlayerOnTurnDidntPlay() {
         return symbolsPlayerOnTurnDidntPlay;
@@ -83,12 +83,12 @@ public class MoveDetails {
     public void setSymbolsPlayerOnTurnDidntPlay(List<DiceSymbols> symbolsPlayerOnTurnDidntPlay) {
         this.symbolsPlayerOnTurnDidntPlay = symbolsPlayerOnTurnDidntPlay;
     }
-    public Boolean getTurnOver() {
-        return isTurnOver;
-    }
-    public void setTurnOver(Boolean turnOver) {
-        isTurnOver = turnOver;
-    }
+//    public Boolean getTurnOver() {
+//        return isTurnOver;
+//    }
+//    public void setTurnOver(Boolean turnOver) {
+//        isTurnOver = turnOver;
+//    }
     public Integer getPlayer1DamageTaken() {
         return player1DamageTaken;
     }

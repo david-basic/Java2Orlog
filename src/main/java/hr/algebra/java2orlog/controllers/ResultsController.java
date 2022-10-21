@@ -1,21 +1,27 @@
 package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
+import hr.algebra.java2orlog.models.PlayerDetails;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -23,25 +29,35 @@ public class ResultsController implements Initializable {
     //region Fields
     private Popup popup = new Popup();
     private Stage stage = OrlogApplication.getMainStage();
+    private ObservableList<PlayerDetails> playerCollection = FXCollections.observableArrayList(new ArrayList<>(LoginController.getPlayerDetailsCollection()));
     //endregion
 
     //region FXML elements
     @FXML
-    private TableView tblRanking;
+    private TableView<PlayerDetails> resultsTable;
     @FXML
-    private TableColumn colPlayerName;
+    private TableColumn<PlayerDetails, String> playerName;
     @FXML
-    private TableColumn colPlayerWins;
+    private TableColumn<PlayerDetails, Integer> wins;
     @FXML
-    private TableColumn colPlayerDraws;
+    private TableColumn<PlayerDetails, Integer> draws;
     @FXML
-    private TableColumn colPlayerLoses;
-    @FXML
-    private Button btnShowRules;
+    private TableColumn<PlayerDetails, Integer> loses;
     //endregion
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        playerName.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("playerName"));
+        wins.setCellValueFactory(new PropertyValueFactory<PlayerDetails, Integer>("numberOfWins"));
+        draws.setCellValueFactory(new PropertyValueFactory<PlayerDetails, Integer>("numberOfDraws"));
+        loses.setCellValueFactory(new PropertyValueFactory<PlayerDetails, Integer>("numberOfLoses"));
+        resultsTable.setItems(playerCollection);
+        resultsTable.setVisible(true);
 
+        gameRulesPopupSetup();
+    }
+
+    private void gameRulesPopupSetup() {
         ImageView imgRules = new ImageView(Objects.requireNonNull(getClass().getResource("/gameRules.jpg")).toExternalForm());
         popup.setHeight(386);
         popup.setWidth(681);
@@ -52,18 +68,17 @@ public class ResultsController implements Initializable {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         popup.setX((screenBounds.getWidth() - popup.getWidth()));
         popup.setY((screenBounds.getHeight() - popup.getHeight()) / 2);
-
     }
 
     @FXML
-    private void showRulesImage(){
-        if (!popup.isShowing()){
+    private void showRulesImage() {
+        if (!popup.isShowing()) {
             popup.show(stage);
         }
     }
 
     @FXML
-    private void returnToLoginView(){
+    private void returnToLoginView() {
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("loginView.fxml"));
         Scene scene = null;
         try {
@@ -85,7 +100,7 @@ public class ResultsController implements Initializable {
     }
 
     @FXML
-    private void openMovesPlayerView(){
+    private void openMovesPlayerView() {
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("playerMovesView.fxml"));
         Scene scene = null;
         try {

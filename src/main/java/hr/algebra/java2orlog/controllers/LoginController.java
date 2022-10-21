@@ -41,7 +41,8 @@ public class LoginController {
         return playerTwoDetails;
     }
     public static List<PlayerDetails> getPlayerDetailsCollection() {
-        return new ArrayList<>(playerDetailsCollection);
+//        return new ArrayList<>(playerDetailsCollection);
+        return playerDetailsCollection;
     }
 
     public void startGame(){
@@ -63,8 +64,8 @@ public class LoginController {
             return;
         }
 
-        playerOneDetails = new PlayerDetails(playerOneName);
-        playerTwoDetails = new PlayerDetails(playerTwoName);
+        playerOneDetails = new PlayerDetails(playerOneName, 0, 0, 0);
+        playerTwoDetails = new PlayerDetails(playerTwoName, 0, 0, 0);
 
         playerDetailsCollection.add(playerOneDetails);
         playerDetailsCollection.add(playerTwoDetails);
@@ -91,6 +92,12 @@ public class LoginController {
 
     @FXML
     private void openResultsView(){
+
+        playerOneDetails = new PlayerDetails("Pero",1,2,3);
+        playerTwoDetails = new PlayerDetails("Jure",3,2,1);
+        playerDetailsCollection.add(playerOneDetails);
+        playerDetailsCollection.add(playerTwoDetails);
+
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
         Scene scene = null;
         try {

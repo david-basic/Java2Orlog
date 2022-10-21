@@ -650,12 +650,14 @@ public class GameScreenController implements Initializable {
 
     private void recordWins(int playerOneTotalDamageTaken, int playerTwoTotalDamageTaken, PlayerDetails player1, PlayerDetails player2) {
         if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
-            player1.recordADraw();
-            player2.recordADraw();
+            player1.setNumberOfDraws(player1.getNumberOfDraws()+1);
+            player2.setNumberOfDraws(player2.getNumberOfDraws()+1);
         } else if (playerOneTotalDamageTaken >= 15) { // P2 wins
-            player2.recordAWin();
+            player2.setNumberOfWins(player1.getNumberOfWins()+1);
+            player1.setNumberOfLost(player2.getNumberOfLost()+1);
         } else { // P1 wins
-            player1.recordAWin();
+            player1.setNumberOfWins(player1.getNumberOfWins()+1);
+            player2.setNumberOfLost(player1.getNumberOfLost()+1);
         }
 
         Alert startNewGameAlert = new Alert(Alert.AlertType.CONFIRMATION);

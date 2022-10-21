@@ -6,25 +6,24 @@ public class PlayerDetails {
     private Integer numberOfDraws;
     private Integer numberOfLost;
 
-    public PlayerDetails(String playerName) {
+    public PlayerDetails(String playerName, Integer numberOfWins, Integer numberOfDraws, Integer numberOfLost) {
         this.playerName = playerName;
-        numberOfWins = 0;
-        numberOfDraws = 0;
-        numberOfLost = 0;
+        this.numberOfWins = numberOfWins;
+        this.numberOfDraws = numberOfDraws;
+        this.numberOfLost = numberOfLost;
     }
 
     public String getPlayerName() {
         return playerName;
     }
-
-    public void recordAWin(){
-        numberOfWins++;
+    public void setNumberOfWins(Integer numberOfWins) {
+        this.numberOfWins = numberOfWins;
     }
-    public void recordADraw(){
-        numberOfDraws++;
+    public void setNumberOfDraws(Integer numberOfDraws) {
+        this.numberOfDraws = numberOfDraws;
     }
-    public void recordALoss(){
-        numberOfLost++;
+    public void setNumberOfLost(Integer numberOfLost) {
+        this.numberOfLost = numberOfLost;
     }
     public Integer getNumberOfWins() {
         return numberOfWins;

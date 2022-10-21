@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -101,24 +102,34 @@ public class ResultsController implements Initializable {
 
     @FXML
     private void openMovesPlayerView() {
-        FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("playerMovesView.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 600, 400);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+
+        if (LoginController.getPlayerDetailsCollection().size() != 0) {
+            FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("playerMovesView.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load(), 600, 400);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+
+            Stage playerMovesScreenStage = OrlogApplication.getMainStage();
+            playerMovesScreenStage.setResizable(false);
+            playerMovesScreenStage.setTitle("Player moves");
+            playerMovesScreenStage.setScene(scene);
+            playerMovesScreenStage.show();
+
+            // with this you set the screen dead center in the visual area
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            playerMovesScreenStage.setX((screenBounds.getWidth() - playerMovesScreenStage.getWidth()) / 2);
+            playerMovesScreenStage.setY((screenBounds.getHeight() - playerMovesScreenStage.getHeight()) / 2);
+        } else {
+            Alert canNotAccessPlayerMoves = new Alert(Alert.AlertType.INFORMATION);
+            canNotAccessPlayerMoves.setTitle("Access denied");
+            canNotAccessPlayerMoves.setHeaderText("No match played this session!");
+            canNotAccessPlayerMoves.setContentText("Can not access player moves page because there is nothing to show.");
+            canNotAccessPlayerMoves.showAndWait();
         }
 
-        Stage playerMovesScreenStage = OrlogApplication.getMainStage();
-        playerMovesScreenStage.setResizable(false);
-        playerMovesScreenStage.setTitle("Player moves");
-        playerMovesScreenStage.setScene(scene);
-        playerMovesScreenStage.show();
-
-        // with this you set the screen dead center in the visual area
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        playerMovesScreenStage.setX((screenBounds.getWidth() - playerMovesScreenStage.getWidth()) / 2);
-        playerMovesScreenStage.setY((screenBounds.getHeight() - playerMovesScreenStage.getHeight()) / 2);
     }
 
 }

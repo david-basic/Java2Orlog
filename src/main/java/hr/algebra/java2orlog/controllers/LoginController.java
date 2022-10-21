@@ -28,6 +28,9 @@ public class LoginController {
 
     @FXML
     private Label lblPlayerTwoNameError;
+
+    @FXML
+    private Label lblSameNamesError;
     //endregion
 
     private static PlayerDetails playerOneDetails;
@@ -51,6 +54,7 @@ public class LoginController {
 
         lblPlayerOneNameError.setVisible(false);
         lblPlayerTwoNameError.setVisible(false);
+        lblSameNamesError.setVisible(false);
 
         if (playerOneName == "" && playerTwoName == "") {
             lblPlayerOneNameError.setVisible(true);
@@ -61,6 +65,11 @@ public class LoginController {
             return;
         } else if (playerTwoName == "") {
             lblPlayerTwoNameError.setVisible(true);
+            return;
+        }
+
+        if (playerOneName.equals(playerTwoName)){
+            lblSameNamesError.setVisible(true);
             return;
         }
 
@@ -92,11 +101,6 @@ public class LoginController {
 
     @FXML
     private void openResultsView(){
-
-        playerOneDetails = new PlayerDetails("Pero",1,2,3);
-        playerTwoDetails = new PlayerDetails("Jure",3,2,1);
-        playerDetailsCollection.add(playerOneDetails);
-        playerDetailsCollection.add(playerTwoDetails);
 
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
         Scene scene = null;

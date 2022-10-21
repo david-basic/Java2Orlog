@@ -221,8 +221,8 @@ public class GameScreenController implements Initializable {
         player.add(new DiceDetails(btnDice5, die5Symbols, false, false));
         player.add(new DiceDetails(btnDice6, die6Symbols, false, false));
     }
-
     //endregion
+
     private void roundSetup(List<DiceDetails> Dice) {
         for (var d : Dice) {
             if (!d.getIsChosenFromDiceTray()) {
@@ -812,6 +812,5 @@ public class GameScreenController implements Initializable {
 
         // TODO: 20/10/2022 implement god powers
     }
-
 
 }

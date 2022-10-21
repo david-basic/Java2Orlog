@@ -75,6 +75,11 @@
                <Font name="Century Gothic" size="24.0" />
             </font>
          </Button>
+         <Label fx:id="lblSameNamesError" layoutX="355.0" layoutY="294.0" text="* same names not allowed" textFill="RED" visible="false">
+            <font>
+               <Font name="Century Gothic" size="12.0" />
+            </font>
+         </Label>
         </AnchorPane>
     </center>
 </BorderPane>

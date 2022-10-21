@@ -33,13 +33,13 @@ public class PlayerMovesController implements Initializable {
 //            if (oldRoundNumber != move.getRoundNumber()) {
             if (!move.getRoundOver()) {
 //                oldRoundNumber = move.getRoundNumber();
-                if (move.getRoundNumber() % 2 == 0) { // ako je runda neparna znam da je player 1 on turn inace je player 2
+                if (move.getRoundNumber() % 2 != 0) { // ako je runda neparna znam da je player 1 on turn inace je player 2
                     sb.append(move.getPlayer1Name()).append("'s turn: \n");
                 } else {
                     sb.append(move.getPlayer2Name()).append("'s turn: \n");
                 }
             } else {
-                if (move.getRoundNumber() % 2 != 0) { // ako je runda parna znam da je player 1 on turn inace je player 2 kad se promijeni nakon prve rune
+                if (move.getRoundNumber() % 2 == 0) { // ako je runda parna znam da je player 1 on turn inace je player 2 kad se promijeni nakon prve rune
                     sb.append(move.getPlayer1Name()).append("'s turn: \n");
                 } else {
                     sb.append(move.getPlayer2Name()).append("'s turn: \n");
@@ -60,7 +60,7 @@ public class PlayerMovesController implements Initializable {
 
 //            if (oldRoundNumber != move.getRoundNumber()) { // ako je ista runda
             if (!move.getRoundOver()) { // ako je ista runa
-                if (move.getRoundNumber() % 2 != 0) { // ako je p1 on turn
+                if (move.getRoundNumber() % 2 == 0) { // ako je p1 on turn
                     sb.append("    Player has taken ").append(move.getPlayer1DamageTaken().toString()).append(" damage.\n");
                     sb.append("    Player has given ").append(move.getPlayer2DamageTaken().toString()).append(" damage.\n");
                     sb.append("    Player has collected ").append(move.getPlayer1CurrentCoins().toString()).append(" coin so far.\n");
@@ -72,7 +72,7 @@ public class PlayerMovesController implements Initializable {
                     sb.append("    Player used following God favor: ").append(move.getPlayer2GodFavorUsed()).append("\n");
                 }
             } else { // razlicita runda
-                if (move.getRoundNumber() % 2 == 0) { // ako je p2 on turn
+                if (move.getRoundNumber() % 2 != 0) { // ako je p2 on turn
                     sb.append("    Player has taken ").append(move.getPlayer2DamageTaken().toString()).append(" damage.\n");
                     sb.append("    Player has given ").append(move.getPlayer1DamageTaken().toString()).append(" damage.\n");
                     sb.append("    Player has collected ").append(move.getPlayer2CurrentCoins().toString()).append(" coin so far.\n");

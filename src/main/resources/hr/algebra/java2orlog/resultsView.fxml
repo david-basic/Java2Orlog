@@ -35,9 +35,9 @@
             <TableView fx:id="resultsTable" prefHeight="200.0" prefWidth="200.0">
               <columns>
                 <TableColumn fx:id="playerName" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0" resizable="false" sortType="DESCENDING" text="Player name" />
-                <TableColumn fx:id="wins" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" resizable="false" sortType="DESCENDING" text="Wins" />
-                  <TableColumn fx:id="draws" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" resizable="false" sortType="DESCENDING" text="Draws" />
-                  <TableColumn fx:id="loses" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" resizable="false" sortType="DESCENDING" text="Loses" />
+                <TableColumn fx:id="numberOfWins" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" resizable="false" sortType="DESCENDING" text="Wins" />
+                  <TableColumn fx:id="numberOfDraws" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" resizable="false" sortType="DESCENDING" text="Draws" />
+                  <TableColumn fx:id="numberOfLoses" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="50.0" resizable="false" sortType="DESCENDING" text="Loses" />
               </columns>
             </TableView>
          </children></StackPane>

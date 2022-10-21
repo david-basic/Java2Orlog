@@ -39,19 +39,19 @@ public class ResultsController implements Initializable {
     @FXML
     private TableColumn<PlayerDetails, String> playerName;
     @FXML
-    private TableColumn<PlayerDetails, Integer> wins;
+    private TableColumn<PlayerDetails, String> numberOfWins;
     @FXML
-    private TableColumn<PlayerDetails, Integer> draws;
+    private TableColumn<PlayerDetails, String> numberOfDraws;
     @FXML
-    private TableColumn<PlayerDetails, Integer> loses;
+    private TableColumn<PlayerDetails, String> numberOfLoses;
     //endregion
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         playerName.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("playerName"));
-        wins.setCellValueFactory(new PropertyValueFactory<PlayerDetails, Integer>("numberOfWins"));
-        draws.setCellValueFactory(new PropertyValueFactory<PlayerDetails, Integer>("numberOfDraws"));
-        loses.setCellValueFactory(new PropertyValueFactory<PlayerDetails, Integer>("numberOfLoses"));
+        numberOfWins.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("numberOfWins"));
+        numberOfDraws.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("numberOfDraws"));
+        numberOfLoses.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("numberOfLoses"));
         resultsTable.setItems(playerCollection);
         resultsTable.setVisible(true);
 

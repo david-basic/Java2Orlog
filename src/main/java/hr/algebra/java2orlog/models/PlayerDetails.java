@@ -1,37 +1,66 @@
 package hr.algebra.java2orlog.models;
 
-public class PlayerDetails {
-    private String playerName;
-    private Integer numberOfWins;
-    private Integer numberOfDraws;
-    private Integer numberOfLost;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
-    public PlayerDetails(String playerName, Integer numberOfWins, Integer numberOfDraws, Integer numberOfLost) {
-        this.playerName = playerName;
-        this.numberOfWins = numberOfWins;
-        this.numberOfDraws = numberOfDraws;
-        this.numberOfLost = numberOfLost;
+public class PlayerDetails {
+    private SimpleStringProperty playerName;
+    private SimpleStringProperty numberOfWins;
+    private SimpleStringProperty numberOfDraws;
+    private SimpleStringProperty numberOfLost;
+
+    public PlayerDetails(String playerName, String numberOfWins, String numberOfDraws, String numberOfLost) {
+        this.playerName = new SimpleStringProperty(playerName);
+        this.numberOfWins = new SimpleStringProperty(numberOfWins);
+        this.numberOfDraws = new SimpleStringProperty(numberOfDraws);
+        this.numberOfLost = new SimpleStringProperty(numberOfLost);
     }
 
     public String getPlayerName() {
+        return playerName.get();
+    }
+
+    public SimpleStringProperty playerNameProperty() {
         return playerName;
     }
-    public void setNumberOfWins(Integer numberOfWins) {
-        this.numberOfWins = numberOfWins;
+
+    public void setPlayerName(String playerName) {
+        this.playerName.set(playerName);
     }
-    public void setNumberOfDraws(Integer numberOfDraws) {
-        this.numberOfDraws = numberOfDraws;
+
+    public String getNumberOfWins() {
+        return numberOfWins.get();
     }
-    public void setNumberOfLost(Integer numberOfLost) {
-        this.numberOfLost = numberOfLost;
-    }
-    public Integer getNumberOfWins() {
+
+    public SimpleStringProperty numberOfWinsProperty() {
         return numberOfWins;
     }
-    public Integer getNumberOfDraws() {
+
+    public void setNumberOfWins(String numberOfWins) {
+        this.numberOfWins.set(numberOfWins);
+    }
+
+    public String getNumberOfDraws() {
+        return numberOfDraws.get();
+    }
+
+    public SimpleStringProperty numberOfDrawsProperty() {
         return numberOfDraws;
     }
-    public Integer getNumberOfLost() {
+
+    public void setNumberOfDraws(String numberOfDraws) {
+        this.numberOfDraws.set(numberOfDraws);
+    }
+
+    public String getNumberOfLost() {
+        return numberOfLost.get();
+    }
+
+    public SimpleStringProperty numberOfLostProperty() {
         return numberOfLost;
+    }
+
+    public void setNumberOfLost(String numberOfLost) {
+        this.numberOfLost.set(numberOfLost);
     }
 }

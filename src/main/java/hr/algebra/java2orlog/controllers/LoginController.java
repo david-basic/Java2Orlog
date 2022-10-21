@@ -73,8 +73,8 @@ public class LoginController {
             return;
         }
 
-        playerOneDetails = new PlayerDetails(playerOneName, 0, 0, 0);
-        playerTwoDetails = new PlayerDetails(playerTwoName, 0, 0, 0);
+        playerOneDetails = new PlayerDetails(playerOneName, "0", "0" , "0");
+        playerTwoDetails = new PlayerDetails(playerTwoName, "0", "0", "0");
 
         playerDetailsCollection.add(playerOneDetails);
         playerDetailsCollection.add(playerTwoDetails);
@@ -101,6 +101,13 @@ public class LoginController {
 
     @FXML
     private void openResultsView(){
+
+        // TODO: 21/10/2022 testing data for table
+        playerOneDetails = new PlayerDetails("John Doe1", "1", "2", "3");
+        playerTwoDetails = new PlayerDetails("John Doe2", "3", "2", "1");
+
+        playerDetailsCollection.add(playerOneDetails);
+        playerDetailsCollection.add(playerTwoDetails);
 
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
         Scene scene = null;

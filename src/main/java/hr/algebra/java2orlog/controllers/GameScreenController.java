@@ -41,8 +41,6 @@ public class GameScreenController implements Initializable {
     private int playerOneTotalDamageTaken = 0;
     private int playerTwoTotalDamageTaken = 0;
 
-    private static List<PlayerDetails> playerDetails = new ArrayList<>();
-
     private MoveDetails tempMoveDetails;
     private static List<MoveDetails> playerMoves = new ArrayList<>();
     private List<DiceDetails> notChosenDice = new ArrayList<>();
@@ -809,14 +807,29 @@ public class GameScreenController implements Initializable {
 
     private void recordWins(int playerOneTotalDamageTaken, int playerTwoTotalDamageTaken, PlayerDetails player1, PlayerDetails player2) {
         if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
-            player1.setNumberOfDraws(player1.getNumberOfDraws() + 1);
-            player2.setNumberOfDraws(player2.getNumberOfDraws() + 1);
+            var tempDrawsP1 = Integer.valueOf(player1.getNumberOfDraws());
+            tempDrawsP1++;
+            player1.setNumberOfDraws(tempDrawsP1.toString());
+
+            var tempDrawsP2 = Integer.valueOf(player2.getNumberOfDraws());
+            tempDrawsP2++;
+            player2.setNumberOfDraws(tempDrawsP2.toString());
         } else if (playerOneTotalDamageTaken >= 15) { // P2 wins
-            player2.setNumberOfWins(player1.getNumberOfWins() + 1);
-            player1.setNumberOfLost(player2.getNumberOfLost() + 1);
+            var tempWinsP2 = Integer.valueOf(player2.getNumberOfWins());
+            tempWinsP2++;
+            player2.setNumberOfWins(tempWinsP2.toString());
+
+            var tempLostP1 = Integer.valueOf(player1.getNumberOfLost());
+            tempLostP1++;
+            player1.setNumberOfLost(tempLostP1.toString());
         } else { // P1 wins
-            player1.setNumberOfWins(player1.getNumberOfWins() + 1);
-            player2.setNumberOfLost(player1.getNumberOfLost() + 1);
+            var tempWinsP1 = Integer.valueOf(player1.getNumberOfWins());
+            tempWinsP1++;
+            player1.setNumberOfWins(tempWinsP1.toString());
+
+            var tempLostP2 = Integer.valueOf(player2.getNumberOfLost());
+            tempLostP2++;
+            player2.setNumberOfLost(tempLostP2.toString());
         }
 
 
@@ -863,7 +876,7 @@ public class GameScreenController implements Initializable {
             Alert currentScoreAlert = new Alert(Alert.AlertType.INFORMATION);
             currentScoreAlert.setTitle("CURRENT SCORE");
             currentScoreAlert.setHeaderText(player1.getPlayerName() + " VS. " + player2.getPlayerName());
-            currentScoreAlert.setContentText(player1.getNumberOfWins().toString() + " : " + player2.getNumberOfWins().toString());
+            currentScoreAlert.setContentText(player1.getNumberOfWins() + " : " + player2.getNumberOfWins());
             currentScoreAlert.showAndWait();
 
             playerMoves.clear(); // TODO: 21/10/2022 this clears player moves since a new game has started

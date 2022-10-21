@@ -5,6 +5,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -150,20 +151,41 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="btnPlayerTwoGodPower1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0">
+                                <Button fx:id="btnThorP2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" prefHeight="339.0" prefWidth="250.0">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
+                           <tooltip>
+                              <Tooltip fx:id="ttThorP2" contentDisplay="BOTTOM" graphicTextGap="2.0" text="Thor's Wrath">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="20.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
                                 </Button>
-                                <Button fx:id="btnPlayerTwoGodPower2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="1">
+                                <Button fx:id="btnHelP2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="1">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
+                           <tooltip>
+                              <Tooltip fx:id="ttHelP2" contentDisplay="BOTTOM" graphicTextGap="2.0" text="Hel's Grip">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="20.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
                                 </Button>
-                                <Button fx:id="btnPlayerTwoGodPower3" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="2">
+                                <Button fx:id="btnIdunP2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="2">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
+                           <tooltip>
+                              <Tooltip fx:id="ttIdunP2" contentDisplay="BOTTOM" graphicTextGap="2.0" text="Idun's Rejuvenation">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="20.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
                                 </Button>
                             </children>
                             <padding>
@@ -218,26 +240,47 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="btnPlayerOneGodPower1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0">
+                                <Button fx:id="btnThorP1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" prefHeight="339.0" prefWidth="250.0">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                     <opaqueInsets>
                                         <Insets />
                                     </opaqueInsets>
+                           <tooltip>
+                              <Tooltip fx:id="ttThorP1" contentDisplay="BOTTOM" graphicTextGap="2.0" text="Thor's Wrath">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="20.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
                                 </Button>
-                                <Button fx:id="btnPlayerOneGodPower2" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="1">
+                                <Button fx:id="btnHelP1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="1">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                     <opaqueInsets>
                                         <Insets />
                                     </opaqueInsets>
+                           <tooltip>
+                              <Tooltip fx:id="ttHelP1" contentDisplay="BOTTOM" graphicTextGap="2.0" text="Hel's Grip">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="20.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
                                 </Button>
-                                <Button fx:id="btnPlayerOneGodPower3" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="2">
+                                <Button fx:id="btnIdunP1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#clickOnGodFavor" prefHeight="339.0" prefWidth="250.0" GridPane.columnIndex="2">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
+                           <tooltip>
+                              <Tooltip fx:id="ttIdunP1" contentDisplay="BOTTOM" graphicTextGap="2.0" text="Idun's Rejuvenation">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="20.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
                                 </Button>
                             </children>
                             <padding>

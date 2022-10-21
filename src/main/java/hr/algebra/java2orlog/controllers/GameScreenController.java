@@ -12,10 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -59,11 +56,11 @@ public class GameScreenController implements Initializable {
 
     //region FXML elements player one
     @FXML
-    private Button btnPlayerOneGodPower1;
+    private Button btnThorP1;
     @FXML
-    private Button btnPlayerOneGodPower2;
+    private Button btnHelP1;
     @FXML
-    private Button btnPlayerOneGodPower3;
+    private Button btnIdunP1;
     @FXML
     private Label lblPlayerOneName;
     @FXML
@@ -92,14 +89,20 @@ public class GameScreenController implements Initializable {
     private ImageView imgCoinPlayerOne;
     @FXML
     private GridPane gridPanePlayerOneHealth;
+    @FXML
+    private Tooltip ttThorP1;
+    @FXML
+    private Tooltip ttHelP1;
+    @FXML
+    private Tooltip ttIdunP1;
     //endregion
     //region FXML elements player two
     @FXML
-    private Button btnPlayerTwoGodPower1;
+    private Button btnThorP2;
     @FXML
-    private Button btnPlayerTwoGodPower2;
+    private Button btnHelP2;
     @FXML
-    private Button btnPlayerTwoGodPower3;
+    private Button btnIdunP2;
     @FXML
     private Label lblPlayerTwoName;
     @FXML
@@ -128,6 +131,12 @@ public class GameScreenController implements Initializable {
     private ImageView imgCoinPlayerTwo;
     @FXML
     private GridPane gridPanePlayerTwoHealth;
+    @FXML
+    private Tooltip ttThorP2;
+    @FXML
+    private Tooltip ttHelP2;
+    @FXML
+    private Tooltip ttIdunP2;
     //endregion
 
     @Override
@@ -162,38 +171,69 @@ public class GameScreenController implements Initializable {
         ImageView p1GodFavor1Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath.png")).toExternalForm());
         p1GodFavor1Img.setFitHeight(284);
         p1GodFavor1Img.setFitWidth(176);
-        btnPlayerOneGodPower1.setPadding(new Insets(0, 0, 0, 0));
-        btnPlayerOneGodPower1.setGraphic(p1GodFavor1Img);
+        btnThorP1.setPadding(new Insets(0, 0, 0, 0));
+        btnThorP1.setGraphic(p1GodFavor1Img);
 
         ImageView p1GodFavor2Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Hels_Grip.png")).toExternalForm());
         p1GodFavor2Img.setFitHeight(284);
         p1GodFavor2Img.setFitWidth(176);
-        btnPlayerOneGodPower2.setPadding(new Insets(0, 0, 0, 0));
-        btnPlayerOneGodPower2.setGraphic(p1GodFavor2Img);
+        btnHelP1.setPadding(new Insets(0, 0, 0, 0));
+        btnHelP1.setGraphic(p1GodFavor2Img);
 
         ImageView p1GodFavor3Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Iduns_Rejuvenation.png")).toExternalForm());
         p1GodFavor3Img.setFitHeight(284);
         p1GodFavor3Img.setFitWidth(176);
-        btnPlayerOneGodPower3.setPadding(new Insets(0, 0, 0, 0));
-        btnPlayerOneGodPower3.setGraphic(p1GodFavor3Img);
+        btnIdunP1.setPadding(new Insets(0, 0, 0, 0));
+        btnIdunP1.setGraphic(p1GodFavor3Img);
 
         ImageView p2GodFavor1Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath.png")).toExternalForm());
         p2GodFavor1Img.setFitHeight(284);
         p2GodFavor1Img.setFitWidth(176);
-        btnPlayerTwoGodPower1.setPadding(new Insets(0, 0, 0, 0));
-        btnPlayerTwoGodPower1.setGraphic(p2GodFavor1Img);
+        btnThorP2.setPadding(new Insets(0, 0, 0, 0));
+        btnThorP2.setGraphic(p2GodFavor1Img);
 
         ImageView p2GodFavor2Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Hels_Grip.png")).toExternalForm());
         p2GodFavor2Img.setFitHeight(284);
         p2GodFavor2Img.setFitWidth(176);
-        btnPlayerTwoGodPower2.setPadding(new Insets(0, 0, 0, 0));
-        btnPlayerTwoGodPower2.setGraphic(p2GodFavor2Img);
+        btnHelP2.setPadding(new Insets(0, 0, 0, 0));
+        btnHelP2.setGraphic(p2GodFavor2Img);
 
         ImageView p2GodFavor3Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Iduns_Rejuvenation.png")).toExternalForm());
         p2GodFavor3Img.setFitHeight(284);
         p2GodFavor3Img.setFitWidth(176);
-        btnPlayerTwoGodPower3.setPadding(new Insets(0, 0, 0, 0));
-        btnPlayerTwoGodPower3.setGraphic(p2GodFavor3Img);
+        btnIdunP2.setPadding(new Insets(0, 0, 0, 0));
+        btnIdunP2.setGraphic(p2GodFavor3Img);
+
+        ImageView thorTooltipImgP1 = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath_explanation.jpg")).toExternalForm());
+        thorTooltipImgP1.setFitHeight(44);
+        thorTooltipImgP1.setFitWidth(287);
+        ttThorP1.setGraphic(thorTooltipImgP1);
+
+        ImageView helTooltipImgP1 = new ImageView(Objects.requireNonNull(getClass().getResource("/Hels_Grip_explanation.jpg")).toExternalForm());
+        helTooltipImgP1.setFitHeight(44);
+        helTooltipImgP1.setFitWidth(287);
+        ttHelP1.setGraphic(helTooltipImgP1);
+
+        ImageView idunTooltipImgP1 = new ImageView(Objects.requireNonNull(getClass().getResource("/Iduns_Rejuvenation_explanation.jpg")).toExternalForm());
+        idunTooltipImgP1.setFitHeight(44);
+        idunTooltipImgP1.setFitWidth(287);
+        ttIdunP1.setGraphic(idunTooltipImgP1);
+
+        ImageView thorTooltipImgP2 = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath_explanation.jpg")).toExternalForm());
+        thorTooltipImgP2.setFitHeight(44);
+        thorTooltipImgP2.setFitWidth(287);
+        ttThorP2.setGraphic(thorTooltipImgP2);
+
+        ImageView helTooltipImgP2 = new ImageView(Objects.requireNonNull(getClass().getResource("/Hels_Grip_explanation.jpg")).toExternalForm());
+        helTooltipImgP2.setFitHeight(44);
+        helTooltipImgP2.setFitWidth(287);
+        ttHelP2.setGraphic(helTooltipImgP2);
+
+        ImageView idunTooltipImgP2 = new ImageView(Objects.requireNonNull(getClass().getResource("/Iduns_Rejuvenation_explanation.jpg")).toExternalForm());
+        idunTooltipImgP2.setFitHeight(44);
+        idunTooltipImgP2.setFitWidth(287);
+        ttIdunP2.setGraphic(idunTooltipImgP2);
+
     }
 
     private void setCoinImages(Image imgCoin, ImageView imgCoinPlayerContainer) {
@@ -1058,24 +1098,12 @@ public class GameScreenController implements Initializable {
 
     @FXML
     private void clickOnGodFavor(ActionEvent actionEvent) {
-        Button clickedGodFavor = (Button) actionEvent.getSource();
+        Button clickedGodFavorBtn = (Button) actionEvent.getSource();
 
         // if you don't have coins for a certain clicked favor return
+        if (clickedGodFavorBtn.equals(btnThorP1)){
 
-    }
-
-
-    @FXML
-    private void showGodFavor() {
-        // TODO: 21/10/2022 popup sa nekim labelom gdje ce prikazat kratko label sa opisom moći
-
-
-    }
-
-
-    @FXML
-    private void hideGodFavor() {
-
+        }
     }
 
 }

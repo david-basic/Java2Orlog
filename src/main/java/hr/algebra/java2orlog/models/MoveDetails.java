@@ -21,6 +21,7 @@ public class MoveDetails {
     private Boolean isGameOver;
     private String winnerNameOrDraw;
 
+    // TODO: 21/10/2022 mozda dodati is player playing again ili nesto slicno da mogu simulirati kada jedan igrac igra par puta za redom jer je drugi zavrsio poteze
     public MoveDetails(Integer roundNumber, Integer turnNumber, String player1Name, String player2Name, List<DiceSymbols> symbolsPlayerOnTurnPlayed, List<DiceSymbols> symbolsPlayerOnTurnDidntPlay, Integer player1DamageTaken, Integer player2DamageTaken, Integer player1CurrentCoins, Integer player2CurrentCoins, String player1GodFavorUsed, String player2GodFavorUsed, Boolean isRoundOver, Boolean isGameOver, String winnerNameOrDraw) {
         this.roundNumber = roundNumber;
         this.turnNumber = turnNumber;

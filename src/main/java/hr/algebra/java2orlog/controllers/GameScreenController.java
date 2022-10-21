@@ -34,7 +34,7 @@ public class GameScreenController implements Initializable {
     private boolean playingIsDone = false;
     private int cntAxeP1 = 0, cntShieldP1 = 0, cntShield_SP1 = 0, cntHelmetP1 = 0, cntHelmet_SP1 = 0, cntArrowP1 = 0, cntArrow_SP1 = 0, cntHandP1 = 0, cntHand_SP1 = 0;
     private int cntAxeP2 = 0, cntShieldP2 = 0, cntShield_SP2 = 0, cntHelmetP2 = 0, cntHelmet_SP2 = 0, cntArrowP2 = 0, cntArrow_SP2 = 0, cntHandP2 = 0, cntHand_SP2 = 0;
-    private int rollCount = 0;
+    private int turnCount = 0;
     private int roundCount = 1;
     private int playerOneCoinCount = 0;
     private int playerTwoCoinCount = 0;
@@ -42,6 +42,8 @@ public class GameScreenController implements Initializable {
     private int playerTwoTotalDamageTaken = 0;
 
     private static List<PlayerDetails> playerDetails = new ArrayList<>();
+
+    private MoveDetails tempMoveDetails;
     private static List<MoveDetails> playerMoves = new ArrayList<>();
     private List<DiceDetails> notChosenDice = new ArrayList<>();
     private List<DiceDetails> playerOneAllDice = new ArrayList<>();
@@ -254,6 +256,30 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void rollTheDice() {
+        // TODO: 21/10/2022 on start of every roll which starts a turn create new temp move basic details, which are going to be filled dynamically through the entire turn with data
+        tempMoveDetails = new MoveDetails(
+                0,
+                0,
+                "John Doe1",
+                "John Doe2",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                0,
+                0,
+                0,
+                0,
+                "None",
+                "None",
+                false,
+                false,
+                "To be determined"
+        ); // basic template which is going to be changed accordingly as data changes
+
+        // basic setup
+        tempMoveDetails.setRoundNumber(roundCount);
+        tempMoveDetails.setTurnNumber(turnCount);
+        tempMoveDetails.setPlayer1Name(lblPlayerOneName.getText());
+        tempMoveDetails.setPlayer2Name(lblPlayerTwoName.getText());
 
         notChosenDice.clear();
 
@@ -317,40 +343,7 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void endTurn() {
-
-        List<DiceDetails> playerOnTurnDice = new ArrayList<>();
-        if (playerOneTurn) {
-            playerOnTurnDice = new ArrayList<>(playerOneAllDice);
-        }
-
-        List<DiceSymbols> symbolsPlayed = new ArrayList<>();
-        List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
-        for (var d : playerOnTurnDice) {
-            if (d.getIsChosenFromDiceTray()) {
-                symbolsPlayed.add(d.getDiceSymbols().get(0));
-            }else{
-                symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
-            }
-        }
-        playerMoves.add(new MoveDetails(
-                roundCount,
-                rollCount,
-                lblPlayerOneName.toString(),
-                lblPlayerTwoName.toString(),
-                symbolsPlayed, symbolsNotPlayed,
-                playerOneTotalDamageTaken,
-                playerTwoTotalDamageTaken,
-                playerOneCoinCount,
-                playerTwoCoinCount,
-                "None",
-                "None",
-                false,
-                false,
-                "To be determined"
-                ));
-
-
-        if (rollCount == 8) { // ako je rollcount jednak 8 kada se stisne end turn
+        if (turnCount == 8) { // ako je turn-count jednak 8 kada se stisne end turn
 
             sendAllRemainingNotChosenDiceToCenter(playerOneAllDice);
             sendAllRemainingNotChosenDiceToCenter(playerTwoAllDice);
@@ -362,6 +355,7 @@ public class GameScreenController implements Initializable {
             newRoundAlert();
 
             if (!playingIsDone) {
+
                 setupNewRound();
             }
         } else {
@@ -392,6 +386,32 @@ public class GameScreenController implements Initializable {
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
                         notChosenDice.clear();
                     }
+
+                    List<DiceDetails> playerOnTurnDice;
+                    if (playerOneTurn) {
+                        playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+                    } else {
+                        playerOnTurnDice = new ArrayList<>(playerTwoAllDice);
+                    }
+                    List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+                    List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+                    for (var d : playerOnTurnDice) {
+                        if (d.getIsChosenFromDiceTray()) {
+                            symbolsPlayed.add(d.getDiceSymbols().get(0));
+                        } else {
+                            symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+                        }
+                    }
+                    // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
+                    tempMoveDetails.setRoundNumber(roundCount);
+                    tempMoveDetails.setTurnNumber(turnCount);
+                    tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
+                    tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
+                    tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
+                    tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
+
+                    playerMoves.add(tempMoveDetails);
+
                 } else { // ako nema dice-eva u P1 trayu kada je korisnik stisnuo end
                     notChosenDice.clear();
                     fillNotChosenDiceList(playerTwoAllDice);
@@ -405,6 +425,31 @@ public class GameScreenController implements Initializable {
                         fillNotChosenDiceList(playerTwoAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
                         notChosenDice.clear();
+
+                        List<DiceDetails> playerOnTurnDice;
+                        if (playerOneTurn) {
+                            playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+                        } else {
+                            playerOnTurnDice = new ArrayList<>(playerTwoAllDice);
+                        }
+                        List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+                        List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+                        for (var d : playerOnTurnDice) {
+                            if (d.getIsChosenFromDiceTray()) {
+                                symbolsPlayed.add(d.getDiceSymbols().get(0));
+                            } else {
+                                symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+                            }
+                        }
+                        // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
+                        tempMoveDetails.setRoundNumber(roundCount);
+                        tempMoveDetails.setTurnNumber(turnCount);
+                        tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
+                        tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
+                        tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
+                        tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
+
+                        playerMoves.add(tempMoveDetails);
                     } else { // ako nema diceva u P1 i nema Diceva u P2 kada je P1 stisnuo end kraj runde ili igre
                         roundResolve();
 
@@ -428,7 +473,6 @@ public class GameScreenController implements Initializable {
                         notChosenDice.clear();
                         fillNotChosenDiceList(playerTwoAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
-                        notChosenDice.clear();
                     } else { // ako nema kockica u P1 trayu, a ima u P2, P2 igra opet
                         playerOneTurn = false;
                         btnRollDicePlayerTwo.setVisible(true);
@@ -439,6 +483,31 @@ public class GameScreenController implements Initializable {
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
                         notChosenDice.clear();
                     }
+
+                    List<DiceDetails> playerOnTurnDice;
+                    if (playerOneTurn) {
+                        playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+                    } else {
+                        playerOnTurnDice = new ArrayList<>(playerTwoAllDice);
+                    }
+                    List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+                    List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+                    for (var d : playerOnTurnDice) {
+                        if (d.getIsChosenFromDiceTray()) {
+                            symbolsPlayed.add(d.getDiceSymbols().get(0));
+                        } else {
+                            symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+                        }
+                    }
+                    // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
+                    tempMoveDetails.setRoundNumber(roundCount);
+                    tempMoveDetails.setTurnNumber(turnCount);
+                    tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
+                    tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
+                    tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
+                    tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
+
+                    playerMoves.add(tempMoveDetails);
                 } else { // ako nema kockica u P2 trayu kada korisnik stisne end
                     notChosenDice.clear();
                     fillNotChosenDiceList(playerOneAllDice);
@@ -452,6 +521,31 @@ public class GameScreenController implements Initializable {
                         fillNotChosenDiceList(playerOneAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
                         notChosenDice.clear();
+
+                        List<DiceDetails> playerOnTurnDice;
+                        if (playerOneTurn) {
+                            playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+                        } else {
+                            playerOnTurnDice = new ArrayList<>(playerTwoAllDice);
+                        }
+                        List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+                        List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+                        for (var d : playerOnTurnDice) {
+                            if (d.getIsChosenFromDiceTray()) {
+                                symbolsPlayed.add(d.getDiceSymbols().get(0));
+                            } else {
+                                symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+                            }
+                        }
+                        // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
+                        tempMoveDetails.setRoundNumber(roundCount);
+                        tempMoveDetails.setTurnNumber(turnCount);
+                        tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
+                        tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
+                        tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
+                        tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
+
+                        playerMoves.add(tempMoveDetails);
                     } else { // ako nema u P2 trayu i nema u P1 trayu kada P2 stisne end Kraj runde ili igre
                         roundResolve();
 
@@ -473,8 +567,10 @@ public class GameScreenController implements Initializable {
             }
         }
 
+        playerMoves.add(tempMoveDetails);
+
         notChosenDice.clear();
-        rollCount++;
+        turnCount++;
     }
 
 
@@ -589,6 +685,29 @@ public class GameScreenController implements Initializable {
         }
         //endregion
 
+        List<DiceDetails> playerOnTurnDice;
+        if (playerOneTurn) {
+            playerOnTurnDice = new ArrayList<>(playerOneAllDice);
+        } else {
+            playerOnTurnDice = new ArrayList<>(playerTwoAllDice);
+        }
+        List<DiceSymbols> symbolsPlayed = new ArrayList<>();
+        List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
+        for (var d : playerOnTurnDice) {
+            if (d.getIsChosenFromDiceTray()) {
+                symbolsPlayed.add(d.getDiceSymbols().get(0));
+            } else {
+                symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
+            }
+        }
+        // TODO: 21/10/2022 mozda bude trebalo doati tu jos stvari
+        tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
+        tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
+        tempMoveDetails.setPlayer1DamageTaken(playerOneTotalDamageTaken);
+        tempMoveDetails.setPlayer2DamageTaken(playerTwoTotalDamageTaken);
+        tempMoveDetails.setRoundOver(true);
+
+
         if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) { // provjeri dal je neki od igraca pokupio 15 ili vise damage-a prije god powersa
             recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerOneDetails(), LoginController.getPlayerTwoDetails());
         }
@@ -627,46 +746,17 @@ public class GameScreenController implements Initializable {
 
             // TODO: 18/10/2022  nakon sto se dodijeli novac mozes usat god favorse ako je useru ostalo novaca tokom runde i dodijelit damage novi ako se taj power usa
 
-
-
-            List<DiceDetails> playerOnTurnDice = new ArrayList<>();
-            if (playerOneTurn) {
-                playerOnTurnDice = new ArrayList<>(playerOneAllDice);
-            }
-
-            List<DiceSymbols> symbolsPlayed = new ArrayList<>();
-            List<DiceSymbols> symbolsNotPlayed = new ArrayList<>();
-            for (var d : playerOnTurnDice) {
-                if (d.getIsChosenFromDiceTray()) {
-                    symbolsPlayed.add(d.getDiceSymbols().get(0));
-                }else{
-                    symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
-                }
-            }
-            playerMoves.add(new MoveDetails(
-                    roundCount,
-                    rollCount,
-                    lblPlayerOneName.toString(),
-                    lblPlayerTwoName.toString(),
-                    symbolsPlayed,
-                    symbolsNotPlayed,
-                    playerOneTotalDamageTaken,
-                    playerTwoTotalDamageTaken,
-                    playerOneCoinCount,
-                    playerTwoCoinCount,
-                    "None",
-                    "None",
-                    true,
-                    false,
-                    "To be determined"
-                    ));
-
-
+            tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
+            tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
+            tempMoveDetails.setPlayer1GodFavorUsed("None");
+            tempMoveDetails.setPlayer2GodFavorUsed("None");
+            tempMoveDetails.setRoundOver(true);
 
             if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) {
                 recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerOneDetails(), LoginController.getPlayerTwoDetails());
             }
         }
+        playerMoves.add(tempMoveDetails);
     }
 
     private void newRoundAlert() {
@@ -709,7 +799,7 @@ public class GameScreenController implements Initializable {
         }
 
         resetSymbolCounters();
-        rollCount = 0;
+        turnCount = 0;
     }
 
     private Boolean checkIfTheGameJustEnded(int playerOneTotalDamageTaken, int playerTwoTotalDamageTaken) {
@@ -739,36 +829,29 @@ public class GameScreenController implements Initializable {
         for (var d : playerOnTurnDice) {
             if (d.getIsChosenFromDiceTray()) {
                 symbolsPlayed.add(d.getDiceSymbols().get(0));
-            }else{
+            } else {
                 symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
             }
         }
-        String winnerOrDraw;
+        String winnerOrDraw; // TODO: 21/10/2022 ovo je malo buggy, vidi kroz testiranje
         if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
             winnerOrDraw = "Draw";
         } else if (playerOneTotalDamageTaken >= 15) { // P2 wins
-            winnerOrDraw = lblPlayerTwoName.toString();
+            winnerOrDraw = lblPlayerTwoName.getText();
         } else { // P1 wins
-            winnerOrDraw = lblPlayerOneName.toString();
+            winnerOrDraw = lblPlayerOneName.getText();
         }
-        playerMoves.add(new MoveDetails(
-                roundCount,
-                rollCount,
-                lblPlayerOneName.toString(),
-                lblPlayerTwoName.toString(),
-                symbolsPlayed,
-                symbolsNotPlayed,
-                playerOneTotalDamageTaken,
-                playerTwoTotalDamageTaken,
-                playerOneCoinCount,
-                playerTwoCoinCount,
-                "None",
-                "None",
-                true,
-                true,
-                winnerOrDraw
-        ));
-
+        tempMoveDetails.setRoundNumber(roundCount);
+        tempMoveDetails.setTurnNumber(turnCount);
+        tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
+        tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
+        tempMoveDetails.setPlayer1DamageTaken(playerOneTotalDamageTaken);
+        tempMoveDetails.setPlayer2DamageTaken(playerTwoTotalDamageTaken);
+        tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
+        tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
+        tempMoveDetails.setRoundOver(true);
+        tempMoveDetails.setGameOver(true);
+        tempMoveDetails.setWinnerNameOrDraw(winnerOrDraw);
 
         Alert startNewGameAlert = new Alert(Alert.AlertType.CONFIRMATION);
         startNewGameAlert.setTitle("GAME OVER");
@@ -794,13 +877,9 @@ public class GameScreenController implements Initializable {
 
             playingIsDone = true;
 
-
-//
-//            playerMoves.add(new MoveDetails()) // TODO: 21/10/2022 this might be a good place to put this, but first write down the code in controller and check if it runs
-
+            playerMoves.add(tempMoveDetails);
 
             openResultsView();
-
         }
     }
 
@@ -844,7 +923,7 @@ public class GameScreenController implements Initializable {
 
     private void setupNewGame() {
         roundCount = 0;
-        rollCount = 0;
+        turnCount = 0;
         playerOneTurn = true;
         btnRollDicePlayerOne.setVisible(true);
         btnRollDicePlayerTwo.setVisible(false);
@@ -874,7 +953,6 @@ public class GameScreenController implements Initializable {
     }
 
     private void openResultsView() {
-
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
         Scene scene = null;
         try {
@@ -901,7 +979,6 @@ public class GameScreenController implements Initializable {
         Button clickedButton = (Button) actionEvent.getSource();
 
         if (playerOneTurn) {
-
             setButtonInvisibleAndTagItAsChosen(playerOneAllDice, clickedButton);
 
             fillCenterWithSymbols(hbPlayerOneChosenDice, playerOneAllDice);

@@ -139,13 +139,13 @@ public class GameScreenController implements Initializable {
         btnRollDicePlayerOne.setVisible(true);
         btnRollDicePlayerTwo.setVisible(false);
 
+        addGodFavorImages();
+
         Image imgCoin = new Image(Objects.requireNonNull(getClass().getResource("/Coin.jpg")).toExternalForm());
         setCoinImages(imgCoin, imgCoinPlayerOne);
         setCoinImages(imgCoin, imgCoinPlayerTwo);
         lblPlayerOneCoins.setText("0");
         lblPlayerTwoCoins.setText("0");
-
-        // TODO: 21/10/2022 load slike za god favorse
 
         lblPlayerOneName.setText(LoginController.getPlayerOneDetails().getPlayerName());
         lblPlayerTwoName.setText(LoginController.getPlayerTwoDetails().getPlayerName());
@@ -156,6 +156,44 @@ public class GameScreenController implements Initializable {
         roundSetup(playerTwoAllDice);
         playerOneAllDice.forEach(d -> d.getDiceButton().setDisable(true));
         playerTwoAllDice.forEach(d -> d.getDiceButton().setDisable(true));
+    }
+
+    private void addGodFavorImages() {
+        ImageView p1GodFavor1Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath.png")).toExternalForm());
+        p1GodFavor1Img.setFitHeight(284);
+        p1GodFavor1Img.setFitWidth(176);
+        btnPlayerOneGodPower1.setPadding(new Insets(0, 0, 0, 0));
+        btnPlayerOneGodPower1.setGraphic(p1GodFavor1Img);
+
+        ImageView p1GodFavor2Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Hels_Grip.png")).toExternalForm());
+        p1GodFavor2Img.setFitHeight(284);
+        p1GodFavor2Img.setFitWidth(176);
+        btnPlayerOneGodPower2.setPadding(new Insets(0, 0, 0, 0));
+        btnPlayerOneGodPower2.setGraphic(p1GodFavor2Img);
+
+        ImageView p1GodFavor3Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Iduns_Rejuvenation.png")).toExternalForm());
+        p1GodFavor3Img.setFitHeight(284);
+        p1GodFavor3Img.setFitWidth(176);
+        btnPlayerOneGodPower3.setPadding(new Insets(0, 0, 0, 0));
+        btnPlayerOneGodPower3.setGraphic(p1GodFavor3Img);
+
+        ImageView p2GodFavor1Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath.png")).toExternalForm());
+        p2GodFavor1Img.setFitHeight(284);
+        p2GodFavor1Img.setFitWidth(176);
+        btnPlayerTwoGodPower1.setPadding(new Insets(0, 0, 0, 0));
+        btnPlayerTwoGodPower1.setGraphic(p2GodFavor1Img);
+
+        ImageView p2GodFavor2Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Hels_Grip.png")).toExternalForm());
+        p2GodFavor2Img.setFitHeight(284);
+        p2GodFavor2Img.setFitWidth(176);
+        btnPlayerTwoGodPower2.setPadding(new Insets(0, 0, 0, 0));
+        btnPlayerTwoGodPower2.setGraphic(p2GodFavor2Img);
+
+        ImageView p2GodFavor3Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Iduns_Rejuvenation.png")).toExternalForm());
+        p2GodFavor3Img.setFitHeight(284);
+        p2GodFavor3Img.setFitWidth(176);
+        btnPlayerTwoGodPower3.setPadding(new Insets(0, 0, 0, 0));
+        btnPlayerTwoGodPower3.setGraphic(p2GodFavor3Img);
     }
 
     private void setCoinImages(Image imgCoin, ImageView imgCoinPlayerContainer) {
@@ -702,7 +740,7 @@ public class GameScreenController implements Initializable {
                 symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
             }
         }
-        // TODO: 21/10/2022 mozda bude trebalo doati tu jos stvari
+        // TODO: 21/10/2022 možda bude trebalo dodati tu jos stvari
         tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
         tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
         tempMoveDetails.setPlayer1DamageTaken(playerOneTotalDamageTaken);
@@ -710,7 +748,7 @@ public class GameScreenController implements Initializable {
         tempMoveDetails.setRoundOver(true);
 
 
-        if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) { // provjeri dal je neki od igraca pokupio 15 ili vise damage-a prije god powersa
+        if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) { // provjeri dal je neki od igrača pokupio 15 ili vise damage-a prije god powers
             recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerOneDetails(), LoginController.getPlayerTwoDetails());
         }
 
@@ -726,7 +764,7 @@ public class GameScreenController implements Initializable {
                 playerOneCoinCount += coinsStolenByP1;
                 playerTwoCoinCount -= coinsStolenByP1;
             } else {
-                // TODO: 20/10/2022 provjerava slucaj kada ima vise handova od coinova, gdje onda krade sve coinove, NEEDS TESTING!!
+                // TODO: 20/10/2022 provjerava slučaj kada ima vise handova od coinova, gdje onda krade sve coinove, NEEDS TESTING!!
                 playerOneCoinCount += playerTwoCoinCount;
                 playerTwoCoinCount = 0;
             }
@@ -746,8 +784,7 @@ public class GameScreenController implements Initializable {
             lblPlayerTwoCoins.setText(p2Coins);
             //endregion
 
-            // TODO: 18/10/2022  nakon sto se dodijeli novac mozes usat god favorse ako je useru ostalo novaca tokom runde i dodijelit damage novi ako se taj power usa
-
+            // TODO: 18/10/2022  nakon sto se dodijeli novac možeš usat god favorse ako je useru ostalo novaca tokom runde i dodijelit damage novi ako se taj power usa
 
 
             tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
@@ -775,14 +812,14 @@ public class GameScreenController implements Initializable {
 
     private void setupNewRound() {
         roundCount++;
-        if (roundCount % 2 == 0) { // ako je sljedeca runda parna igra prvi u rundi P2
+        if (roundCount % 2 == 0) { // ako je sljedeća runda parna igra prvi u rundi P2
             playerOneTurn = false;
 
             setupDiceForNewRound();
 
             btnRollDicePlayerOne.setVisible(false);
             btnRollDicePlayerTwo.setVisible(true);
-        } else { // inace igra P1
+        } else { // inače igra P1
             playerOneTurn = true;
 
             setupDiceForNewRound();
@@ -1014,26 +1051,30 @@ public class GameScreenController implements Initializable {
     }
 
 
-    @FXML
-    private void clickOnGodFavor(ActionEvent actionEvent) {
-        Button clickedGodFavor = (Button) actionEvent.getSource();
-
-        // if you dont have coins for a certain clicked favor return
-
-    }
-
     public static List<MoveDetails> getPlayerMovesCollection() {
         return playerMoves;
     }
 
+
     @FXML
-    private void showGodFavor(){
-        // TODO: 21/10/2022 popup sa nekim labelom gdje ce prikazat kratko label sa opisom moci
+    private void clickOnGodFavor(ActionEvent actionEvent) {
+        Button clickedGodFavor = (Button) actionEvent.getSource();
+
+        // if you don't have coins for a certain clicked favor return
+
     }
 
 
     @FXML
-    private void hideGodFavor(){
+    private void showGodFavor() {
+        // TODO: 21/10/2022 popup sa nekim labelom gdje ce prikazat kratko label sa opisom moći
+
+
+    }
+
+
+    @FXML
+    private void hideGodFavor() {
 
     }
 

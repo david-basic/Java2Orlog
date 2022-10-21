@@ -32,6 +32,8 @@ public class GameScreenController implements Initializable {
     //region Fields
     private Boolean playerOneTurn;
     private boolean playingIsDone = false;
+    private boolean p1GodFavorUsed = false;
+    private boolean p2GodFavorUsed = false;
     private int cntAxeP1 = 0, cntShieldP1 = 0, cntShield_SP1 = 0, cntHelmetP1 = 0, cntHelmet_SP1 = 0, cntArrowP1 = 0, cntArrow_SP1 = 0, cntHandP1 = 0, cntHand_SP1 = 0;
     private int cntAxeP2 = 0, cntShieldP2 = 0, cntShield_SP2 = 0, cntHelmetP2 = 0, cntHelmet_SP2 = 0, cntArrowP2 = 0, cntArrow_SP2 = 0, cntHandP2 = 0, cntHand_SP2 = 0;
     private int turnCount = 0;
@@ -142,6 +144,8 @@ public class GameScreenController implements Initializable {
         setCoinImages(imgCoin, imgCoinPlayerTwo);
         lblPlayerOneCoins.setText("0");
         lblPlayerTwoCoins.setText("0");
+
+        // TODO: 21/10/2022 load slike za god favorse
 
         lblPlayerOneName.setText(LoginController.getPlayerOneDetails().getPlayerName());
         lblPlayerTwoName.setText(LoginController.getPlayerTwoDetails().getPlayerName());
@@ -744,6 +748,8 @@ public class GameScreenController implements Initializable {
 
             // TODO: 18/10/2022  nakon sto se dodijeli novac mozes usat god favorse ako je useru ostalo novaca tokom runde i dodijelit damage novi ako se taj power usa
 
+
+
             tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
             tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
             tempMoveDetails.setPlayer1GodFavorUsed("None");
@@ -883,11 +889,6 @@ public class GameScreenController implements Initializable {
 
             setupNewGame();
         } else {
-            FeatureNotYetImplementedAlert();
-            // TODO: 19/10/2022 ovdje otvori high score view gdje ce biti ispisani samo kao text jedno ispod drugog u tablici nekoj player1 vs player2 i score u formatu X:Y
-            // TODO: 19/10/2022 ili ako tablice imaju vec implementirani neki filter po stupcima mozemo definirati stupce PlayerName|Wins|Draws|Losses <---<---<--- cool ideja
-            // TODO: 19/10/2022 mozda u CurrentGameDetails spremati bitne neke detalje o igri
-
             playingIsDone = true;
 
             playerMoves.add(tempMoveDetails);
@@ -1014,14 +1015,26 @@ public class GameScreenController implements Initializable {
 
 
     @FXML
-    private void clickOnGodPower(ActionEvent actionEvent) {
-        Button clickedGodPower = (Button) actionEvent.getSource();
+    private void clickOnGodFavor(ActionEvent actionEvent) {
+        Button clickedGodFavor = (Button) actionEvent.getSource();
 
-        // TODO: 20/10/2022 implement god powers
+        // if you dont have coins for a certain clicked favor return
+
     }
 
     public static List<MoveDetails> getPlayerMovesCollection() {
         return playerMoves;
+    }
+
+    @FXML
+    private void showGodFavor(){
+        // TODO: 21/10/2022 popup sa nekim labelom gdje ce prikazat kratko label sa opisom moci
+    }
+
+
+    @FXML
+    private void hideGodFavor(){
+
     }
 
 }

@@ -150,17 +150,17 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="btnPlayerTwoGodPower1" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodPower" prefHeight="339.0" prefWidth="250.0" text="God powers WIP">
+                                <Button fx:id="btnPlayerTwoGodPower1" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" text="God powers WIP">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </Button>
-                                <Button fx:id="btnPlayerTwoGodPower2" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodPower" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="1">
+                                <Button fx:id="btnPlayerTwoGodPower2" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="1">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </Button>
-                                <Button fx:id="btnPlayerTwoGodPower3" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodPower" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="2">
+                                <Button fx:id="btnPlayerTwoGodPower3" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="2">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
@@ -218,7 +218,7 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="btnPlayerOneGodPower1" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodPower" prefHeight="339.0" prefWidth="250.0" text="God powers WIP">
+                                <Button fx:id="btnPlayerOneGodPower1" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" text="God powers WIP">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
@@ -226,7 +226,7 @@
                                         <Insets />
                                     </opaqueInsets>
                                 </Button>
-                                <Button fx:id="btnPlayerOneGodPower2" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodPower" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="1">
+                                <Button fx:id="btnPlayerOneGodPower2" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="1">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
@@ -234,7 +234,7 @@
                                         <Insets />
                                     </opaqueInsets>
                                 </Button>
-                                <Button fx:id="btnPlayerOneGodPower3" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodPower" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="2">
+                                <Button fx:id="btnPlayerOneGodPower3" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#clickOnGodFavor" onMouseEntered="#showGodFavor" onMouseExited="#hideGodFavor" prefHeight="339.0" prefWidth="250.0" text="God powers WIP" GridPane.columnIndex="2">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>

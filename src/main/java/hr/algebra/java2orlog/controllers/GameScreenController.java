@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -29,8 +30,6 @@ public class GameScreenController implements Initializable {
     //region Fields
     private Boolean playerOneTurn;
     private boolean playingIsDone = false;
-    private boolean p1GodFavorUsed = false;
-    private boolean p2GodFavorUsed = false;
     private int cntAxeP1 = 0, cntShieldP1 = 0, cntShield_SP1 = 0, cntHelmetP1 = 0, cntHelmet_SP1 = 0, cntArrowP1 = 0, cntArrow_SP1 = 0, cntHandP1 = 0, cntHand_SP1 = 0;
     private int cntAxeP2 = 0, cntShieldP2 = 0, cntShield_SP2 = 0, cntHelmetP2 = 0, cntHelmet_SP2 = 0, cntArrowP2 = 0, cntArrow_SP2 = 0, cntHandP2 = 0, cntHand_SP2 = 0;
     private int turnCount = 0;
@@ -39,6 +38,10 @@ public class GameScreenController implements Initializable {
     private int playerTwoCoinCount = 0;
     private int playerOneTotalDamageTaken = 0;
     private int playerTwoTotalDamageTaken = 0;
+    private int tempPlayerOneCoinCount = playerOneCoinCount;
+    private int tempPlayerTwoCoinCount = playerTwoCoinCount;
+    private int tempPlayerOneTotalDamageTaken = playerOneTotalDamageTaken;
+    private int tempPlayerTwoTotalDamageTaken = playerTwoTotalDamageTaken;
 
     private MoveDetails tempMoveDetails;
     private static List<MoveDetails> playerMoves = new ArrayList<>();
@@ -95,6 +98,8 @@ public class GameScreenController implements Initializable {
     private Tooltip ttHelP1;
     @FXML
     private Tooltip ttIdunP1;
+    @FXML
+    private GridPane gpP1GodFavors;
     //endregion
     //region FXML elements player two
     @FXML
@@ -137,6 +142,8 @@ public class GameScreenController implements Initializable {
     private Tooltip ttHelP2;
     @FXML
     private Tooltip ttIdunP2;
+    @FXML
+    private GridPane gpP2GodFavors;
     //endregion
 
     @Override
@@ -165,6 +172,9 @@ public class GameScreenController implements Initializable {
         roundSetup(playerTwoAllDice);
         playerOneAllDice.forEach(d -> d.getDiceButton().setDisable(true));
         playerTwoAllDice.forEach(d -> d.getDiceButton().setDisable(true));
+
+        gpP1GodFavors.setDisable(true);
+        gpP2GodFavors.setDisable(true);
     }
 
     private void addGodFavorImages() {
@@ -369,6 +379,7 @@ public class GameScreenController implements Initializable {
                 shuffleDiceSymbols(playerOneAllDice);
                 roundSetup(playerOneAllDice); // set images to buttons in tray and set only those in tray visible
                 setAllDiceButtonsInCollectionEnabled(playerOneAllDice);
+                setAllGodFavorsInGridPaneEnabled(gpP1GodFavors);
                 btnRollDicePlayerOne.setVisible(false);
                 btnEndTurnPlayerOne.setVisible(true);
             } else { // ako nema kockica u trayu od P1 kada je turn P1, onda igra P2 odmah
@@ -380,6 +391,7 @@ public class GameScreenController implements Initializable {
                 shuffleDiceSymbols(playerTwoAllDice);
                 roundSetup(playerTwoAllDice); // set images to buttons in tray and set only those in tray visible
                 setAllDiceButtonsInCollectionEnabled(playerTwoAllDice);
+                setAllGodFavorsInGridPaneEnabled(gpP2GodFavors);
                 btnRollDicePlayerTwo.setVisible(false);
                 btnEndTurnPlayerTwo.setVisible(true);
             } else { // ako nema kockica u trayu od P2 kada je P2 na redu, onda igra P1 odmah
@@ -420,6 +432,9 @@ public class GameScreenController implements Initializable {
         btnDice.setDisable(false);
     }
 
+    private void setAllGodFavorsInGridPaneEnabled(GridPane gridPaneArea) {
+        gridPaneArea.setDisable(false);
+    }
 
     @FXML
     public void endTurn() {
@@ -454,6 +469,7 @@ public class GameScreenController implements Initializable {
                         notChosenDice.clear();
                         fillNotChosenDiceList(playerOneAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
+                        setAllGodFavorsInGridPaneDisabled(gpP1GodFavors);
                         notChosenDice.clear();
 
                     } else { // ako nema diceva u P2 trayu a ima u P1 trayu, onda P1 igra opet
@@ -464,6 +480,7 @@ public class GameScreenController implements Initializable {
                         notChosenDice.clear();
                         fillNotChosenDiceList(playerOneAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
+                        setAllGodFavorsInGridPaneDisabled(gpP1GodFavors);
                         notChosenDice.clear();
                     }
 
@@ -505,6 +522,7 @@ public class GameScreenController implements Initializable {
                         fillNotChosenDiceList(playerTwoAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
                         notChosenDice.clear();
+                        setAllGodFavorsInGridPaneDisabled(gpP1GodFavors);
 
                         List<DiceDetails> playerOnTurnDice;
                         if (playerOneTurn) {
@@ -553,6 +571,7 @@ public class GameScreenController implements Initializable {
                         notChosenDice.clear();
                         fillNotChosenDiceList(playerTwoAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
+                        setAllGodFavorsInGridPaneDisabled(gpP2GodFavors);
                     } else { // ako nema kockica u P1 trayu, a ima u P2, P2 igra opet
                         playerOneTurn = false;
                         btnRollDicePlayerTwo.setVisible(true);
@@ -562,6 +581,7 @@ public class GameScreenController implements Initializable {
                         fillNotChosenDiceList(playerTwoAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
                         notChosenDice.clear();
+                        setAllGodFavorsInGridPaneDisabled(gpP2GodFavors);
                     }
 
                     List<DiceDetails> playerOnTurnDice;
@@ -601,6 +621,7 @@ public class GameScreenController implements Initializable {
                         fillNotChosenDiceList(playerOneAllDice);
                         notChosenDice.forEach(d -> d.getDiceButton().setDisable(true));
                         notChosenDice.clear();
+                        setAllGodFavorsInGridPaneDisabled(gpP2GodFavors);
 
                         List<DiceDetails> playerOnTurnDice;
                         if (playerOneTurn) {
@@ -653,6 +674,10 @@ public class GameScreenController implements Initializable {
         turnCount++;
     }
 
+    private void setAllGodFavorsInGridPaneDisabled(GridPane gpArea) {
+        gpArea.setDisable(true);
+    }
+
 
     private void sendAllRemainingNotChosenDiceToCenter(List<DiceDetails> diceCollection) {
         for (var d : diceCollection) {
@@ -684,6 +709,8 @@ public class GameScreenController implements Initializable {
         btnRollDicePlayerTwo.setVisible(false);
         btnEndTurnPlayerOne.setVisible(false);
         btnEndTurnPlayerTwo.setVisible(false);
+        setAllGodFavorsInGridPaneDisabled(gpP1GodFavors);
+        setAllGodFavorsInGridPaneDisabled(gpP2GodFavors);
 
         //region Damage calculations and logic
         for (var d : playerOneAllDice) {
@@ -743,26 +770,8 @@ public class GameScreenController implements Initializable {
             playerTwoTotalDamageTaken += arrowDamageGivenByP1 - damageMitigatedByShieldsP2;
         }
 
-        var p1HP = gridPanePlayerOneHealth.getChildren().stream().toList();
-        var p2HP = gridPanePlayerTwoHealth.getChildren().stream().toList();
+        adjustHealthPoolToDamageTaken();
 
-        int i = 0;
-        for (var hp : p1HP) {
-            if (i == playerOneTotalDamageTaken) {
-                break;
-            }
-            hp.setVisible(false);
-            i++;
-        }
-
-        i = 0;
-        for (var hp : p2HP) {
-            if (i == playerTwoTotalDamageTaken) {
-                break;
-            }
-            hp.setVisible(false);
-            i++;
-        }
         //endregion
 
         List<DiceDetails> playerOnTurnDice;
@@ -817,15 +826,8 @@ public class GameScreenController implements Initializable {
                 playerOneCoinCount = 0;
             }
 
-            String p1Coins = Integer.toString(playerOneCoinCount);
-            lblPlayerOneCoins.setText(p1Coins);
-
-            String p2Coins = Integer.toString(playerTwoCoinCount);
-            lblPlayerTwoCoins.setText(p2Coins);
+            adjustCoinCountToNewValues();
             //endregion
-
-            // TODO: 18/10/2022  nakon sto se dodijeli novac možeš usat god favorse ako je useru ostalo novaca tokom runde i dodijelit damage novi ako se taj power usa
-
 
             tempMoveDetails.setPlayer1CurrentCoins(playerOneCoinCount);
             tempMoveDetails.setPlayer2CurrentCoins(playerTwoCoinCount);
@@ -838,6 +840,37 @@ public class GameScreenController implements Initializable {
             }
         }
         playerMoves.add(tempMoveDetails);
+    }
+
+    private void adjustCoinCountToNewValues() {
+        String p1Coins = Integer.toString(playerOneCoinCount);
+        lblPlayerOneCoins.setText(p1Coins);
+
+        String p2Coins = Integer.toString(playerTwoCoinCount);
+        lblPlayerTwoCoins.setText(p2Coins);
+    }
+
+    private void adjustHealthPoolToDamageTaken() {
+        var p1HP = gridPanePlayerOneHealth.getChildren().stream().toList();
+        var p2HP = gridPanePlayerTwoHealth.getChildren().stream().toList();
+
+        int i = 0;
+        for (var hp : p1HP) {
+            if (i == playerOneTotalDamageTaken) {
+                break;
+            }
+            hp.setVisible(false);
+            i++;
+        }
+
+        i = 0;
+        for (var hp : p2HP) {
+            if (i == playerTwoTotalDamageTaken) {
+                break;
+            }
+            hp.setVisible(false);
+            i++;
+        }
     }
 
     private void newRoundAlert() {
@@ -878,7 +911,8 @@ public class GameScreenController implements Initializable {
             turnCoinPlayerOne.setVisible(false);
             turnCoinPlayerTwo.setVisible(true);
         }
-
+        setAllGodFavorsInGridPaneDisabled(gpP1GodFavors);
+        setAllGodFavorsInGridPaneDisabled(gpP2GodFavors);
         resetSymbolCounters();
         turnCount = 0;
     }
@@ -889,7 +923,7 @@ public class GameScreenController implements Initializable {
     }
 
     private void recordWins(int playerOneTotalDamageTaken, int playerTwoTotalDamageTaken, PlayerDetails player1, PlayerDetails player2) {
-        if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
+        if ((playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) || (playerOneTotalDamageTaken < 15 && playerTwoTotalDamageTaken < 15)) { // Draw
             var tempDrawsP1 = Integer.valueOf(player1.getNumberOfDraws());
             tempDrawsP1++;
             player1.setNumberOfDraws(tempDrawsP1.toString());
@@ -1026,6 +1060,9 @@ public class GameScreenController implements Initializable {
         lblPlayerOneCoins.setText("0");
         lblPlayerTwoCoins.setText("0");
 
+        playerOneTotalDamageTaken = 0;
+        playerTwoTotalDamageTaken = 0;
+
         gridPanePlayerOneHealth.getChildren().stream().toList().forEach(hp -> hp.setVisible(true));
         gridPanePlayerTwoHealth.getChildren().stream().toList().forEach(hp -> hp.setVisible(true));
 
@@ -1033,6 +1070,8 @@ public class GameScreenController implements Initializable {
         btnEndTurnPlayerTwo.setVisible(false);
 
         setupDiceForNewRound();
+        setAllGodFavorsInGridPaneDisabled(gpP1GodFavors);
+        setAllGodFavorsInGridPaneDisabled(gpP2GodFavors);
     }
 
     private void FeatureNotYetImplementedAlert() {
@@ -1101,9 +1140,111 @@ public class GameScreenController implements Initializable {
         Button clickedGodFavorBtn = (Button) actionEvent.getSource();
 
         // if you don't have coins for a certain clicked favor return
-        if (clickedGodFavorBtn.equals(btnThorP1)){
-
+        if (clickedGodFavorBtn.equals(btnThorP1)  && playerOneCoinCount < 8) {
+            notEnoughCoinAlert();
+            return;
+        } else if (clickedGodFavorBtn.equals(btnHelP1) && playerOneCoinCount < 12) {
+            notEnoughCoinAlert();
+            return;
+        } else if (clickedGodFavorBtn.equals(btnIdunP1) && playerOneCoinCount < 10) {
+            notEnoughCoinAlert();
+            return;
+        } else if (clickedGodFavorBtn.equals(btnThorP2)  && playerTwoCoinCount < 8) {
+            notEnoughCoinAlert();
+            return;
+        } else if (clickedGodFavorBtn.equals(btnHelP2) && playerTwoCoinCount < 12) {
+            notEnoughCoinAlert();
+            return;
+        } else if (clickedGodFavorBtn.equals(btnIdunP2) && playerTwoCoinCount < 10) {
+            notEnoughCoinAlert();
+            return;
         }
+
+        if (clickedGodFavorBtn.equals(btnThorP1)) {
+            playerOneCoinCount -= 8;
+            playerTwoTotalDamageTaken += 5;
+
+            adjustCoinCountToNewValues();
+            adjustHealthPoolToDamageTaken();
+
+        } else if (clickedGodFavorBtn.equals(btnThorP2)) {
+            playerTwoCoinCount -= 8;
+            playerOneTotalDamageTaken += 5;
+
+            adjustCoinCountToNewValues();
+            adjustHealthPoolToDamageTaken();
+        } else if (clickedGodFavorBtn.equals(btnHelP1)) {
+            playerOneCoinCount -= 12;
+            playerTwoTotalDamageTaken += 8;
+
+            adjustCoinCountToNewValues();
+            adjustHealthPoolToDamageTaken();
+        } else if (clickedGodFavorBtn.equals(btnHelP2)) {
+            playerTwoCoinCount -= 8;
+            playerOneTotalDamageTaken += 5;
+
+            adjustCoinCountToNewValues();
+            adjustHealthPoolToDamageTaken();
+        } else if (clickedGodFavorBtn.equals(btnIdunP1)) {
+            playerOneCoinCount -= 10;
+            var healAll = false;
+            if (playerOneTotalDamageTaken <= 6) {
+                playerOneTotalDamageTaken = 0;
+                healAll = true;
+            } else {
+                playerOneTotalDamageTaken -= 6;
+                healAll = false;
+            }
+
+            adjustCoinCountToNewValues();
+
+            var p1HP = gridPanePlayerOneHealth.getChildren().stream().toList();
+            healDamageTaken(playerOneTotalDamageTaken, p1HP, healAll);
+        } else if (clickedGodFavorBtn.equals(btnIdunP2)) {
+            playerTwoCoinCount -= 10;
+            var healAll = false;
+            if (playerTwoTotalDamageTaken <= 6) {
+                playerTwoTotalDamageTaken = 0;
+                healAll = true;
+            } else {
+                playerTwoTotalDamageTaken -= 6;
+                healAll = false;
+            }
+
+            adjustCoinCountToNewValues();
+
+            var p2HP = gridPanePlayerTwoHealth.getChildren().stream().toList();
+            healDamageTaken(playerTwoTotalDamageTaken, p2HP, healAll);
+        }
+
+    }
+
+    private void healDamageTaken(int damageTaken, List<Node> hpCollection, boolean healAll) {
+
+        if (healAll) {
+            for (var hp : hpCollection) {
+                hp.setVisible(true);
+            }
+        } else {
+            var skipHp = damageTaken;
+            int i = 1;
+            for (var hp : hpCollection) {
+                if (i <= skipHp) {
+                    hp.setVisible(false);
+                } else {
+                    hp.setVisible(true);
+                }
+                i++;
+            }
+        }
+    }
+
+    private void notEnoughCoinAlert() {
+        Alert coinMissingAlert = new Alert(Alert.AlertType.INFORMATION);
+        coinMissingAlert.setTitle("Coin missing!");
+        coinMissingAlert.setHeaderText("Not enough coin to grant this favor!");
+        coinMissingAlert.setContentText("Sacrifice more coin in the glory of the gods to ask them favors!");
+        coinMissingAlert.showAndWait();
     }
 
 }

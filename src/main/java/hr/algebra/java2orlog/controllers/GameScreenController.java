@@ -796,7 +796,7 @@ public class GameScreenController implements Initializable {
 
 
 //
-//            playerMoves.add(new MoveDetails())
+//            playerMoves.add(new MoveDetails()) // TODO: 21/10/2022 this might be a good place to put this, but first write down the code in controller and check if it runs
 
 
             openResultsView();

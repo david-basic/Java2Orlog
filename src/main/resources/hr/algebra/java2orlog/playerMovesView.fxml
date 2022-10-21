@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="hr.algebra.java2orlog.controllers.PlayerMovesController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.PlayerMovesController">
+   <children>
+      <TextArea fx:id="taPlayerMovesDisplayArea" editable="false" layoutX="29.0" layoutY="27.0" prefHeight="658.0" prefWidth="1142.0" />
+      <Button layoutX="513.0" layoutY="699.0" mnemonicParsing="false" onAction="#returnToRulesView" prefHeight="76.0" prefWidth="174.0" text="RETURN">
+         <font>
+            <Font name="Century Gothic" size="24.0" />
+         </font>
+      </Button>
+   </children>
 </AnchorPane>

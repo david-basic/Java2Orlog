@@ -107,7 +107,7 @@ public class ResultsController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("playerMovesView.fxml"));
             Scene scene = null;
             try {
-                scene = new Scene(fxmlLoader.load(), 600, 400);
+                scene = new Scene(fxmlLoader.load(), 1200, 800);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

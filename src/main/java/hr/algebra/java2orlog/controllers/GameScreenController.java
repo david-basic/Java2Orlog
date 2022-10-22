@@ -1173,7 +1173,7 @@ public class GameScreenController implements Initializable {
             adjustHealthPoolToDamageTaken();
         } else if (clickedGodFavorBtn.equals(btnHelP2)) {
             playerTwoCoinCount -= 8;
-            playerOneTotalDamageTaken += 5;
+            playerOneTotalDamageTaken += 8;
 
             adjustCoinCountToNewValues();
             adjustHealthPoolToDamageTaken();

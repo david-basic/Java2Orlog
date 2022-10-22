@@ -346,7 +346,6 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void rollTheDice() {
-        // TODO: 21/10/2022 on start of every roll which starts a turn create new temp move basic details, which are going to be filled dynamically through the entire turn with data
         tempMoveDetails = new MoveDetails(
                 0,
                 0,
@@ -499,7 +498,6 @@ public class GameScreenController implements Initializable {
                             symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
                         }
                     }
-                    // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
                     tempMoveDetails.setRoundNumber(roundCount);
                     tempMoveDetails.setTurnNumber(turnCount);
                     tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
@@ -539,7 +537,6 @@ public class GameScreenController implements Initializable {
                                 symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
                             }
                         }
-                        // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
                         tempMoveDetails.setRoundNumber(roundCount);
                         tempMoveDetails.setTurnNumber(turnCount);
                         tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
@@ -599,7 +596,6 @@ public class GameScreenController implements Initializable {
                             symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
                         }
                     }
-                    // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
                     tempMoveDetails.setRoundNumber(roundCount);
                     tempMoveDetails.setTurnNumber(turnCount);
                     tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
@@ -638,7 +634,6 @@ public class GameScreenController implements Initializable {
                                 symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
                             }
                         }
-                        // TODO: 21/10/2022 mozda bude trebalo dodati jos ovih ako se neki ne overwritaju od defaulta
                         tempMoveDetails.setRoundNumber(roundCount);
                         tempMoveDetails.setTurnNumber(turnCount);
                         tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
@@ -698,7 +693,7 @@ public class GameScreenController implements Initializable {
                 hbCentralContainer.getChildren().add(
                         symbolImage
                 );
-                d.getDiceButton().setVisible(false); // TODO: 20/10/2022 novo dodano da probam fixat zaostale diceve vidljive u trayu
+                d.getDiceButton().setVisible(false);
             }
             d.setCanBeSentToCenter(false);
         });
@@ -789,7 +784,6 @@ public class GameScreenController implements Initializable {
                 symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
             }
         }
-        // TODO: 21/10/2022 možda bude trebalo dodati tu jos stvari
         tempMoveDetails.setSymbolsPlayerOnTurnPlayed(symbolsPlayed);
         tempMoveDetails.setSymbolsPlayerOnTurnDidntPlay(symbolsNotPlayed);
         tempMoveDetails.setPlayer1DamageTaken(playerOneTotalDamageTaken);
@@ -813,7 +807,6 @@ public class GameScreenController implements Initializable {
                 playerOneCoinCount += coinsStolenByP1;
                 playerTwoCoinCount -= coinsStolenByP1;
             } else {
-                // TODO: 20/10/2022 provjerava slučaj kada ima vise handova od coinova, gdje onda krade sve coinove, NEEDS TESTING!!
                 playerOneCoinCount += playerTwoCoinCount;
                 playerTwoCoinCount = 0;
             }
@@ -963,7 +956,7 @@ public class GameScreenController implements Initializable {
                 symbolsNotPlayed.add((d.getDiceSymbols().get(0)));
             }
         }
-        String winnerOrDraw; // TODO: 21/10/2022 ovo je malo buggy, vidi kroz testiranje
+        String winnerOrDraw;
         if (playerOneTotalDamageTaken >= 15 && playerTwoTotalDamageTaken >= 15) { // Draw
             winnerOrDraw = "Draw";
         } else if (playerOneTotalDamageTaken >= 15) { // P2 wins
@@ -996,7 +989,7 @@ public class GameScreenController implements Initializable {
             currentScoreAlert.setContentText(player1.getNumberOfWins() + " : " + player2.getNumberOfWins());
             currentScoreAlert.showAndWait();
 
-            playerMoves.clear(); // TODO: 21/10/2022 this clears player moves since a new game has started
+            playerMoves.clear();
 
             setupNewGame();
         } else {
@@ -1102,7 +1095,6 @@ public class GameScreenController implements Initializable {
         resultsScreenStage.setX((screenBounds.getWidth() - resultsScreenStage.getWidth()) / 2);
         resultsScreenStage.setY((screenBounds.getHeight() - resultsScreenStage.getHeight()) / 2);
     }
-
 
     @FXML
     public void diceChosen(ActionEvent actionEvent) {

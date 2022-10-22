@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class LoginController {
     //region FXML elements
@@ -56,14 +57,14 @@ public class LoginController {
         lblPlayerTwoNameError.setVisible(false);
         lblSameNamesError.setVisible(false);
 
-        if (playerOneName == "" && playerTwoName == "") {
+        if (playerOneName.equals("") && playerTwoName.equals("")) {
             lblPlayerOneNameError.setVisible(true);
             lblPlayerTwoNameError.setVisible(true);
             return;
-        } else if (playerOneName == ""){
+        } else if (playerOneName.equals("")){
             lblPlayerOneNameError.setVisible(true);
             return;
-        } else if (playerTwoName == "") {
+        } else if (Objects.equals(playerTwoName, "")) {
             lblPlayerTwoNameError.setVisible(true);
             return;
         }
@@ -102,12 +103,13 @@ public class LoginController {
     @FXML
     private void openResultsView(){
 
-        // TODO: 21/10/2022 testing data for table
-        playerOneDetails = new PlayerDetails("John Doe1", "1", "2", "3");
-        playerTwoDetails = new PlayerDetails("John Doe2", "3", "2", "1");
-
-        playerDetailsCollection.add(playerOneDetails);
-        playerDetailsCollection.add(playerTwoDetails);
+        //region Testing data for table, comment out if not used
+//        playerOneDetails = new PlayerDetails("John Doe1", "1", "2", "3");
+//        playerTwoDetails = new PlayerDetails("John Doe2", "3", "2", "1");
+//
+//        playerDetailsCollection.add(playerOneDetails);
+//        playerDetailsCollection.add(playerTwoDetails);
+        //endregion
 
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
         Scene scene = null;

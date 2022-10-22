@@ -104,11 +104,11 @@ public class LoginController {
     private void openResultsView(){
 
         //region Testing data for table, comment out if not used
-//        playerOneDetails = new PlayerDetails("John Doe1", "1", "2", "3");
-//        playerTwoDetails = new PlayerDetails("John Doe2", "3", "2", "1");
-//
-//        playerDetailsCollection.add(playerOneDetails);
-//        playerDetailsCollection.add(playerTwoDetails);
+        playerOneDetails = new PlayerDetails("John Doe1", "1", "2", "3");
+        playerTwoDetails = new PlayerDetails("John Doe2", "3", "2", "1");
+
+        playerDetailsCollection.add(playerOneDetails);
+        playerDetailsCollection.add(playerTwoDetails);
         //endregion
 
         FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));

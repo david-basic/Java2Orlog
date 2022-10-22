@@ -10,19 +10,16 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -30,7 +27,10 @@ public class ResultsController implements Initializable {
     //region Fields
     private Popup popup = new Popup();
     private Stage stage = OrlogApplication.getMainStage();
-    private ObservableList<PlayerDetails> playerCollection = FXCollections.observableArrayList(new ArrayList<>(LoginController.getPlayerDetailsCollection()));
+
+
+//    private ObservableList<PlayerDetails> playerCollection = FXCollections.observableArrayList(new ArrayList<>(LoginController.getPlayerDetailsCollection()));
+    private ObservableList<PlayerDetails> playerCollection;
     //endregion
 
     //region FXML elements
@@ -43,17 +43,20 @@ public class ResultsController implements Initializable {
     @FXML
     private TableColumn<PlayerDetails, String> numberOfDraws;
     @FXML
-    private TableColumn<PlayerDetails, String> numberOfLoses;
+    private TableColumn<PlayerDetails, String> numberOfLost;
     //endregion
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         playerName.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("playerName"));
         numberOfWins.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("numberOfWins"));
         numberOfDraws.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("numberOfDraws"));
-        numberOfLoses.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("numberOfLoses"));
+        numberOfLost.setCellValueFactory(new PropertyValueFactory<PlayerDetails, String>("numberOfLost"));
+
+        playerCollection = FXCollections.observableArrayList(LoginController.getPlayerDetailsCollection());
+
         resultsTable.setItems(playerCollection);
-        resultsTable.setVisible(true);
 
         gameRulesPopupSetup();
     }

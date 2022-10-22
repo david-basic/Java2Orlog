@@ -7,4 +7,5 @@ module hr.algebra.java2orlog {
     exports hr.algebra.java2orlog;
     exports hr.algebra.java2orlog.controllers;
     opens hr.algebra.java2orlog.controllers to javafx.fxml;
+    opens hr.algebra.java2orlog.models to javafx.base;
 }

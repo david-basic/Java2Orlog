@@ -2,12 +2,13 @@ package hr.algebra.java2orlog.models;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class PlayerDetails {
-    private SimpleStringProperty playerName;
-    private SimpleStringProperty numberOfWins;
-    private SimpleStringProperty numberOfDraws;
-    private SimpleStringProperty numberOfLost;
+    private StringProperty playerName;
+    private StringProperty numberOfWins;
+    private StringProperty numberOfDraws;
+    private StringProperty numberOfLost;
 
     public PlayerDetails(String playerName, String numberOfWins, String numberOfDraws, String numberOfLost) {
         this.playerName = new SimpleStringProperty(playerName);
@@ -20,7 +21,7 @@ public class PlayerDetails {
         return playerName.get();
     }
 
-    public SimpleStringProperty playerNameProperty() {
+    public StringProperty playerNameProperty() {
         return playerName;
     }
 
@@ -32,7 +33,7 @@ public class PlayerDetails {
         return numberOfWins.get();
     }
 
-    public SimpleStringProperty numberOfWinsProperty() {
+    public StringProperty numberOfWinsProperty() {
         return numberOfWins;
     }
 
@@ -44,7 +45,7 @@ public class PlayerDetails {
         return numberOfDraws.get();
     }
 
-    public SimpleStringProperty numberOfDrawsProperty() {
+    public StringProperty numberOfDrawsProperty() {
         return numberOfDraws;
     }
 
@@ -56,7 +57,7 @@ public class PlayerDetails {
         return numberOfLost.get();
     }
 
-    public SimpleStringProperty numberOfLostProperty() {
+    public StringProperty numberOfLostProperty() {
         return numberOfLost;
     }
 

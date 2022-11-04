@@ -38,10 +38,6 @@ public class GameScreenController implements Initializable {
     private int playerTwoCoinCount = 0;
     private int playerOneTotalDamageTaken = 0;
     private int playerTwoTotalDamageTaken = 0;
-    private int tempPlayerOneCoinCount = playerOneCoinCount;
-    private int tempPlayerTwoCoinCount = playerTwoCoinCount;
-    private int tempPlayerOneTotalDamageTaken = playerOneTotalDamageTaken;
-    private int tempPlayerTwoTotalDamageTaken = playerTwoTotalDamageTaken;
 
     private MoveDetails tempMoveDetails;
     private static List<MoveDetails> playerMoves = new ArrayList<>();
@@ -1238,5 +1234,16 @@ public class GameScreenController implements Initializable {
         coinMissingAlert.setContentText("Sacrifice more coin in the glory of the gods to ask them favors!");
         coinMissingAlert.showAndWait();
     }
+
+    @FXML
+    private void SaveGame(){
+
+    }
+
+    @FXML
+    private void LoadGame(){
+
+    }
+
 
 }

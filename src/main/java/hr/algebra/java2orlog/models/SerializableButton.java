@@ -3,47 +3,47 @@ package hr.algebra.java2orlog.models;
 import java.io.Serializable;
 
 public class SerializableButton implements Serializable {
-    private DiceSymbols symbol;
-    private int positionX;
-    private int positionY;
-    private Boolean playerOneTrayDice; // if they are dice of player 1 then this is true
+    private String btnId;
+    private String symbol;
+    private Boolean disabled;
+    private Boolean visible;
 
-    public SerializableButton(DiceSymbols symbol, int positionX, int positionY, Boolean playerOneTrayDice) {
+    public SerializableButton(String btnId, String symbol, Boolean disabled, Boolean visible) {
+        this.btnId = btnId;
         this.symbol = symbol;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.playerOneTrayDice = playerOneTrayDice;
+        this.disabled = disabled;
+        this.visible = visible;
     }
 
-    public DiceSymbols getSymbol() {
+    public String getBtnId() {
+        return btnId;
+    }
+
+    public void setBtnId(String btnId) {
+        this.btnId = btnId;
+    }
+
+    public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(DiceSymbols symbol) {
+    public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
-    public int getPositionX() {
-        return positionX;
+    public Boolean getDisabled() {
+        return disabled;
     }
 
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
-    public int getPositionY() {
-        return positionY;
+    public Boolean getVisible() {
+        return visible;
     }
 
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
-
-    public Boolean getPlayerOneTrayDice() {
-        return playerOneTrayDice;
-    }
-
-    public void setPlayerOneTrayDice(Boolean playerOneTrayDice) {
-        this.playerOneTrayDice = playerOneTrayDice;
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 }

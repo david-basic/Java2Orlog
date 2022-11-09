@@ -1,10 +1,7 @@
 package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
-import hr.algebra.java2orlog.models.DiceDetails;
-import hr.algebra.java2orlog.models.DiceSymbols;
-import hr.algebra.java2orlog.models.MoveDetails;
-import hr.algebra.java2orlog.models.PlayerDetails;
+import hr.algebra.java2orlog.models.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.net.URL;
@@ -107,6 +102,8 @@ public class GameScreenController implements Initializable {
     private Tooltip ttIdunP1;
     @FXML
     private GridPane gpP1GodFavors;
+    @FXML
+    private GridPane gridP1AllDice;
     //endregion
     //region FXML elements player two
     @FXML
@@ -151,6 +148,8 @@ public class GameScreenController implements Initializable {
     private Tooltip ttIdunP2;
     @FXML
     private GridPane gpP2GodFavors;
+    @FXML
+    private GridPane gridP2AllDice;
     //endregion
 
     @Override
@@ -343,6 +342,7 @@ public class GameScreenController implements Initializable {
         diceImage.setFitHeight(60);
         diceImage.setFitWidth(60);
         button.setPadding(new Insets(0, 0, 0, 0));
+        button.setAccessibleText(symbols.get(0).toString().trim());
         button.setGraphic(diceImage);
     }
 
@@ -1247,13 +1247,74 @@ public class GameScreenController implements Initializable {
     }
 
     @FXML
-    private void SaveGame() {
+    private void saveGame() throws IOException {
+        List<SerializableButton> serializableButtonsCollection = new ArrayList<>();
+
+        List<Node> p1Buttons = gridP1AllDice.getChildren().stream().toList();
+        List<Node> p2Buttons = gridP2AllDice.getChildren().stream().toList();
+
+//        for (var b : p1Buttons) {
+//            System.out.println(b.getAccessibleText());
+//        }
+//        System.out.println();
+//        for (var b : p2Buttons) {
+//            System.out.println(b.getAccessibleText());
+//        }
+
+        for (var b : p1Buttons) {
+            serializableButtonsCollection.add(new SerializableButton(b.getId(), b.getAccessibleText(), b.isDisabled(), b.isVisible()));
+        }
+        for (var b : p2Buttons) {
+            serializableButtonsCollection.add(new SerializableButton(b.getId(), b.getAccessibleText(), b.isDisabled(), b.isVisible()));
+        }
+
+        try (ObjectOutputStream serializer = new ObjectOutputStream(new FileOutputStream("savedGame.ser"))) {
+            serializer.writeObject(serializableButtonsCollection);
+        }
 
     }
 
     @FXML
-    private void LoadGame() {
+    private void loadGame() throws IOException, ClassNotFoundException {
+        try (ObjectInputStream deserializer = new ObjectInputStream(new FileInputStream("savedGame.ser"))) {
+            List<SerializableButton> serializableButtonList = (List<SerializableButton>) deserializer.readObject();
 
+            int i = 0;
+            for (var btn : serializableButtonList) {
+                if (i < 8) {
+                    loadButtonIntoGrid(gridP1AllDice, btn);
+                } else {
+                    loadButtonIntoGrid(gridP2AllDice, btn);
+                }
+                i++;
+            }
+        }
+    }
+
+    private void loadButtonIntoGrid(GridPane grid, SerializableButton btn) {
+        List<Node> btns = grid.getChildren().stream().toList();
+        List<Button> tempButtonCollection = new ArrayList<>();
+        for (var button : btns){
+            if (button.getId() != null){
+                tempButtonCollection.add((Button) button);
+            }
+        }
+
+        for (var b : tempButtonCollection){
+            if (Objects.equals(b.getId(), btn.getBtnId())){
+                b.setVisible(btn.getVisible());
+                b.setDisable(btn.getDisabled());
+
+                String symbol = btn.getSymbol();
+
+                ImageView img = new ImageView(Objects.requireNonNull(getClass().getResource("/" + symbol.trim() + ".jpg")).toExternalForm());
+                img.setFitHeight(60);
+                img.setFitWidth(60);
+                b.setPadding(new Insets(0, 0, 0, 0));
+                b.setAccessibleText(symbol.trim());
+                b.setGraphic(img);
+            }
+        }
     }
 
     @FXML

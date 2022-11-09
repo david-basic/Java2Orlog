@@ -142,8 +142,8 @@
                                 </GridPane>
                         <MenuButton fx:id="mbOptions" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" popupSide="RIGHT" style="-fx-background-color: transparent;" GridPane.rowSpan="2">
                           <items>
-                            <MenuItem fx:id="miSaveGame" mnemonicParsing="false" onAction="#SaveGame" text="Save game" />
-                            <MenuItem fx:id="miLoadGame" mnemonicParsing="false" onAction="#LoadGame" text="Load game" />
+                            <MenuItem fx:id="miSaveGame" mnemonicParsing="false" onAction="#saveGame" text="Save game" />
+                            <MenuItem fx:id="miLoadGame" mnemonicParsing="false" onAction="#loadGame" text="Load game" />
                               <MenuItem mnemonicParsing="false" onAction="#createDocumentation" text="Generate documentation" />
                           </items>
                            <font>
@@ -317,7 +317,7 @@
                                 <Insets left="20.0" right="25.0" top="10.0" />
                             </padding>
                         </GridPane>
-                        <GridPane fx:id="gridPanePlayerTwoDiceTray" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <GridPane fx:id="gridPanePlayerTwoTrayGrid" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -333,30 +333,84 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="btnPlayerTwoTrayDice1" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerTwoTrayDice2" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerTwoTrayDice3" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerTwoTrayDice4" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerTwoTrayDice5" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerTwoTrayDice6" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
+                        <GridPane fx:id="gridP2AllDice" alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" />
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints percentHeight="0.0" vgrow="SOMETIMES" />
+                            <RowConstraints percentHeight="0.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                                      <Button fx:id="btnPlayerTwoTrayDice1" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerTwoTrayDice2" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerTwoTrayDice3" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerTwoTrayDice4" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Button accessibleText="filler" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.rowIndex="1">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerTwoTrayDice5" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerTwoTrayDice6" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Button accessibleText="filler" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                           </children>
+                        </GridPane>
                                 <Circle fx:id="turnCoinPlayerTwo" radius="38.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                                     <fill>
                                         <RadialGradient centerX="0.5" centerY="0.5" focusAngle="135.0" focusDistance="-0.4367816091954023" radius="0.5574712643678161">
@@ -420,7 +474,7 @@
                                 </Label>
                             </children>
                         </GridPane>
-                        <GridPane fx:id="gridPanePlayerOneDiceTray" GridPane.columnIndex="1">
+                        <GridPane fx:id="gridPanePlayerOneTrayGrid" GridPane.columnIndex="1">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -436,30 +490,84 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="btnPlayerOneTrayDice1" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerOneTrayDice2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerOneTrayDice3" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerOneTrayDice4" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerOneTrayDice5" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
-                                <Button fx:id="btnPlayerOneTrayDice6" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor></Button>
+                        <GridPane fx:id="gridP1AllDice" alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" />
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints percentHeight="0.0" vgrow="SOMETIMES" />
+                            <RowConstraints percentHeight="0.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Button accessibleText="filler" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" visible="false">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerOneTrayDice1" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerOneTrayDice2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Button accessibleText="filler" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerOneTrayDice3" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.rowIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerOneTrayDice4" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerOneTrayDice5" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                                      <Button fx:id="btnPlayerOneTrayDice6" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#diceChosen" prefHeight="60.0" prefWidth="60.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
+                           </children>
+                        </GridPane>
                                 <Circle fx:id="turnCoinPlayerOne" radius="38.0" stroke="BLACK" strokeType="INSIDE" visible="false" GridPane.rowIndex="3">
                                     <fill>
                                         <RadialGradient centerX="0.5" centerY="0.5" focusAngle="135.0" focusDistance="-0.4367816091954023" radius="0.5574712643678161">

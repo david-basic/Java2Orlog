@@ -1,6 +1,7 @@
 package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
+import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -102,24 +103,11 @@ public class PlayerMovesController implements Initializable {
     }
 
     @FXML
-    private void returnToRulesView() {
-        FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
-        Scene scene = null;
+    public void returnToRulesView() {
         try {
-            scene = new Scene(fxmlLoader.load(), 600, 400);
+            FxmlUtils.showScreen("resultsView.fxml", OrlogApplication.getMainStage(), 600,400, "Results");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
-        Stage resultsScreenStage = OrlogApplication.getMainStage();
-        resultsScreenStage.setResizable(false);
-        resultsScreenStage.setTitle("Results");
-        resultsScreenStage.setScene(scene);
-        resultsScreenStage.show();
-
-        // with this you set the screen dead center in the visual area
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        resultsScreenStage.setX((screenBounds.getWidth() - resultsScreenStage.getWidth()) / 2);
-        resultsScreenStage.setY((screenBounds.getHeight() - resultsScreenStage.getHeight()) / 2);
     }
 }

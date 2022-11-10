@@ -2,6 +2,7 @@ package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.*;
+import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -1005,7 +1006,11 @@ public class GameScreenController implements Initializable {
 
             playerMoves.add(tempMoveDetails);
 
-            openResultsView();
+            try {
+                openResultsView();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -1083,25 +1088,8 @@ public class GameScreenController implements Initializable {
         featureNotImplemented.showAndWait();
     }
 
-    private void openResultsView() {
-        FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("resultsView.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 600, 400);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        Stage resultsScreenStage = OrlogApplication.getMainStage();
-        resultsScreenStage.setResizable(false);
-        resultsScreenStage.setTitle("Results");
-        resultsScreenStage.setScene(scene);
-        resultsScreenStage.show();
-
-        // with this you set the screen dead center in the visual area
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        resultsScreenStage.setX((screenBounds.getWidth() - resultsScreenStage.getWidth()) / 2);
-        resultsScreenStage.setY((screenBounds.getHeight() - resultsScreenStage.getHeight()) / 2);
+    private void openResultsView() throws IOException {
+        FxmlUtils.showScreen("resultsView.fxml", OrlogApplication.getMainStage(), 600, 400, "Results");
     }
 
     @FXML
@@ -1136,7 +1124,7 @@ public class GameScreenController implements Initializable {
 
 
     @FXML
-    private void clickOnGodFavor(ActionEvent actionEvent) {
+    public void clickOnGodFavor(ActionEvent actionEvent) {
         Button clickedGodFavorBtn = (Button) actionEvent.getSource();
 
         // if you don't have coins for a certain clicked favor return
@@ -1248,7 +1236,7 @@ public class GameScreenController implements Initializable {
     }
 
     @FXML
-    private void saveGame() throws IOException {
+    public void saveGame() throws IOException {
         List<SerializableDiceDetails> serializableDiceDetailsCollection = new ArrayList<>();
         List<Node> p1Buttons = gridP1AllDice.getChildren().stream().toList();
         List<Node> p2Buttons = gridP2AllDice.getChildren().stream().toList();
@@ -1307,7 +1295,7 @@ public class GameScreenController implements Initializable {
     }
 
     @FXML
-    private void loadGame() throws IOException, ClassNotFoundException {
+    public void loadGame() throws IOException, ClassNotFoundException {
 
         if (!loadAllowed) {
             Alert loadDeniedAlert = new Alert(Alert.AlertType.WARNING);
@@ -1395,11 +1383,10 @@ public class GameScreenController implements Initializable {
     }
 
     @FXML
-    private void createDocumentation() {
+    public void createDocumentation() {
         File documentationFile = new File("documentation.html");
 
         try {
-
             FileWriter writer = new FileWriter(documentationFile);
 
             writer.write("<!DOCTYPE html>");
@@ -1416,7 +1403,6 @@ public class GameScreenController implements Initializable {
                     .collect(Collectors.toList());
 
             for (Path path : paths) {
-                //System.out.println("Path: " + path);
                 String[] tokens = path.toString().split(Pattern.quote(System.getProperty("file.separator")));
 
                 Boolean startBuildingPath = false;
@@ -1430,7 +1416,6 @@ public class GameScreenController implements Initializable {
                     }
 
                     if (startBuildingPath) {
-
                         if (token.endsWith(CLASS_EXTENSION)) {
                             sb.append(token.substring(0, token.indexOf(".")));
                         } else {
@@ -1481,10 +1466,19 @@ public class GameScreenController implements Initializable {
                     writer.write("<h3>Constructors:</h3>");
 
                     for (Constructor c : constructors) {
+                        StringBuilder cb = new StringBuilder();
+
+                        Annotation[] annotations = c.getAnnotations();
+                        if (annotations.length != 0) {
+                            for (Annotation a : annotations) {
+                                cb.append(a.toString());
+                                cb.append("<br />");
+                            }
+                        }
 
                         String constructorParams = generateDocumentation(c);
 
-                        writer.write("<h4>Constructor:" + Modifier.toString(c.getModifiers()) + " " + c.getName()
+                        writer.write("<h4>" + cb.toString() + "Constructor:" + Modifier.toString(c.getModifiers()) + " " + c.getName()
                                 + "(" + constructorParams + ")" + "</h4>");
                     }
 
@@ -1493,6 +1487,16 @@ public class GameScreenController implements Initializable {
                     writer.write("<h3>Methods:</h3>");
 
                     for (Method m : methods) {
+                        StringBuilder mb = new StringBuilder();
+
+                        Annotation[] annotations = m.getAnnotations();
+                        if (annotations.length != 0) {
+                            for (Annotation a : annotations) {
+                                mb.append(a.toString());
+                                mb.append("<br />");
+                            }
+                        }
+
 
                         String methodsParams = generateDocumentation(m);
 
@@ -1511,7 +1515,7 @@ public class GameScreenController implements Initializable {
                             }
                         }
 
-                        writer.write("<h4>Method:" + Modifier.toString(m.getModifiers())
+                        writer.write("<h4>" + mb.toString() + "Method:" + Modifier.toString(m.getModifiers())
                                 + " " + m.getReturnType().getSimpleName()
                                 + " " + m.getName() + "(" + methodsParams + ")"
                                 + " " + exceptionsBuilder.toString()

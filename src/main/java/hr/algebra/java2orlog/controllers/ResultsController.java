@@ -2,6 +2,7 @@ package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.PlayerDetails;
+import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -75,56 +76,29 @@ public class ResultsController implements Initializable {
     }
 
     @FXML
-    private void showRulesImage() {
+    public void showRulesImage() {
         if (!popup.isShowing()) {
             popup.show(stage);
         }
     }
 
     @FXML
-    private void returnToLoginView() {
-        FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("loginView.fxml"));
-        Scene scene = null;
+    public void returnToLoginView() {
         try {
-            scene = new Scene(fxmlLoader.load(), 858, 438);
+            FxmlUtils.showScreen("loginView.fxml", OrlogApplication.getMainStage(), 858,438, "Login");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
-        Stage loginScreenStage = OrlogApplication.getMainStage();
-        loginScreenStage.setResizable(false);
-        loginScreenStage.setTitle("Login");
-        loginScreenStage.setScene(scene);
-        loginScreenStage.show();
-
-        // with this you set the screen dead center in the visual area
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        loginScreenStage.setX((screenBounds.getWidth() - loginScreenStage.getWidth()) / 2);
-        loginScreenStage.setY((screenBounds.getHeight() - loginScreenStage.getHeight()) / 2);
     }
 
     @FXML
-    private void openMovesPlayerView() {
-
+    public void openMovesPlayerView() {
         if (LoginController.getPlayerDetailsCollection().size() != 0) {
-            FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("playerMovesView.fxml"));
-            Scene scene = null;
             try {
-                scene = new Scene(fxmlLoader.load(), 1200, 800);
+                FxmlUtils.showScreen("playerMovesView.fxml", OrlogApplication.getMainStage(), 1200,800, "Player moves");
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-
-            Stage playerMovesScreenStage = OrlogApplication.getMainStage();
-            playerMovesScreenStage.setResizable(false);
-            playerMovesScreenStage.setTitle("Player moves");
-            playerMovesScreenStage.setScene(scene);
-            playerMovesScreenStage.show();
-
-            // with this you set the screen dead center in the visual area
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            playerMovesScreenStage.setX((screenBounds.getWidth() - playerMovesScreenStage.getWidth()) / 2);
-            playerMovesScreenStage.setY((screenBounds.getHeight() - playerMovesScreenStage.getHeight()) / 2);
         } else {
             Alert canNotAccessPlayerMoves = new Alert(Alert.AlertType.INFORMATION);
             canNotAccessPlayerMoves.setTitle("Access denied");

@@ -1,5 +1,6 @@
 package hr.algebra.java2orlog;
 
+import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,12 +13,8 @@ public class OrlogApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        FxmlUtils.showScreen("loginView.fxml", stage, 858, 438, "Login");
         mainStage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(OrlogApplication.class.getResource("loginView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 858, 438);
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public static Stage getMainStage() {

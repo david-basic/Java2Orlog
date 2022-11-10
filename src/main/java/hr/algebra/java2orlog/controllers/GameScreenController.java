@@ -43,6 +43,7 @@ public class GameScreenController implements Initializable {
     private int playerOneTotalDamageTaken = 0;
     private int playerTwoTotalDamageTaken = 0;
     private static final String CLASS_EXTENSION = ".class";
+    private Boolean loadAllowed = true;
 
     private MoveDetails tempMoveDetails;
     private static List<MoveDetails> playerMoves = new ArrayList<>();
@@ -1248,62 +1249,108 @@ public class GameScreenController implements Initializable {
 
     @FXML
     private void saveGame() throws IOException {
-        List<SerializableButton> serializableButtonsCollection = new ArrayList<>();
+//        List<SerializableButton> serializableButtonsCollection = new ArrayList<>();
+//
+//        List<Node> p1Buttons = gridP1AllDice.getChildren().stream().toList();
+//        List<Node> p2Buttons = gridP2AllDice.getChildren().stream().toList();
+//
+////        for (var b : p1Buttons) {
+////            System.out.println(b.getAccessibleText());
+////        }
+////        System.out.println();
+////        for (var b : p2Buttons) {
+////            System.out.println(b.getAccessibleText());
+////        }
+//
+//        for (var b : p1Buttons) {
+//            serializableButtonsCollection.add(new SerializableButton(b.getId(), b.getAccessibleText(), b.isDisabled(), b.isVisible()));
+//        }
+//        for (var b : p2Buttons) {
+//            serializableButtonsCollection.add(new SerializableButton(b.getId(), b.getAccessibleText(), b.isDisabled(), b.isVisible()));
+//        }
+//
+//        try (ObjectOutputStream serializer = new ObjectOutputStream(new FileOutputStream("savedButtonStates.ser"))) {
+//            serializer.writeObject(serializableButtonsCollection);
+//        }
 
+        List<SerializableDiceDetails> serializableDiceDetailsCollection = new ArrayList<>();
         List<Node> p1Buttons = gridP1AllDice.getChildren().stream().toList();
         List<Node> p2Buttons = gridP2AllDice.getChildren().stream().toList();
 
-//        for (var b : p1Buttons) {
-//            System.out.println(b.getAccessibleText());
-//        }
-//        System.out.println();
-//        for (var b : p2Buttons) {
-//            System.out.println(b.getAccessibleText());
-//        }
+        saveDice(p1Buttons, playerOneAllDice, serializableDiceDetailsCollection);
+        saveDice(p2Buttons, playerTwoAllDice, serializableDiceDetailsCollection);
 
-        for (var b : p1Buttons) {
-            serializableButtonsCollection.add(new SerializableButton(b.getId(), b.getAccessibleText(), b.isDisabled(), b.isVisible()));
-        }
-        for (var b : p2Buttons) {
-            serializableButtonsCollection.add(new SerializableButton(b.getId(), b.getAccessibleText(), b.isDisabled(), b.isVisible()));
+        try(ObjectOutputStream serializer = new ObjectOutputStream(new FileOutputStream("savedDice.ser"))){
+            serializer.writeObject(serializableDiceDetailsCollection);
         }
 
-        try (ObjectOutputStream serializer = new ObjectOutputStream(new FileOutputStream("savedGame.ser"))) {
-            serializer.writeObject(serializableButtonsCollection);
-        }
+        loadAllowed = true;
+    }
 
+    private void saveDice(List<Node> buttons, List<DiceDetails> playerDiceList, List<SerializableDiceDetails> serializableDiceDetailsCollection) {
+        for (var b : buttons){
+            List<DiceSymbols> tempListSymbols = null;
+            Boolean tempChosen = false;
+            Boolean tempSentToCenter = false;
+            for(var d : playerDiceList){
+                if (Objects.equals(d.getDiceButton().getId(), b.getId())){
+                    tempListSymbols = new ArrayList<>(d.getDiceSymbols());
+                    tempChosen = d.getIsChosenFromDiceTray();
+                    tempSentToCenter = d.getCanBeSentToCenter();
+                }
+            }
+
+            serializableDiceDetailsCollection.add(
+                    new SerializableDiceDetails(
+                            new SerializableButton(b.getId(), b.getAccessibleText(), b.isDisabled(), b.isVisible()),
+                            tempListSymbols,
+                            tempChosen,
+                            tempSentToCenter
+                    )
+            );
+        }
     }
 
     @FXML
     private void loadGame() throws IOException, ClassNotFoundException {
-        try (ObjectInputStream deserializer = new ObjectInputStream(new FileInputStream("savedGame.ser"))) {
-            List<SerializableButton> serializableButtonList = (List<SerializableButton>) deserializer.readObject();
+
+        if (!loadAllowed){
+            Alert loadDeniedAlert = new Alert(Alert.AlertType.WARNING);
+            loadDeniedAlert.setTitle("Load denied");
+            loadDeniedAlert.setHeaderText("You already loaded the game.");
+            loadDeniedAlert.setContentText("Save the game again to load it.");
+            loadDeniedAlert.showAndWait();
+
+            return;
+        }
+
+        try(ObjectInputStream deserializer = new ObjectInputStream(new FileInputStream("savedDice.ser"))){
+            List<SerializableDiceDetails> serializableDiceDetailsList = (List<SerializableDiceDetails>) deserializer.readObject();
 
             int i = 0;
-            for (var btn : serializableButtonList) {
-                if (i < 8) {
-                    loadButtonIntoGrid(gridP1AllDice, btn);
-                } else {
-                    loadButtonIntoGrid(gridP2AllDice, btn);
+            for (var d : serializableDiceDetailsList){
+                if (i < 8){
+                    loadButtonsAndChosenButtons(gridP1AllDice, d.getButton(), d.getChosenFromDiceTray(), hbPlayerOneChosenDice, d, playerOneAllDice);
+                }else{
+                    loadButtonsAndChosenButtons(gridP2AllDice, d.getButton(), d.getChosenFromDiceTray(), hbPlayerTwoChosenDice, d, playerTwoAllDice);
                 }
                 i++;
             }
         }
+
+        loadAllowed = false;
     }
 
-    private void loadButtonIntoGrid(GridPane grid, SerializableButton btn) {
-        List<Node> btns = grid.getChildren().stream().toList();
-        List<Button> tempButtonCollection = new ArrayList<>();
-        for (var button : btns){
-            if (button.getId() != null){
-                tempButtonCollection.add((Button) button);
-            }
-        }
+    private void loadButtonsAndChosenButtons(GridPane grid, SerializableButton btn, Boolean chosenFromDiceTray, HBox hbCentralContainer, SerializableDiceDetails diceDetails, List<DiceDetails> allDice) {
 
-        for (var b : tempButtonCollection){
-            if (Objects.equals(b.getId(), btn.getBtnId())){
+        for (var d : allDice){
+            if (Objects.equals(d.getDiceButton().getId(), btn.getBtnId())){
+                Button b = d.getDiceButton();
+
                 b.setVisible(btn.getVisible());
                 b.setDisable(btn.getDisabled());
+                d.setIsChosenFromDiceTray(chosenFromDiceTray);
+                d.setCanBeSentToCenter(diceDetails.getCanBeSentToCenter());
 
                 String symbol = btn.getSymbol();
 
@@ -1313,8 +1360,39 @@ public class GameScreenController implements Initializable {
                 b.setPadding(new Insets(0, 0, 0, 0));
                 b.setAccessibleText(symbol.trim());
                 b.setGraphic(img);
+
+                if (chosenFromDiceTray){
+                    img.setFitWidth(60);
+                    img.setFitHeight(60);
+                    hbCentralContainer.getChildren().add(
+                            img
+                    );
+                }
             }
         }
+
+//        for (var b : tempButtonCollection) {
+//            if (Objects.equals(b.getId(), btn.getBtnId())) {
+//                b.setVisible(btn.getVisible());
+//
+//                String symbol = btn.getSymbol();
+//
+//                ImageView img = new ImageView(Objects.requireNonNull(getClass().getResource("/" + symbol.trim() + ".jpg")).toExternalForm());
+//                img.setFitHeight(60);
+//                img.setFitWidth(60);
+//                b.setPadding(new Insets(0, 0, 0, 0));
+//                b.setAccessibleText(symbol.trim());
+//                b.setGraphic(img);
+//
+//                if (chosenFromDiceTray){
+//                    img.setFitWidth(60);
+//                    img.setFitHeight(60);
+//                    hbCentralContainer.getChildren().add(
+//                            img
+//                    );
+//                }
+//            }
+//        }
     }
 
     @FXML

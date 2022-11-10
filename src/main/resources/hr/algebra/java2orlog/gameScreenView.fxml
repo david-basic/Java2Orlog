@@ -115,7 +115,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <HBox fx:id="hbPlayerOneChosenDice" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+                                        <HBox fx:id="hbPlayerOneChosenDice" alignment="CENTER" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
                                     </children>
                                 </GridPane>
                                 <GridPane fx:id="gridPanePlayerTwoChosenDiceArea" GridPane.columnIndex="2" GridPane.columnSpan="8" GridPane.rowIndex="1">
@@ -137,7 +137,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <HBox fx:id="hbPlayerTwoChosenDice" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+                                        <HBox fx:id="hbPlayerTwoChosenDice" alignment="CENTER" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
                                     </children>
                                 </GridPane>
                         <MenuButton fx:id="mbOptions" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" popupSide="RIGHT" style="-fx-background-color: transparent;" GridPane.rowSpan="2">

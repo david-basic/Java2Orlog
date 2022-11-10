@@ -46,4 +46,5 @@ public class SerializableButton implements Serializable {
     public void setVisible(Boolean visible) {
         this.visible = visible;
     }
+
 }

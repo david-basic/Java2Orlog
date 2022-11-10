@@ -1,16 +1,17 @@
 package hr.algebra.java2orlog.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SerializableButton implements Serializable {
     private String btnId;
-    private String symbol;
+    private List<DiceSymbols> diceSymbols;
     private Boolean disabled;
     private Boolean visible;
 
-    public SerializableButton(String btnId, String symbol, Boolean disabled, Boolean visible) {
+    public SerializableButton(String btnId, List<DiceSymbols> diceSymbols, Boolean disabled, Boolean visible) {
         this.btnId = btnId;
-        this.symbol = symbol;
+        this.diceSymbols = diceSymbols;
         this.disabled = disabled;
         this.visible = visible;
     }
@@ -23,12 +24,12 @@ public class SerializableButton implements Serializable {
         this.btnId = btnId;
     }
 
-    public String getSymbol() {
-        return symbol;
+    public List<DiceSymbols> getDiceSymbols() {
+        return diceSymbols;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
+    public void setDiceSymbol(List<DiceSymbols> diceSymbols) {
+        this.diceSymbols = diceSymbols;
     }
 
     public Boolean getDisabled() {

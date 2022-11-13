@@ -5,20 +5,15 @@ import hr.algebra.java2orlog.models.*;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
@@ -1244,11 +1239,6 @@ public class GameScreenController implements Initializable {
         saveDice(p1Buttons, playerOneAllDice, serializableDiceDetailsCollection);
         saveDice(p2Buttons, playerTwoAllDice, serializableDiceDetailsCollection);
 
-        try (ObjectOutputStream serializer = new ObjectOutputStream(new FileOutputStream("savedDice.ser"))) {
-            serializer.writeObject(serializableDiceDetailsCollection);
-        }
-
-
         List<SerializableMatchData> serializableMatchDataCollection = new ArrayList<>();
 
         serializableMatchDataCollection.add(
@@ -1259,7 +1249,8 @@ public class GameScreenController implements Initializable {
                         playerTwoCoinCount,
                         turnCount,
                         roundCount,
-                        playerOneTurn
+                        playerOneTurn,
+                        serializableDiceDetailsCollection
                 )
         );
 
@@ -1323,21 +1314,17 @@ public class GameScreenController implements Initializable {
                 roundCount = m.getRoundCount();
 
                 playerOneTurn = m.getPlayerOneTurn();
-            }
-        }
 
-
-        try (ObjectInputStream deserializer = new ObjectInputStream(new FileInputStream("savedDice.ser"))) {
-            List<SerializableDiceDetails> serializableDiceDetailsList = (List<SerializableDiceDetails>) deserializer.readObject();
-
-            int i = 0;
-            for (var d : serializableDiceDetailsList) {
-                if (i < 8) {
-                    loadButtonsAndChosenButtons(gridP1AllDice, d.getButton(), d.getChosenFromDiceTray(), hbPlayerOneChosenDice, d, playerOneAllDice);
-                } else {
-                    loadButtonsAndChosenButtons(gridP2AllDice, d.getButton(), d.getChosenFromDiceTray(), hbPlayerTwoChosenDice, d, playerTwoAllDice);
+                int i = 0;
+                for (var d : m.getSerializableDiceDetailsCollection()) {
+                    if (i < 8) {
+                        loadButtonsAndChosenButtons(gridP1AllDice, d.getButton(), d.getChosenFromDiceTray(), hbPlayerOneChosenDice, d, playerOneAllDice);
+                    } else {
+                        loadButtonsAndChosenButtons(gridP2AllDice, d.getButton(), d.getChosenFromDiceTray(), hbPlayerTwoChosenDice, d, playerTwoAllDice);
+                    }
+                    i++;
                 }
-                i++;
+
             }
         }
 

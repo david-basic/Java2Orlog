@@ -1,6 +1,8 @@
 package hr.algebra.java2orlog.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SerializableMatchData implements Serializable {
     private Integer p1DamageTaken;
@@ -10,8 +12,9 @@ public class SerializableMatchData implements Serializable {
     private Integer turnCount;
     private Integer roundCount;
     private Boolean playerOneTurn;
+    private List<SerializableDiceDetails> serializableDiceDetailsCollection;
 
-    public SerializableMatchData(Integer p1DamageTaken, Integer p2DamageTaken, Integer p1CoinCount, Integer p2CoinCount, Integer turnCount, Integer roundCount, Boolean playerOneTurn) {
+    public SerializableMatchData(Integer p1DamageTaken, Integer p2DamageTaken, Integer p1CoinCount, Integer p2CoinCount, Integer turnCount, Integer roundCount, Boolean playerOneTurn, List<SerializableDiceDetails> serializableDiceDetailsCollection) {
         this.p1DamageTaken = p1DamageTaken;
         this.p2DamageTaken = p2DamageTaken;
         this.p1CoinCount = p1CoinCount;
@@ -19,6 +22,7 @@ public class SerializableMatchData implements Serializable {
         this.turnCount = turnCount;
         this.roundCount = roundCount;
         this.playerOneTurn = playerOneTurn;
+        this.serializableDiceDetailsCollection = new ArrayList<>(serializableDiceDetailsCollection);
     }
 
     public Integer getP1DamageTaken() {
@@ -75,5 +79,13 @@ public class SerializableMatchData implements Serializable {
 
     public void setPlayerOneTurn(Boolean playerOneTurn) {
         this.playerOneTurn = playerOneTurn;
+    }
+
+    public List<SerializableDiceDetails> getSerializableDiceDetailsCollection() {
+        return serializableDiceDetailsCollection;
+    }
+
+    public void setSerializableDiceDetailsCollection(List<SerializableDiceDetails> serializableDiceDetailsCollection) {
+        this.serializableDiceDetailsCollection = serializableDiceDetailsCollection;
     }
 }

@@ -1330,8 +1330,16 @@ public class GameScreenController implements Initializable {
 
         if (playerOneTurn) {
             playerOneAllDice.forEach(d -> d.getDiceButton().setDisable(true));
+            btnRollDicePlayerOne.setVisible(true);
+            btnRollDicePlayerTwo.setVisible(false);
+            btnEndTurnPlayerOne.setVisible(false);
+            btnEndTurnPlayerTwo.setVisible(false);
         } else {
             playerTwoAllDice.forEach(d -> d.getDiceButton().setDisable(true));
+            btnRollDicePlayerTwo.setVisible(true);
+            btnRollDicePlayerOne.setVisible(false);
+            btnEndTurnPlayerOne.setVisible(false);
+            btnEndTurnPlayerTwo.setVisible(false);
         }
 
         loadAllowed = false;

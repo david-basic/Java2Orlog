@@ -1325,6 +1325,15 @@ public class GameScreenController implements Initializable {
                     i++;
                 }
 
+
+//                List<SerializableDiceDetails> serDiceDetails = m.getSerializableDiceDetailsCollection();
+//
+//                List<List<DiceSymbols>> tempSerDiceSymbolsList = new ArrayList<>();
+//                for (var serDie : serDiceDetails) {
+//                    tempSerDiceSymbolsList.add(serDie.getDiceSymbols());
+//                }
+
+
             }
         }
 
@@ -1345,7 +1354,8 @@ public class GameScreenController implements Initializable {
         loadAllowed = false;
     }
 
-    private void loadButtonsAndChosenButtons(GridPane grid, SerializableButton btn, Boolean chosenFromDiceTray, HBox hbCentralContainer, SerializableDiceDetails diceDetails, List<DiceDetails> allDice) {
+    private void loadButtonsAndChosenButtons(GridPane grid, SerializableButton btn, Boolean
+            chosenFromDiceTray, HBox hbCentralContainer, SerializableDiceDetails diceDetails, List<DiceDetails> allDice) {
 
         for (var d : allDice) {
             if (Objects.equals(d.getDiceButton().getId(), btn.getBtnId())) {

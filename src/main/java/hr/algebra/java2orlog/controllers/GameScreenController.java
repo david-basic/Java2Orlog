@@ -1202,6 +1202,7 @@ public class GameScreenController implements Initializable {
 
     }
 
+
     private void healDamageTaken(int damageTaken, List<Node> hpCollection, boolean healAll) {
 
         if (healAll) {

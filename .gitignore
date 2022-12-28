@@ -37,3 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 /out/artifacts/Java2Orlog_jar/Java2Orlog.jar
+/.idea/artifacts/Java2Orlog_jar.xml

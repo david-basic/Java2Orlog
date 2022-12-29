@@ -4,13 +4,8 @@ import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.PlayerDetails;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,16 +16,12 @@ public class LoginController {
     //region FXML elements
     @FXML
     private TextField tfPlayerOneName;
-
     @FXML
     private TextField tfPlayerTwoName;
-
     @FXML
     private Label lblPlayerOneNameError;
-
     @FXML
     private Label lblPlayerTwoNameError;
-
     @FXML
     private Label lblSameNamesError;
     //endregion
@@ -85,6 +76,7 @@ public class LoginController {
         try {
             FxmlUtils.showScreen("gameScreenView.fxml", OrlogApplication.getMainStage(), 1720,880, "Orlog");
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }

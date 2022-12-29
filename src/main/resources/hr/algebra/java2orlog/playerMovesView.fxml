@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.PlayerMovesController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.PlayerMovesController">
    <children>
       <TextArea fx:id="taPlayerMovesDisplayArea" editable="false" layoutX="29.0" layoutY="27.0" prefHeight="658.0" prefWidth="1142.0" />
       <Button layoutX="513.0" layoutY="699.0" mnemonicParsing="false" onAction="#returnToRulesView" prefHeight="76.0" prefWidth="174.0" text="RETURN">

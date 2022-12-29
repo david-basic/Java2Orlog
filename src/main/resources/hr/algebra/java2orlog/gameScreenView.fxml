@@ -23,7 +23,7 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPaneBase" prefHeight="880.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.GameScreenController">
+<BorderPane fx:id="borderPaneBase" prefHeight="880.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.GameScreenController">
     <center>
         <AnchorPane fx:id="anchorPaneGamePane" BorderPane.alignment="CENTER">
             <children>

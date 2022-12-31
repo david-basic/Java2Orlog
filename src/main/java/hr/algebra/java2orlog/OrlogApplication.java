@@ -2,8 +2,6 @@ package hr.algebra.java2orlog;
 
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +20,11 @@ public class OrlogApplication extends Application {
     }
 
     public static void main(String[] args) {
+
+        for (String param : args) {
+            System.out.println("Next param: " + param);
+        }
+
         launch();
     }
 }

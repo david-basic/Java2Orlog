@@ -6,10 +6,8 @@ import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,9 +26,6 @@ public class ResultsController implements Initializable {
     //region Fields
     private Popup popup = new Popup();
     private Stage stage = OrlogApplication.getMainStage();
-
-
-//    private ObservableList<PlayerDetails> playerCollection = FXCollections.observableArrayList(new ArrayList<>(LoginController.getPlayerDetailsCollection()));
     private ObservableList<PlayerDetails> playerCollection;
     //endregion
 
@@ -85,7 +80,7 @@ public class ResultsController implements Initializable {
     @FXML
     public void returnToLoginView() {
         try {
-            FxmlUtils.showScreen("loginView.fxml", OrlogApplication.getMainStage(), 858,438, "Login");
+            FxmlUtils.showScreen("loginView.fxml", OrlogApplication.getMainStage(), 858, 438, "Login");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -95,7 +90,7 @@ public class ResultsController implements Initializable {
     public void openMovesPlayerView() {
         if (LoginController.getPlayerDetailsCollection().size() != 0) {
             try {
-                FxmlUtils.showScreen("playerMovesView.fxml", OrlogApplication.getMainStage(), 1200,800, "Player moves");
+                FxmlUtils.showScreen("playerMovesView.fxml", OrlogApplication.getMainStage(), 1200, 800, "Player moves");
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -106,7 +101,5 @@ public class ResultsController implements Initializable {
             canNotAccessPlayerMoves.setContentText("Can not access player moves page because there is nothing to show.");
             canNotAccessPlayerMoves.showAndWait();
         }
-
     }
-
 }

@@ -2,14 +2,19 @@ package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.PlayerDetails;
+import hr.algebra.java2orlog.models.PlayerMetaData;
 import hr.algebra.java2orlog.server.Server;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,7 +30,9 @@ public class LoginController implements Initializable {
     @FXML
     private Label lblPlayerNameError;
     @FXML
-    private Label lblPlayerOrder;
+    private RadioButton rbFirst;
+    @FXML
+    private RadioButton rbSecond;
     //endregion
 
     private static PlayerDetails playerDetails;
@@ -34,29 +41,49 @@ public class LoginController implements Initializable {
     public static PlayerDetails getPlayerDetails() {
         return playerDetails;
     }
-
     public static List<PlayerDetails> getPlayerDetailsCollection() {
         return playerDetailsCollection;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lblPlayerName.setText(OrlogApplication.getPlayerName());
-        lblPlayerOrder.setText(OrlogApplication.getPlayerOrderChoice());
+        ToggleGroup radioButtonGroup = new ToggleGroup();
+        rbFirst.setToggleGroup(radioButtonGroup);
+        rbSecond.setToggleGroup(radioButtonGroup);
+
+        rbFirst.setSelected(true);
+
+        //lblPlayerName.setText(OrlogApplication.getPlayerName());
     }
 
     @FXML
     public void startGame() {
 
         try (Socket clientSocket = new Socket(Server.HOST, Server.PORT)) {
-            System.err.println("Client connecting to: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
 
-//            sendSerializableRequest(clientSocket);
+            System.err.println("Client is connecting to " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
-        } catch (IOException e) { //| ClassNotFoundException e) {
+            oos.writeObject(
+                    new PlayerMetaData(
+                            clientSocket.getInetAddress().toString(),
+                            String.valueOf(clientSocket.getPort()),
+                            tfPlayerName.getText(),
+                            ProcessHandle.current().pid()
+                    ));
+
+            String confirmation = (String) ois.readObject();
+
+            if ("ERROR".equals(confirmation)) {
+                System.exit(1);
+            } else if ("SUCCESS".equals(confirmation)) {
+                System.out.println("SUCCESSFULLY CONNECTED");
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
 
         String playerName = tfPlayerName.getText();
 
@@ -67,7 +94,11 @@ public class LoginController implements Initializable {
             return;
         }
 
-        playerDetails = new PlayerDetails(playerName, "0", "0", "0");
+        if (rbFirst.isSelected()){
+            playerDetails = new PlayerDetails(playerName, "0", "0", "0", true);
+        }else{
+            playerDetails = new PlayerDetails(playerName, "0", "0", "0", false);
+        }
 
         playerDetailsCollection.add(playerDetails);
 
@@ -83,10 +114,10 @@ public class LoginController implements Initializable {
     public void openResultsView() {
 
         //region Testing data for table, comment out if not used
-        playerDetails = new PlayerDetails("John Doe1", "1", "2", "3");
-        playerDetailsCollection.add(playerDetails);
-        playerDetails = new PlayerDetails("John Doe2", "3", "2", "1");
-        playerDetailsCollection.add(playerDetails);
+//        playerDetails = new PlayerDetails("John Doe1", "1", "2", "3");
+//        playerDetailsCollection.add(playerDetails);
+//        playerDetails = new PlayerDetails("John Doe2", "3", "2", "1");
+//        playerDetailsCollection.add(playerDetails);
         //endregion
 
         try {

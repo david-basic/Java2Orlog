@@ -32,24 +32,24 @@ public class OrlogApplication extends Application {
 
     public static void main(String[] args) {
 
-        StringBuilder playerNameSB = new StringBuilder();
-
-        int tokenNum = 1;
-        for (String param : args) {
-            System.out.println("Next param: " + param);
-            if (args.length > tokenNum) {
-                playerNameSB.append(param).append(" ");
-//            } else if ((args.length - 1) == tokenNum) {
-//                playerNameSB.append(param).append(": ");
-            } else {
-                playerOrderChoice = param;
-            }
-            tokenNum++;
-        }
-
-        playerNameSB.append(": ");
-
-        playerName = playerNameSB.toString();
+//        StringBuilder playerNameSB = new StringBuilder();
+//
+//        int tokenNum = 1;
+//        for (String param : args) {
+//            System.out.println("Next param: " + param);
+//            if (args.length > tokenNum) {
+//                playerNameSB.append(param).append(" ");
+////            } else if ((args.length - 1) == tokenNum) {
+////                playerNameSB.append(param).append(": ");
+//            } else {
+//                playerOrderChoice = param;
+//            }
+//            tokenNum++;
+//        }
+//
+//        playerNameSB.append(": ");
+//
+//        playerName = playerNameSB.toString();
 
         launch();
     }

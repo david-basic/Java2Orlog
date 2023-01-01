@@ -44,6 +44,10 @@ public class GameScreenController implements Initializable {
     private MoveDetails tempMoveDetails;
     private static List<MoveDetails> playerMoves = new ArrayList<>();
 
+    public static List<MoveDetails> getPlayerMovesCollection() {
+        return playerMoves;
+    }
+
     private List<DiceDetails> notChosenDice = new ArrayList<>();
     private List<DiceDetails> playerOneAllDice = new ArrayList<>();
     private List<DiceDetails> playerTwoAllDice = new ArrayList<>();
@@ -55,7 +59,6 @@ public class GameScreenController implements Initializable {
     private List<DiceSymbols> die5Symbols = new ArrayList<>();
     private List<DiceSymbols> die6Symbols = new ArrayList<>();
     //endregion
-
     //region FXML elements player one
     @FXML
     private Button btnThorP1;
@@ -166,8 +169,15 @@ public class GameScreenController implements Initializable {
         lblPlayerOneCoins.setText("0");
         lblPlayerTwoCoins.setText("0");
 
-        lblPlayerOneName.setText(LoginController.getPlayerDetails().getPlayerName());
-        lblPlayerTwoName.setText(LoginController.getPlayerDetails().getPlayerName());
+        //TODO maybe use player-metadata and not player Details to get the first player
+        List<PlayerDetails> playerDetailsCollection = LoginController.getPlayerDetailsCollection();
+        for (var playerDet : playerDetailsCollection) {
+//            if (playerDet.getIsPlayerFirst()) {
+                lblPlayerOneName.setText(playerDet.getPlayerName());
+//            } else {
+                lblPlayerTwoName.setText(playerDet.getPlayerName());
+//            }
+        }
 
         defineAllDice();
 
@@ -334,7 +344,6 @@ public class GameScreenController implements Initializable {
     }
 
     private void setButtonImage(Button button, List<DiceSymbols> symbols) {
-//        ImageView diceImage = new ImageView(getClass().getResource("/" + symbols.get(0).toString().trim() + ".jpg").toExternalForm()); // isto kao ovo ispod
         ImageView diceImage = new ImageView(Objects.requireNonNull(getClass().getResource("/" + symbols.get(0).toString().trim() + ".jpg")).toExternalForm());
         diceImage.setFitHeight(60);
         diceImage.setFitWidth(60);
@@ -347,26 +356,9 @@ public class GameScreenController implements Initializable {
         btnDice.setVisible(true);
     }
 
-
     @FXML
     public void rollTheDice() {
-        tempMoveDetails = new MoveDetails(
-                0,
-                0,
-                "John Doe1",
-                "John Doe2",
-                new ArrayList<>(),
-                new ArrayList<>(),
-                0,
-                0,
-                0,
-                0,
-                "None",
-                "None",
-                false,
-                false,
-                "To be determined"
-        ); // basic template which is going to be changed accordingly as data changes
+        tempMoveDetails = new MoveDetails(0, 0, "John Doe1", "John Doe2", new ArrayList<>(), new ArrayList<>(), 0, 0, 0, 0, "None", "None", false, false, "To be determined"); // basic template which is going to be changed accordingly as data changes
 
         // basic setup
         tempMoveDetails.setRoundNumber(roundCount);
@@ -404,13 +396,11 @@ public class GameScreenController implements Initializable {
     }
 
     private void fillNotChosenDiceList(List<DiceDetails> allDice) {
-        allDice.forEach(d ->
-                {
-                    if (!d.getIsChosenFromDiceTray()) {
-                        notChosenDice.add(d); // for each die from all, if it has not been chosen, add it to not chosen die list
-                    }
-                }
-        );
+        allDice.forEach(d -> {
+            if (!d.getIsChosenFromDiceTray()) {
+                notChosenDice.add(d); // for each die from all, if it has not been chosen, add it to not chosen die list
+            }
+        });
     }
 
     private void shuffleDiceSymbols(List<DiceDetails> Dice) {
@@ -677,7 +667,6 @@ public class GameScreenController implements Initializable {
         gpArea.setDisable(true);
     }
 
-
     private void sendAllRemainingNotChosenDiceToCenter(List<DiceDetails> diceCollection) {
         for (var d : diceCollection) {
             if (!d.getIsChosenFromDiceTray()) {
@@ -694,9 +683,7 @@ public class GameScreenController implements Initializable {
                 ImageView symbolImage = new ImageView(Objects.requireNonNull(getClass().getResource("/" + symbol + ".jpg")).toExternalForm());
                 symbolImage.setFitWidth(60);
                 symbolImage.setFitHeight(60);
-                hbCentralContainer.getChildren().add(
-                        symbolImage
-                );
+                hbCentralContainer.getChildren().add(symbolImage);
                 d.getDiceButton().setVisible(false);
             }
             d.setCanBeSentToCenter(false);
@@ -1112,12 +1099,6 @@ public class GameScreenController implements Initializable {
         }
     }
 
-
-    public static List<MoveDetails> getPlayerMovesCollection() {
-        return playerMoves;
-    }
-
-
     @FXML
     public void clickOnGodFavor(ActionEvent actionEvent) {
         Button clickedGodFavorBtn = (Button) actionEvent.getSource();
@@ -1202,7 +1183,6 @@ public class GameScreenController implements Initializable {
 
     }
 
-
     private void healDamageTaken(int damageTaken, List<Node> hpCollection, boolean healAll) {
 
         if (healAll) {
@@ -1242,18 +1222,7 @@ public class GameScreenController implements Initializable {
 
         List<SerializableMatchData> serializableMatchDataCollection = new ArrayList<>();
 
-        serializableMatchDataCollection.add(
-                new SerializableMatchData(
-                        playerOneTotalDamageTaken,
-                        playerTwoTotalDamageTaken,
-                        playerOneCoinCount,
-                        playerTwoCoinCount,
-                        turnCount,
-                        roundCount,
-                        playerOneTurn,
-                        serializableDiceDetailsCollection
-                )
-        );
+        serializableMatchDataCollection.add(new SerializableMatchData(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, playerOneCoinCount, playerTwoCoinCount, turnCount, roundCount, playerOneTurn, serializableDiceDetailsCollection));
 
         try (ObjectOutputStream serializer = new ObjectOutputStream(new FileOutputStream("savedMatchData.ser"))) {
             serializer.writeObject(serializableMatchDataCollection);
@@ -1275,14 +1244,7 @@ public class GameScreenController implements Initializable {
                 }
             }
 
-            serializableDiceDetailsCollection.add(
-                    new SerializableDiceDetails(
-                            new SerializableButton(b.getId(), tempListSymbols, b.isDisabled(), b.isVisible()),
-                            tempListSymbols,
-                            tempChosen,
-                            tempSentToCenter
-                    )
-            );
+            serializableDiceDetailsCollection.add(new SerializableDiceDetails(new SerializableButton(b.getId(), tempListSymbols, b.isDisabled(), b.isVisible()), tempListSymbols, tempChosen, tempSentToCenter));
         }
     }
 
@@ -1355,8 +1317,13 @@ public class GameScreenController implements Initializable {
         loadAllowed = false;
     }
 
-    private void loadButtonsAndChosenButtons(GridPane grid, SerializableButton btn, Boolean
-            chosenFromDiceTray, HBox hbCentralContainer, SerializableDiceDetails diceDetails, List<DiceDetails> allDice) {
+    private void loadButtonsAndChosenButtons(
+            GridPane grid,
+            SerializableButton btn,
+            Boolean chosenFromDiceTray,
+            HBox hbCentralContainer,
+            SerializableDiceDetails diceDetails,
+            List<DiceDetails> allDice) {
 
         for (var d : allDice) {
             if (Objects.equals(d.getDiceButton().getId(), btn.getBtnId())) {
@@ -1380,9 +1347,7 @@ public class GameScreenController implements Initializable {
                 if (chosenFromDiceTray) {
                     img.setFitWidth(60);
                     img.setFitHeight(60);
-                    hbCentralContainer.getChildren().add(
-                            img
-                    );
+                    hbCentralContainer.getChildren().add(img);
                 }
             }
         }
@@ -1404,9 +1369,7 @@ public class GameScreenController implements Initializable {
             writer.write("<h1>Project documentation</h1>");
             writer.write("<p>Class list:</p>");
 
-            List<Path> paths = Files.walk(Paths.get("."))
-                    .filter(path -> path.getFileName().toString().endsWith(CLASS_EXTENSION))
-                    .collect(Collectors.toList());
+            List<Path> paths = Files.walk(Paths.get(".")).filter(path -> path.getFileName().toString().endsWith(CLASS_EXTENSION)).collect(Collectors.toList());
 
             for (Path path : paths) {
                 String[] tokens = path.toString().split(Pattern.quote(System.getProperty("file.separator")));
@@ -1484,8 +1447,7 @@ public class GameScreenController implements Initializable {
 
                         String constructorParams = generateDocumentation(c);
 
-                        writer.write("<h4>" + cb.toString() + "Constructor:" + Modifier.toString(c.getModifiers()) + " " + c.getName()
-                                + "(" + constructorParams + ")" + "</h4>");
+                        writer.write("<h4>" + cb.toString() + "Constructor:" + Modifier.toString(c.getModifiers()) + " " + c.getName() + "(" + constructorParams + ")" + "</h4>");
                     }
 
                     Method[] methods = clazz.getMethods();
@@ -1521,11 +1483,7 @@ public class GameScreenController implements Initializable {
                             }
                         }
 
-                        writer.write("<h4>" + mb.toString() + "Method:" + Modifier.toString(m.getModifiers())
-                                + " " + m.getReturnType().getSimpleName()
-                                + " " + m.getName() + "(" + methodsParams + ")"
-                                + " " + exceptionsBuilder.toString()
-                                + "</h4>");
+                        writer.write("<h4>" + mb.toString() + "Method:" + Modifier.toString(m.getModifiers()) + " " + m.getReturnType().getSimpleName() + " " + m.getName() + "(" + methodsParams + ")" + " " + exceptionsBuilder.toString() + "</h4>");
                     }
 
                 } catch (ClassNotFoundException e) {

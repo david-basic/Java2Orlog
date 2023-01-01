@@ -44,7 +44,8 @@ public class Server {
                     playerMetaData.getPlayerName() + " " +
                     playerMetaData.getIpAddress() + " " +
                     playerMetaData.getPort() + " " +
-                    playerMetaData.getPid());
+                    playerMetaData.getPid() + " " +
+                    playerMetaData.getPlayerIsFirst().toString()); // TODO: 01/01/2023 mozda bude radilo ovako pogledaj malo pri runanju
 
             if (players.size() < 2) {
                 players.put(playerMetaData.getPid(), playerMetaData);

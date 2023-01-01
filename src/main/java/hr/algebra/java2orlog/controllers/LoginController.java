@@ -41,6 +41,7 @@ public class LoginController implements Initializable {
     public static PlayerDetails getPlayerDetails() {
         return playerDetails;
     }
+
     public static List<PlayerDetails> getPlayerDetailsCollection() {
         return playerDetailsCollection;
     }
@@ -70,7 +71,8 @@ public class LoginController implements Initializable {
                             clientSocket.getInetAddress().toString(),
                             String.valueOf(clientSocket.getPort()),
                             tfPlayerName.getText(),
-                            ProcessHandle.current().pid()
+                            ProcessHandle.current().pid(),
+                            rbFirst.isSelected()
                     ));
 
             String confirmation = (String) ois.readObject();
@@ -94,11 +96,7 @@ public class LoginController implements Initializable {
             return;
         }
 
-        if (rbFirst.isSelected()){
-            playerDetails = new PlayerDetails(playerName, "0", "0", "0", true);
-        }else{
-            playerDetails = new PlayerDetails(playerName, "0", "0", "0", false);
-        }
+        playerDetails = new PlayerDetails(playerName, "0", "0", "0");
 
         playerDetailsCollection.add(playerDetails);
 

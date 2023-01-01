@@ -10,6 +10,7 @@ public class PlayerMetaData implements Serializable {
     private String port;
     private String playerName;
     private Long pid;
+    private Boolean playerIsFirst;
 
     public PlayerMetaData() {
 
@@ -20,6 +21,14 @@ public class PlayerMetaData implements Serializable {
         this.port = port;
         this.playerName = playerName;
         this.pid = pid;
+    }
+
+    public PlayerMetaData(String ipAddress, String port, String playerName, Long pid, Boolean playerIsFirst) {
+        this.ipAddress = ipAddress;
+        this.port = port;
+        this.playerName = playerName;
+        this.pid = pid;
+        this.playerIsFirst = playerIsFirst;
     }
 
     public String getIpAddress() {
@@ -52,5 +61,13 @@ public class PlayerMetaData implements Serializable {
 
     public void setPid(Long pid) {
         this.pid = pid;
+    }
+
+    public Boolean getPlayerIsFirst() {
+        return playerIsFirst;
+    }
+
+    public void setPlayerIsFirst(Boolean playerIsFirst) {
+        this.playerIsFirst = playerIsFirst;
     }
 }

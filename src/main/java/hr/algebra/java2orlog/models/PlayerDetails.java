@@ -1,7 +1,5 @@
 package hr.algebra.java2orlog.models;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -10,21 +8,12 @@ public class PlayerDetails {
     private StringProperty numberOfWins;
     private StringProperty numberOfDraws;
     private StringProperty numberOfLost;
-    private BooleanProperty playerIsFirst;
 
     public PlayerDetails(String playerName, String numberOfWins, String numberOfDraws, String numberOfLost) {
         this.playerName = new SimpleStringProperty(playerName);
         this.numberOfWins = new SimpleStringProperty(numberOfWins);
         this.numberOfDraws = new SimpleStringProperty(numberOfDraws);
         this.numberOfLost = new SimpleStringProperty(numberOfLost);
-    }
-
-    public PlayerDetails(String playerName, String numberOfWins, String numberOfDraws, String numberOfLost, Boolean playerIsFirst) {
-        this.playerName = new SimpleStringProperty(playerName);
-        this.numberOfWins = new SimpleStringProperty(numberOfWins);
-        this.numberOfDraws = new SimpleStringProperty(numberOfDraws);
-        this.numberOfLost = new SimpleStringProperty(numberOfLost);
-        this.playerIsFirst = new SimpleBooleanProperty(playerIsFirst);
     }
 
     public String getPlayerName() {
@@ -65,15 +54,5 @@ public class PlayerDetails {
     }
     public void setNumberOfLost(String numberOfLost) {
         this.numberOfLost.set(numberOfLost);
-    }
-
-    public Boolean getIsPlayerFirst(){
-        return playerIsFirst.get();
-    }
-    public BooleanProperty playerIsFirstProperty(){
-        return playerIsFirst;
-    }
-    public void setIsPlayerFirst(Boolean playerIsFirst){
-        this.playerIsFirst.set(playerIsFirst);
     }
 }

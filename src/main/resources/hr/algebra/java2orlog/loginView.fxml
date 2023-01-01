@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="858.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="858.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.LoginController">
     <center>
         <AnchorPane BorderPane.alignment="CENTER">
             <Label alignment="CENTER" layoutX="332.0" layoutY="28.0" prefHeight="46.0" prefWidth="194.0" text="Orlog">
@@ -25,32 +25,17 @@
                     <Font name="Century Gothic" size="18.0" />
                 </font>
             </Label>
-            <Label layoutX="212.0" layoutY="135.0" text="Please choose your names and start up the game!">
+            <Label layoutX="212.0" layoutY="135.0" text="Please choose your name and start up the game!">
                 <font>
                     <Font name="Century Gothic" size="18.0" />
                 </font>
             </Label>
-            <Label layoutX="285.0" layoutY="213.0" text="Player 1 name:">
+            <Label fx:id="lblPlayerName" layoutX="280.0" layoutY="182.0" text="Player :">
                 <font>
                     <Font name="Century Gothic" size="18.0" />
                 </font>
             </Label>
-            <Label layoutX="285.0" layoutY="262.0" text="Player 2 name:">
-                <font>
-                    <Font name="Century Gothic" size="18.0" />
-                </font>
-            </Label>
-            <Label layoutX="374.0" layoutY="165.0" text="Player 1 plays first">
-                <font>
-                    <Font name="Century Gothic" size="14.0" />
-                </font>
-            </Label>
-            <TextField fx:id="tfPlayerOneName" layoutX="432.0" layoutY="212.0">
-                <font>
-                    <Font name="Century Gothic" size="12.0" />
-                </font>
-            </TextField>
-            <TextField fx:id="tfPlayerTwoName" layoutX="432.0" layoutY="261.0">
+            <TextField fx:id="tfPlayerName" layoutX="362.0" layoutY="182.0">
                 <font>
                     <Font name="Century Gothic" size="12.0" />
                 </font>
@@ -60,12 +45,7 @@
                     <Font name="Century Gothic" size="24.0" />
                 </font>
             </Button>
-            <Label fx:id="lblPlayerOneNameError" layoutX="593.0" layoutY="215.0" text="* field required" textFill="RED" visible="false">
-                <font>
-                    <Font name="Century Gothic" size="12.0" />
-                </font>
-            </Label>
-            <Label fx:id="lblPlayerTwoNameError" layoutX="593.0" layoutY="265.0" text="* field required" textFill="RED" visible="false">
+            <Label fx:id="lblPlayerNameError" layoutX="523.0" layoutY="185.0" text="* field required" textFill="RED" visible="false">
                 <font>
                     <Font name="Century Gothic" size="12.0" />
                 </font>
@@ -75,11 +55,13 @@
                <Font name="Century Gothic" size="24.0" />
             </font>
          </Button>
-         <Label fx:id="lblSameNamesError" layoutX="355.0" layoutY="294.0" text="* same names not allowed" textFill="RED" visible="false">
+         <Label layoutX="277.0" layoutY="219.0" text="Do you wish to play first or second?">
             <font>
-               <Font name="Century Gothic" size="12.0" />
+               <Font name="Century Gothic" size="18.0" />
             </font>
          </Label>
+         <Label layoutX="353.0" layoutY="242.0" text="(There is no real benefit to it)" />
+         <Label fx:id="lblPlayerOrder" layoutX="389.0" layoutY="274.0" text="Temp test label" />
         </AnchorPane>
     </center>
 </BorderPane>

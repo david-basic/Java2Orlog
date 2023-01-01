@@ -2,79 +2,77 @@ package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.PlayerDetails;
+import hr.algebra.java2orlog.server.Server;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class LoginController {
+public class LoginController implements Initializable {
     //region FXML elements
     @FXML
-    private TextField tfPlayerOneName;
+    private TextField tfPlayerName;
     @FXML
-    private TextField tfPlayerTwoName;
+    private Label lblPlayerName;
     @FXML
-    private Label lblPlayerOneNameError;
+    private Label lblPlayerNameError;
     @FXML
-    private Label lblPlayerTwoNameError;
-    @FXML
-    private Label lblSameNamesError;
+    private Label lblPlayerOrder;
     //endregion
 
-    private static PlayerDetails playerOneDetails;
-    private static PlayerDetails playerTwoDetails;
+    private static PlayerDetails playerDetails;
     private static List<PlayerDetails> playerDetailsCollection = new ArrayList<>();
 
-    public static PlayerDetails getPlayerOneDetails() {
-        return playerOneDetails;
+    public static PlayerDetails getPlayerDetails() {
+        return playerDetails;
     }
-    public static PlayerDetails getPlayerTwoDetails() {
-        return playerTwoDetails;
-    }
+
     public static List<PlayerDetails> getPlayerDetailsCollection() {
-//        return new ArrayList<>(playerDetailsCollection);
         return playerDetailsCollection;
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        lblPlayerName.setText(OrlogApplication.getPlayerName());
+        lblPlayerOrder.setText(OrlogApplication.getPlayerOrderChoice());
+    }
+
     @FXML
-    public void startGame(){
-        String playerOneName = tfPlayerOneName.getText();
-        String playerTwoName = tfPlayerTwoName.getText();
+    public void startGame() {
 
-        lblPlayerOneNameError.setVisible(false);
-        lblPlayerTwoNameError.setVisible(false);
-        lblSameNamesError.setVisible(false);
+        try (Socket clientSocket = new Socket(Server.HOST, Server.PORT)) {
+            System.err.println("Client connecting to: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
-        if (playerOneName.equals("") && playerTwoName.equals("")) {
-            lblPlayerOneNameError.setVisible(true);
-            lblPlayerTwoNameError.setVisible(true);
-            return;
-        } else if (playerOneName.equals("")){
-            lblPlayerOneNameError.setVisible(true);
-            return;
-        } else if (Objects.equals(playerTwoName, "")) {
-            lblPlayerTwoNameError.setVisible(true);
+//            sendSerializableRequest(clientSocket);
+
+        } catch (IOException e) { //| ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        String playerName = tfPlayerName.getText();
+
+        lblPlayerNameError.setVisible(false);
+
+        if (playerName.equals("")) {
+            lblPlayerNameError.setVisible(true);
             return;
         }
 
-        if (playerOneName.equals(playerTwoName)){
-            lblSameNamesError.setVisible(true);
-            return;
-        }
+        playerDetails = new PlayerDetails(playerName, "0", "0", "0");
 
-        playerOneDetails = new PlayerDetails(playerOneName, "0", "0" , "0");
-        playerTwoDetails = new PlayerDetails(playerTwoName, "0", "0", "0");
-
-        playerDetailsCollection.add(playerOneDetails);
-        playerDetailsCollection.add(playerTwoDetails);
+        playerDetailsCollection.add(playerDetails);
 
         try {
-            FxmlUtils.showScreen("gameScreenView.fxml", OrlogApplication.getMainStage(), 1720,880, "Orlog");
+            FxmlUtils.showScreen("gameScreenView.fxml", OrlogApplication.getMainStage(), 1720, 880, "Orlog");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
@@ -82,19 +80,19 @@ public class LoginController {
     }
 
     @FXML
-    public void openResultsView(){
+    public void openResultsView() {
 
         //region Testing data for table, comment out if not used
-        playerOneDetails = new PlayerDetails("John Doe1", "1", "2", "3");
-        playerTwoDetails = new PlayerDetails("John Doe2", "3", "2", "1");
-
-        playerDetailsCollection.add(playerOneDetails);
-        playerDetailsCollection.add(playerTwoDetails);
+        playerDetails = new PlayerDetails("John Doe1", "1", "2", "3");
+        playerDetailsCollection.add(playerDetails);
+        playerDetails = new PlayerDetails("John Doe2", "3", "2", "1");
+        playerDetailsCollection.add(playerDetails);
         //endregion
 
         try {
-            FxmlUtils.showScreen("resultsView.fxml", OrlogApplication.getMainStage(), 600,400, "Results");
+            FxmlUtils.showScreen("resultsView.fxml", OrlogApplication.getMainStage(), 600, 400, "Results");
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }

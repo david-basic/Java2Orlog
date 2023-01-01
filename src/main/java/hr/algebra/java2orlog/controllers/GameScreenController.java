@@ -166,8 +166,8 @@ public class GameScreenController implements Initializable {
         lblPlayerOneCoins.setText("0");
         lblPlayerTwoCoins.setText("0");
 
-        lblPlayerOneName.setText(LoginController.getPlayerOneDetails().getPlayerName());
-        lblPlayerTwoName.setText(LoginController.getPlayerTwoDetails().getPlayerName());
+        lblPlayerOneName.setText(LoginController.getPlayerDetails().getPlayerName());
+        lblPlayerTwoName.setText(LoginController.getPlayerDetails().getPlayerName());
 
         defineAllDice();
 
@@ -796,7 +796,7 @@ public class GameScreenController implements Initializable {
 
 
         if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) { // provjeri dal je neki od igrača pokupio 15 ili vise damage-a prije god powers
-            recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerOneDetails(), LoginController.getPlayerTwoDetails());
+            recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerDetails(), LoginController.getPlayerDetails());
         }
 
         if (!checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) {
@@ -833,7 +833,7 @@ public class GameScreenController implements Initializable {
             tempMoveDetails.setRoundOver(true);
 
             if (checkIfTheGameJustEnded(playerOneTotalDamageTaken, playerTwoTotalDamageTaken)) {
-                recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerOneDetails(), LoginController.getPlayerTwoDetails());
+                recordWins(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, LoginController.getPlayerDetails(), LoginController.getPlayerDetails());
             }
         }
         playerMoves.add(tempMoveDetails);

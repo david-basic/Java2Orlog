@@ -75,12 +75,17 @@ public class LoginController implements Initializable {
                             rbFirst.isSelected()
                     ));
 
-            String confirmation = (String) ois.readObject();
+            System.out.println("Object metadata sent to server!");
 
-            if ("ERROR".equals(confirmation)) {
-                System.exit(1);
-            } else if ("SUCCESS".equals(confirmation)) {
-                System.out.println("SUCCESSFULLY CONNECTED");
+            if (ois.available() > 0) {
+                String confirmation = (String) ois.readObject();
+                System.out.println("Confirmation read from the server!");
+
+                if ("ERROR".equals(confirmation)) {
+                    System.exit(1);
+                } else if ("SUCCESS".equals(confirmation)) {
+                    System.out.println("SUCCESSFULLY CONNECTED");
+                }
             }
 
         } catch (IOException | ClassNotFoundException e) {

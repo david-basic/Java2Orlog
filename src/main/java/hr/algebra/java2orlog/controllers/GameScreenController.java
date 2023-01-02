@@ -2,6 +2,7 @@ package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.*;
+import hr.algebra.java2orlog.server.Server;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -170,14 +171,26 @@ public class GameScreenController implements Initializable {
         lblPlayerTwoCoins.setText("0");
 
         //TODO maybe use player-metadata and not player Details to get the first player
-        List<PlayerDetails> playerDetailsCollection = LoginController.getPlayerDetailsCollection();
-        for (var playerDet : playerDetailsCollection) {
-//            if (playerDet.getIsPlayerFirst()) {
-                lblPlayerOneName.setText(playerDet.getPlayerName());
-//            } else {
-                lblPlayerTwoName.setText(playerDet.getPlayerName());
-//            }
+//        List<PlayerDetails> playerDetailsCollection = LoginController.getPlayerDetailsCollection();
+//        for (var playerDet : playerDetailsCollection) {
+////            if (playerDet.getIsPlayerFirst()) {
+//                lblPlayerOneName.setText(playerDet.getPlayerName());
+////            } else {
+//                lblPlayerTwoName.setText(playerDet.getPlayerName());
+////            }
+//        }
+
+        // TODO: 01/01/2023 check if this works!!!
+        Map<Long, PlayerMetaData> playersMetaData = Server.getPlayersMetaData();
+        for (var playerData : playersMetaData.entrySet()) {
+            if (playerData.getValue().getPlayerIsFirst()){
+                lblPlayerOneName.setText(playerData.getValue().getPlayerName());
+            }else{
+                lblPlayerTwoName.setText(playerData.getValue().getPlayerName());
+            }
         }
+
+
 
         defineAllDice();
 

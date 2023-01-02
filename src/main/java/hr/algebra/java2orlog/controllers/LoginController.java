@@ -66,9 +66,11 @@ public class LoginController implements Initializable {
 
             System.err.println("Client is connecting to " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
+            System.out.println("Connecting to address: " + clientSocket.getLocalAddress().toString().substring(1));
+
             oos.writeObject(
                     new PlayerMetaData(
-                            clientSocket.getInetAddress().toString(),
+                            clientSocket.getLocalAddress().toString().substring(1),
                             String.valueOf(clientSocket.getPort()),
                             tfPlayerName.getText(),
                             ProcessHandle.current().pid(),
@@ -78,7 +80,9 @@ public class LoginController implements Initializable {
             System.out.println("Object metadata sent to server!");
 
             if (ois.available() > 0) {
+
                 String confirmation = (String) ois.readObject();
+
                 System.out.println("Confirmation read from the server!");
 
                 if ("ERROR".equals(confirmation)) {

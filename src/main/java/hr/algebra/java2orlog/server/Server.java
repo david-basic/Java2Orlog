@@ -1,5 +1,6 @@
 package hr.algebra.java2orlog.server;
 
+import hr.algebra.java2orlog.models.GameState;
 import hr.algebra.java2orlog.models.PlayerMetaData;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class Server {
 
             if (players.size() < 2) {
                 System.out.println("Adding new player to the game!");
+
                 players.put(playerMetaData.getPid(), playerMetaData);
                 oos.writeObject("SUCCESS");
             } else {
@@ -74,11 +76,38 @@ public class Server {
                 System.err.println("Client is connecting to " + firstClientSocket.getInetAddress() + ":" + firstClientSocket.getPort());
 
                 oos.writeObject("SUCCESS");
-
             }
+
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        System.out.println("Server is trying to open a connection to the client!");
+
+        while (true) {
+            try (Socket serverClientSocket = new Socket(Server.HOST, 1987)) {
+
+                System.out.println("Trying to open output stream to the client!");
+
+                ObjectOutputStream oos = new ObjectOutputStream(serverClientSocket.getOutputStream());
+
+                System.out.println("Connection to the client successfully created!");
+
+
+                System.out.println("Sending a new GameState object to client!");
+
+                oos.writeObject(new GameState());
+
+                System.out.println("New GameState object successfully sent to client!");
+                System.out.println("");
+
+                Thread.sleep(2000);
+
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

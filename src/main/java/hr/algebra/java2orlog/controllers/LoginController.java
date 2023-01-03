@@ -1,9 +1,11 @@
 package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
+import hr.algebra.java2orlog.models.GameState;
 import hr.algebra.java2orlog.models.PlayerDetails;
 import hr.algebra.java2orlog.models.PlayerMetaData;
 import hr.algebra.java2orlog.server.Server;
+import hr.algebra.java2orlog.thread.ClientThread;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,9 +19,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginController implements Initializable {
     //region FXML elements
@@ -37,6 +39,7 @@ public class LoginController implements Initializable {
 
     private static PlayerDetails playerDetails;
     private static List<PlayerDetails> playerDetailsCollection = new ArrayList<>();
+    private static Map<Long, PlayerMetaData> playersMetaData = new HashMap<>();
 
     public static PlayerDetails getPlayerDetails() {
         return playerDetails;
@@ -44,6 +47,10 @@ public class LoginController implements Initializable {
 
     public static List<PlayerDetails> getPlayerDetailsCollection() {
         return playerDetailsCollection;
+    }
+
+    public static Map<Long, PlayerMetaData> getPlayersMetaData() {
+        return playersMetaData;
     }
 
     @Override
@@ -60,42 +67,6 @@ public class LoginController implements Initializable {
     @FXML
     public void startGame() {
 
-        try (Socket clientSocket = new Socket(Server.HOST, Server.PORT)) {
-            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
-
-            System.err.println("Client is connecting to " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
-
-            System.out.println("Connecting to address: " + clientSocket.getLocalAddress().toString().substring(1));
-
-            oos.writeObject(
-                    new PlayerMetaData(
-                            clientSocket.getLocalAddress().toString().substring(1),
-                            String.valueOf(clientSocket.getPort()),
-                            tfPlayerName.getText(),
-                            ProcessHandle.current().pid(),
-                            rbFirst.isSelected()
-                    ));
-
-            System.out.println("Object metadata sent to server!");
-
-            if (ois.available() > 0) {
-
-                String confirmation = (String) ois.readObject();
-
-                System.out.println("Confirmation read from the server!");
-
-                if ("ERROR".equals(confirmation)) {
-                    System.exit(1);
-                } else if ("SUCCESS".equals(confirmation)) {
-                    System.out.println("SUCCESSFULLY CONNECTED");
-                }
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
         String playerName = tfPlayerName.getText();
 
         lblPlayerNameError.setVisible(false);
@@ -103,6 +74,51 @@ public class LoginController implements Initializable {
         if (playerName.equals("")) {
             lblPlayerNameError.setVisible(true);
             return;
+        }
+
+        System.out.println("Client thread is about to get started!");
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new ClientThread(new GameState()));
+        System.out.println("Client thread started!");
+
+        try (Socket clientSocket = new Socket(Server.HOST, Server.PORT)) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+
+            System.err.println("Client is connecting to " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
+
+            System.out.println("Connecting to address: " + clientSocket.getLocalAddress().toString().substring(1));
+
+            PlayerMetaData newPlayerMetaData = new PlayerMetaData(
+                    clientSocket.getLocalAddress().toString().substring(1),
+                    String.valueOf(clientSocket.getPort()),
+                    playerName,
+                    ProcessHandle.current().pid(),
+                    rbFirst.isSelected()
+            );
+
+            playersMetaData.put(ProcessHandle.current().pid(), newPlayerMetaData);
+
+            oos.writeObject(newPlayerMetaData);
+
+            System.out.println("Object metadata sent to server!");
+
+//            if (ois.available() > 0) {
+//
+//                newPlayerMetaData.setPort(String.valueOf(clientSocket.getLocalPort()));
+//
+//                System.out.println("Confirmation read from the server!");
+//
+//                if ("ERROR".equals(confirmation)) {
+//                    System.exit(1);
+//                } else if ("SUCCESS".equals(confirmation)) {
+//                    System.out.println("SUCCESSFULLY CONNECTED");
+//                }
+//            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         playerDetails = new PlayerDetails(playerName, "0", "0", "0");

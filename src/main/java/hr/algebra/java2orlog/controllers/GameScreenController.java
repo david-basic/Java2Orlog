@@ -2,7 +2,6 @@ package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.*;
-import hr.algebra.java2orlog.server.Server;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +18,7 @@ import javafx.scene.shape.Circle;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -181,15 +181,14 @@ public class GameScreenController implements Initializable {
 //        }
 
         // TODO: 01/01/2023 check if this works!!!
-        Map<Long, PlayerMetaData> playersMetaData = Server.getPlayersMetaData();
-        for (var playerData : playersMetaData.entrySet()) {
-            if (playerData.getValue().getPlayerIsFirst()){
-                lblPlayerOneName.setText(playerData.getValue().getPlayerName());
-            }else{
-                lblPlayerTwoName.setText(playerData.getValue().getPlayerName());
-            }
-        }
-
+//        Map<Long, PlayerMetaData> playersMetaData = Server.getPlayersMetaData();
+//        for (var playerData : playersMetaData.entrySet()) {
+//            if (playerData.getValue().getPlayerIsFirst()) {
+//                lblPlayerOneName.setText(playerData.getValue().getPlayerName());
+//            } else {
+//                lblPlayerTwoName.setText(playerData.getValue().getPlayerName());
+//            }
+//        }
 
 
         defineAllDice();
@@ -201,6 +200,43 @@ public class GameScreenController implements Initializable {
 
         gpP1GodFavors.setDisable(true);
         gpP2GodFavors.setDisable(true);
+
+
+        PlayerMetaData playerMetaData = LoginController.getPlayersMetaData().get(ProcessHandle.current().pid());
+//
+//        // TODO: 03/01/2023 mozda ovako a ne onako kao gore, mozda ne bude radilo ako je pid drugaciji kada se otvore game screen view
+//        if (playerMetaData.getPlayerIsFirst()) {
+//            lblPlayerOneName.setText(playerMetaData.getPlayerName());
+//        } else {
+//            lblPlayerTwoName.setText(playerMetaData.getPlayerName());
+//        }
+//
+////        try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(playerMetaData.getPort()))) {
+//        try (ServerSocket serverSocket = new ServerSocket(2020)) {
+//            System.err.println("Client listening on port: " + serverSocket.getLocalPort());
+//
+//            while (true) {
+//                Socket clientSocket = serverSocket.accept();
+//                System.err.println("Client connected from port: " + clientSocket.getPort());
+//                new Thread(() -> processSerializableClient(clientSocket)).start();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+    }
+
+    private static void processSerializableClient(Socket clientSocket) {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+
+            Object readObject = ois.readObject();
+
+            System.out.println(readObject);
+
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void addGodFavorImages() {
@@ -1227,13 +1263,13 @@ public class GameScreenController implements Initializable {
     @FXML
     public void saveGame() throws IOException {
         List<SerializableDiceDetails> serializableDiceDetailsCollection = new ArrayList<>();
+        List<SerializableMatchData> serializableMatchDataCollection = new ArrayList<>();
+
         List<Node> p1Buttons = gridP1AllDice.getChildren().stream().toList();
         List<Node> p2Buttons = gridP2AllDice.getChildren().stream().toList();
 
         saveDice(p1Buttons, playerOneAllDice, serializableDiceDetailsCollection);
         saveDice(p2Buttons, playerTwoAllDice, serializableDiceDetailsCollection);
-
-        List<SerializableMatchData> serializableMatchDataCollection = new ArrayList<>();
 
         serializableMatchDataCollection.add(new SerializableMatchData(playerOneTotalDamageTaken, playerTwoTotalDamageTaken, playerOneCoinCount, playerTwoCoinCount, turnCount, roundCount, playerOneTurn, serializableDiceDetailsCollection));
 

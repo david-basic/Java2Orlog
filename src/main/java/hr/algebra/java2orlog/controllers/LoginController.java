@@ -126,7 +126,7 @@ public class LoginController implements Initializable {
         playerDetailsCollection.add(playerDetails);
 
         try {
-            FxmlUtils.showScreen("gameScreenView.fxml", OrlogApplication.getMainStage(), 1720, 880, "Orlog");
+            FxmlUtils.showScreen("gameScreenView.fxml", OrlogApplication.getMainStage(), 1920, 880, "Orlog");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());

@@ -2,6 +2,7 @@ package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.models.*;
+import hr.algebra.java2orlog.rmiserver.ChatService;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +24,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -59,6 +64,9 @@ public class GameScreenController implements Initializable {
     private List<DiceSymbols> die4Symbols = new ArrayList<>();
     private List<DiceSymbols> die5Symbols = new ArrayList<>();
     private List<DiceSymbols> die6Symbols = new ArrayList<>();
+
+    PlayerMetaData playerMetaData = null;
+    ChatService stub = null;
     //endregion
     //region FXML elements player one
     @FXML
@@ -152,6 +160,14 @@ public class GameScreenController implements Initializable {
     @FXML
     private GridPane gridP2AllDice;
     //endregion
+    //region Joint FXML elements
+    @FXML
+    private TextArea taChatHistory;
+    @FXML
+    private TextField tfChatMessage;
+    @FXML
+    private Button btnSend;
+    //endregion
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -202,16 +218,25 @@ public class GameScreenController implements Initializable {
         gpP2GodFavors.setDisable(true);
 
 
-        PlayerMetaData playerMetaData = LoginController.getPlayersMetaData().get(ProcessHandle.current().pid());
-//
-//        // TODO: 03/01/2023 mozda ovako a ne onako kao gore, mozda ne bude radilo ako je pid drugaciji kada se otvore game screen view
+        playerMetaData = LoginController.getPlayersMetaData().get(ProcessHandle.current().pid());
+
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.getRegistry("localhost", 1099);
+            stub = (ChatService) registry.lookup(ChatService.REMOTE_OBJECT_NAME);
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
+
+
+
+        // TODO: 03/01/2023 mozda ovako a ne onako kao gore, mozda ne bude radilo ako je pid drugaciji kada se otvore game screen view
 //        if (playerMetaData.getPlayerIsFirst()) {
 //            lblPlayerOneName.setText(playerMetaData.getPlayerName());
 //        } else {
 //            lblPlayerTwoName.setText(playerMetaData.getPlayerName());
 //        }
-//
-////        try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(playerMetaData.getPort()))) {
+
 //        try (ServerSocket serverSocket = new ServerSocket(2020)) {
 //            System.err.println("Client listening on port: " + serverSocket.getLocalPort());
 //
@@ -226,9 +251,23 @@ public class GameScreenController implements Initializable {
 
     }
 
+    @FXML
+    public void sendMessage(){
+        try {
+            stub.sendMessage(tfChatMessage.getText(), playerMetaData.getPlayerName());
+
+            StringBuilder sbChatHistory = new StringBuilder();
+
+            stub.getChatHistory().forEach(el -> sbChatHistory.append(el).append("\n"));
+
+            taChatHistory.setText(sbChatHistory.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void processSerializableClient(Socket clientSocket) {
-        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
-             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
 
             Object readObject = ois.readObject();
 

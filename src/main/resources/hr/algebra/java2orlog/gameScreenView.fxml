@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.ImageView?>
@@ -23,7 +25,7 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPaneBase" prefHeight="880.0" prefWidth="1720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.GameScreenController">
+<BorderPane fx:id="borderPaneBase" prefHeight="880.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.java2orlog.controllers.GameScreenController">
     <center>
         <AnchorPane fx:id="anchorPaneGamePane" BorderPane.alignment="CENTER">
             <children>
@@ -440,7 +442,7 @@
                                         <Font name="Century Gothic Bold" size="14.0" />
                                     </font>
                                     <GridPane.margin>
-                                        <Insets left="-20.0" top="45.0" />
+                                        <Insets bottom="10.0" left="-20.0" top="45.0" />
                                     </GridPane.margin>
                                 </Label>
                                 <Button fx:id="btnRollDicePlayerTwo" mnemonicParsing="false" onAction="#rollTheDice" prefHeight="28.0" prefWidth="192.0" text="ROLL DICE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
@@ -594,7 +596,7 @@
                                         <Font name="Century Gothic Bold" size="14.0" />
                                     </font>
                                     <GridPane.margin>
-                                        <Insets bottom="45.0" left="-20.0" />
+                                        <Insets bottom="45.0" left="-20.0" top="10.0" />
                                     </GridPane.margin>
                                 </Label>
                                 <Button fx:id="btnRollDicePlayerOne" mnemonicParsing="false" onAction="#rollTheDice" prefHeight="28.0" prefWidth="191.0" text="ROLL DICE" GridPane.columnIndex="2" GridPane.columnSpan="2">
@@ -633,4 +635,27 @@
             </children>
         </AnchorPane>
     </center>
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextArea fx:id="taChatHistory" editable="false" layoutY="7.0" prefHeight="700.0" prefWidth="195.0" promptText="Chat history...." wrapText="true" />
+            <TextField fx:id="tfChatMessage" layoutY="716.0" prefHeight="32.0" prefWidth="195.0" promptText="Write message....">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Century Gothic" size="12.0" />
+               </font>
+            </TextField>
+            <Button fx:id="btnSend" layoutY="764.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="39.0" prefWidth="195.0" text="SEND">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Century Gothic Bold" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </right>
 </BorderPane>

@@ -84,7 +84,7 @@ public class LoginController implements Initializable {
         try (Socket clientSocket = new Socket(Server.HOST, Server.PORT)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+//            ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
 
             System.err.println("Client is connecting to " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
@@ -103,19 +103,6 @@ public class LoginController implements Initializable {
             oos.writeObject(newPlayerMetaData);
 
             System.out.println("Object metadata sent to server!");
-
-//            if (ois.available() > 0) {
-//
-//                newPlayerMetaData.setPort(String.valueOf(clientSocket.getLocalPort()));
-//
-//                System.out.println("Confirmation read from the server!");
-//
-//                if ("ERROR".equals(confirmation)) {
-//                    System.exit(1);
-//                } else if ("SUCCESS".equals(confirmation)) {
-//                    System.out.println("SUCCESSFULLY CONNECTED");
-//                }
-//            }
 
         } catch (IOException e) {
             e.printStackTrace();

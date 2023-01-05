@@ -19,7 +19,6 @@ import javafx.scene.shape.Circle;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.net.Socket;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -171,6 +170,20 @@ public class GameScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // TODO: 05/01/2023 doesn't work. idk why.
+        taChatHistory.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                StringBuilder sbChatHistory = new StringBuilder();
+
+                stub.getChatHistory().forEach(line -> sbChatHistory.append(line).append("\n"));
+
+                taChatHistory.setText(sbChatHistory.toString());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+
         playerOneTurn = true;
         turnCoinPlayerOne.setVisible(true);
         turnCoinPlayerTwo.setVisible(false);
@@ -228,14 +241,16 @@ public class GameScreenController implements Initializable {
             e.printStackTrace();
         }
 
+        // TODO: 04/01/2023 mozda ovako input imena rijesit ?
+        Map<Long, PlayerMetaData> playersMetaDataCollection = LoginController.getPlayersMetaData();
+        for (var player : playersMetaDataCollection.values()){
+            if (player.getPlayerIsFirst()) {
+                lblPlayerOneName.setText(player.getPlayerName());
+            } else {
+                lblPlayerTwoName.setText(player.getPlayerName());
+            }
+        }
 
-
-        // TODO: 03/01/2023 mozda ovako a ne onako kao gore, mozda ne bude radilo ako je pid drugaciji kada se otvore game screen view
-//        if (playerMetaData.getPlayerIsFirst()) {
-//            lblPlayerOneName.setText(playerMetaData.getPlayerName());
-//        } else {
-//            lblPlayerTwoName.setText(playerMetaData.getPlayerName());
-//        }
 
 //        try (ServerSocket serverSocket = new ServerSocket(2020)) {
 //            System.err.println("Client listening on port: " + serverSocket.getLocalPort());
@@ -251,6 +266,18 @@ public class GameScreenController implements Initializable {
 
     }
 
+    private void refreshChat() {
+        try {
+            StringBuilder sbChatHistory = new StringBuilder();
+
+            stub.getChatHistory().forEach(line -> sbChatHistory.append(line).append("\n"));
+
+            taChatHistory.setText(sbChatHistory.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     public void sendMessage(){
         try {
@@ -261,22 +288,25 @@ public class GameScreenController implements Initializable {
             stub.getChatHistory().forEach(el -> sbChatHistory.append(el).append("\n"));
 
             taChatHistory.setText(sbChatHistory.toString());
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+
+        tfChatMessage.clear();
     }
 
-    private static void processSerializableClient(Socket clientSocket) {
-        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
-
-            Object readObject = ois.readObject();
-
-            System.out.println(readObject);
-
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-    }
+//    private static void processSerializableClient(Socket clientSocket) {
+//        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
+//
+//            Object readObject = ois.readObject();
+//
+//            System.out.println(readObject);
+//
+//        } catch (IOException | ClassNotFoundException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 
     private void addGodFavorImages() {
         ImageView p1GodFavor1Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath.png")).toExternalForm());
@@ -446,6 +476,8 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void rollTheDice() {
+        refreshChat();
+
         tempMoveDetails = new MoveDetails(0, 0, "John Doe1", "John Doe2", new ArrayList<>(), new ArrayList<>(), 0, 0, 0, 0, "None", "None", false, false, "To be determined"); // basic template which is going to be changed accordingly as data changes
 
         // basic setup
@@ -519,6 +551,8 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void endTurn() {
+        refreshChat();
+
         if (turnCount == 8) { // ako je turn-count jednak 8 kada se stisne end turn
 
             sendAllRemainingNotChosenDiceToCenter(playerOneAllDice);
@@ -1164,6 +1198,8 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void diceChosen(ActionEvent actionEvent) {
+        refreshChat();
+
         Button clickedButton = (Button) actionEvent.getSource();
 
         if (playerOneTurn) {
@@ -1189,6 +1225,8 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void clickOnGodFavor(ActionEvent actionEvent) {
+        refreshChat();
+
         Button clickedGodFavorBtn = (Button) actionEvent.getSource();
 
         // if you don't have coins for a certain clicked favor return
@@ -1301,6 +1339,8 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void saveGame() throws IOException {
+        refreshChat();
+
         List<SerializableDiceDetails> serializableDiceDetailsCollection = new ArrayList<>();
         List<SerializableMatchData> serializableMatchDataCollection = new ArrayList<>();
 
@@ -1338,6 +1378,7 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void loadGame() throws IOException, ClassNotFoundException {
+        refreshChat();
 
         if (!loadAllowed) {
             Alert loadDeniedAlert = new Alert(Alert.AlertType.WARNING);
@@ -1443,6 +1484,8 @@ public class GameScreenController implements Initializable {
 
     @FXML
     public void createDocumentation() {
+        refreshChat();
+
         File documentationFile = new File("documentation.html");
 
         try {

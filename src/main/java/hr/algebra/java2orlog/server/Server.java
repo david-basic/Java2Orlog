@@ -1,8 +1,11 @@
 package hr.algebra.java2orlog.server;
 
+import hr.algebra.java2orlog.jndi.JndiHelper;
+import hr.algebra.java2orlog.jndi.JndiKeyEnum;
 import hr.algebra.java2orlog.models.GameState;
 import hr.algebra.java2orlog.models.PlayerMetaData;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -54,7 +57,6 @@ public class Server {
 
             if (players.size() < 2) {
                 System.out.println("Adding new player to the game!");
-
                 players.put(playerMetaData.getPid(), playerMetaData);
                 oos.writeObject("SUCCESS");
             } else {
@@ -86,7 +88,14 @@ public class Server {
         System.out.println("Server is trying to open a connection to the client!");
 
         while (true) {
-            try (Socket serverClientSocket = new Socket(Server.HOST, 1987)) {
+            String clientPort = null;
+            try {
+                clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_1_PORT);
+            } catch (NamingException | IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            try (Socket serverClientSocket = new Socket(Server.HOST, Integer.parseInt(clientPort))) {
 
                 System.out.println("Trying to open output stream to the client!");
 

@@ -1,6 +1,8 @@
 package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
+import hr.algebra.java2orlog.jndi.JndiHelper;
+import hr.algebra.java2orlog.jndi.JndiKeyEnum;
 import hr.algebra.java2orlog.models.*;
 import hr.algebra.java2orlog.rmiserver.ChatService;
 import hr.algebra.java2orlog.utils.FxmlUtils;
@@ -16,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 
+import javax.naming.NamingException;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -235,9 +238,10 @@ public class GameScreenController implements Initializable {
 
         Registry registry = null;
         try {
-            registry = LocateRegistry.getRegistry("localhost", 1099);
+            String rmiPortString = JndiHelper.getConfigurationParameter(JndiKeyEnum.RMI_PORT_KEY);
+            registry = LocateRegistry.getRegistry("localhost", Integer.parseInt(rmiPortString));
             stub = (ChatService) registry.lookup(ChatService.REMOTE_OBJECT_NAME);
-        } catch (RemoteException | NotBoundException e) {
+        } catch (NotBoundException | NamingException | IOException e) {
             e.printStackTrace();
         }
 
@@ -250,20 +254,6 @@ public class GameScreenController implements Initializable {
                 lblPlayerTwoName.setText(player.getPlayerName());
             }
         }
-
-
-//        try (ServerSocket serverSocket = new ServerSocket(2020)) {
-//            System.err.println("Client listening on port: " + serverSocket.getLocalPort());
-//
-//            while (true) {
-//                Socket clientSocket = serverSocket.accept();
-//                System.err.println("Client connected from port: " + clientSocket.getPort());
-//                new Thread(() -> processSerializableClient(clientSocket)).start();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
     private void refreshChat() {
@@ -295,18 +285,6 @@ public class GameScreenController implements Initializable {
 
         tfChatMessage.clear();
     }
-
-//    private static void processSerializableClient(Socket clientSocket) {
-//        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
-//
-//            Object readObject = ois.readObject();
-//
-//            System.out.println(readObject);
-//
-//        } catch (IOException | ClassNotFoundException ex) {
-//            ex.printStackTrace();
-//        }
-//    }
 
     private void addGodFavorImages() {
         ImageView p1GodFavor1Img = new ImageView(Objects.requireNonNull(getClass().getResource("/Thors_Wrath.png")).toExternalForm());

@@ -12,9 +12,15 @@ import java.net.Socket;
 
 public class ClientThread implements Runnable {
     private GameState gameState;
+    private String clientPort;
 
-    public ClientThread(GameState gameState) {
+    public ClientThread(GameState gameState){
         this.gameState = gameState;
+    }
+
+    public ClientThread(GameState gameState, String clientPort) {
+        this.gameState = gameState;
+        this.clientPort = clientPort;
     }
 
     @Override
@@ -40,7 +46,7 @@ public class ClientThread implements Runnable {
 
                     System.out.println("Object input stream successfully created!");
 
-                     this.gameState = (GameState) ois.readObject();
+                    this.gameState = (GameState) ois.readObject();
 
                     System.out.println("New game state received from server!");
                     System.out.println("");
@@ -58,5 +64,13 @@ public class ClientThread implements Runnable {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public String getClientPort() {
+        return clientPort;
+    }
+
+    public void setClientPort(String clientPort) {
+        this.clientPort = clientPort;
     }
 }

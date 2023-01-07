@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class Server {
     public static final String HOST = "localhost";
-    public static final int PORT = 2023;
+    private static int serverPort = 0;
     private static Map<Long, PlayerMetaData> players = new HashMap<>();
 
     public static Map<Long, PlayerMetaData> getPlayersMetaData() {
@@ -25,11 +25,18 @@ public class Server {
 
     public static void main(String[] args) {
         System.out.println("Server started");
+
+        try {
+            serverPort = Integer.parseInt(JndiHelper.getConfigurationParameter(JndiKeyEnum.SERVER_PORT_KEY));
+        } catch (NamingException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
         acceptRequests();
     }
 
     private static void acceptRequests() {
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(serverPort)) {
             System.err.println("Server listening on port: " + serverSocket.getLocalPort());
 
             while (true) {
@@ -87,14 +94,14 @@ public class Server {
 
         System.out.println("Server is trying to open a connection to the client!");
 
-        while (true) {
-            String clientPort = null;
-            try {
-                clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_1_PORT);
-            } catch (NamingException | IOException e) {
-                throw new RuntimeException(e);
-            }
+        String clientPort = null;
+        try {
+            clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_1_PORT);
+        } catch (NamingException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        while (true) {
             try (Socket serverClientSocket = new Socket(Server.HOST, Integer.parseInt(clientPort))) {
 
                 System.out.println("Trying to open output stream to the client!");
@@ -117,6 +124,5 @@ public class Server {
                 e.printStackTrace();
             }
         }
-
     }
 }

@@ -1,10 +1,7 @@
 package hr.algebra.java2orlog.thread;
 
-import hr.algebra.java2orlog.jndi.JndiHelper;
-import hr.algebra.java2orlog.jndi.JndiKeyEnum;
 import hr.algebra.java2orlog.models.GameState;
 
-import javax.naming.NamingException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -25,12 +22,12 @@ public class ClientThread implements Runnable {
 
     @Override
     public void run() {
-        String clientPort = null;
-        try {
-            clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_1_PORT);
-        } catch (NamingException | IOException e) {
-            throw new RuntimeException(e);
-        }
+//        String clientPort = null;
+//        try {
+//            clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_1_PORT);
+//        } catch (NamingException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
         try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(clientPort))) {
 
             System.out.println("Client server socket opened!");

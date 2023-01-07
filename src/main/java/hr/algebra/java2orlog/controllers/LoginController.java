@@ -77,9 +77,20 @@ public class LoginController implements Initializable {
             return;
         }
 
-        System.out.println("Client thread is about to get started!");
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new ClientThread(new GameState()));
+        String clientPort = null;
+        try {
+            System.out.println("Client thread is about to get started!");
+            ExecutorService executor = Executors.newCachedThreadPool();
+            if (rbFirst.isSelected()) {
+                clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_1_PORT);
+                executor.execute(new ClientThread(new GameState(), clientPort));
+            } else {
+                clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_2_PORT);
+                executor.execute(new ClientThread(new GameState(), clientPort));
+            }
+        } catch (NamingException | IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Client thread started!");
 
         String serverPort = null;

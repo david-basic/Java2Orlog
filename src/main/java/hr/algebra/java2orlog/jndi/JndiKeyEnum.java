@@ -3,6 +3,7 @@ package hr.algebra.java2orlog.jndi;
 public enum JndiKeyEnum {
 
     RMI_PORT_KEY("rmi.port"),
+    SERVER_PORT_KEY("server.port"),
     CLIENT_1_PORT("client1.port"),
     CLIENT_2_PORT("client2.port");
 

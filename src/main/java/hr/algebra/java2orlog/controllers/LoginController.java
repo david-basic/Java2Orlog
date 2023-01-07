@@ -68,7 +68,6 @@ public class LoginController implements Initializable {
 
     @FXML
     public void startGame() {
-
         String playerName = tfPlayerName.getText();
 
         lblPlayerNameError.setVisible(false);

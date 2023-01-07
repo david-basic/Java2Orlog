@@ -1,6 +1,8 @@
 package hr.algebra.java2orlog.controllers;
 
 import hr.algebra.java2orlog.OrlogApplication;
+import hr.algebra.java2orlog.jndi.JndiHelper;
+import hr.algebra.java2orlog.jndi.JndiKeyEnum;
 import hr.algebra.java2orlog.models.GameState;
 import hr.algebra.java2orlog.models.PlayerDetails;
 import hr.algebra.java2orlog.models.PlayerMetaData;
@@ -14,6 +16,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -80,7 +83,14 @@ public class LoginController implements Initializable {
         executor.execute(new ClientThread(new GameState()));
         System.out.println("Client thread started!");
 
-        try (Socket clientSocket = new Socket(Server.HOST, Server.PORT)) {
+        String serverPort = null;
+        try {
+            serverPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.SERVER_PORT_KEY);
+        } catch (NamingException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (Socket clientSocket = new Socket(Server.HOST, Integer.parseInt(serverPort))) {
 
             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
 //            ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());

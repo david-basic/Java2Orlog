@@ -61,7 +61,6 @@ public class ClientThread implements Runnable {
     public GameState getGameState() {
         return gameState;
     }
-
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
@@ -69,7 +68,6 @@ public class ClientThread implements Runnable {
     public String getClientPort() {
         return clientPort;
     }
-
     public void setClientPort(String clientPort) {
         this.clientPort = clientPort;
     }

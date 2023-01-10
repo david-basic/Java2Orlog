@@ -11,10 +11,6 @@ public class ClientThread implements Runnable {
     private GameState gameState;
     private String clientPort;
 
-    public ClientThread(GameState gameState){
-        this.gameState = gameState;
-    }
-
     public ClientThread(GameState gameState, String clientPort) {
         this.gameState = gameState;
         this.clientPort = clientPort;
@@ -22,12 +18,6 @@ public class ClientThread implements Runnable {
 
     @Override
     public void run() {
-//        String clientPort = null;
-//        try {
-//            clientPort = JndiHelper.getConfigurationParameter(JndiKeyEnum.CLIENT_1_PORT);
-//        } catch (NamingException | IOException e) {
-//            throw new RuntimeException(e);
-//        }
         try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(clientPort))) {
 
             System.out.println("Client server socket opened!");

@@ -174,7 +174,6 @@ public class GameScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // TODO: 05/01/2023 doesn't work. idk why.
         taChatHistory.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 StringBuilder sbChatHistory = new StringBuilder();
@@ -202,7 +201,7 @@ public class GameScreenController implements Initializable {
         lblPlayerOneCoins.setText("0");
         lblPlayerTwoCoins.setText("0");
 
-        //TODO maybe use player-metadata and not player Details to get the first player
+        
 //        List<PlayerDetails> playerDetailsCollection = LoginController.getPlayerDetailsCollection();
 //        for (var playerDet : playerDetailsCollection) {
 ////            if (playerDet.getIsPlayerFirst()) {
@@ -212,7 +211,7 @@ public class GameScreenController implements Initializable {
 ////            }
 //        }
 
-        // TODO: 01/01/2023 check if this works!!!
+
 //        Map<Long, PlayerMetaData> playersMetaData = Server.getPlayersMetaData();
 //        for (var playerData : playersMetaData.entrySet()) {
 //            if (playerData.getValue().getPlayerIsFirst()) {
@@ -245,7 +244,7 @@ public class GameScreenController implements Initializable {
             e.printStackTrace();
         }
 
-        // TODO: 04/01/2023 mozda ovako input imena rijesit ?
+        // TODO: 07/01/2023 ne ispisuje oba imena dobro
         Map<Long, PlayerMetaData> playersMetaDataCollection = LoginController.getPlayersMetaData();
         for (var player : playersMetaDataCollection.values()){
             if (player.getPlayerIsFirst()) {

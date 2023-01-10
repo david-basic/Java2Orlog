@@ -38,22 +38,22 @@ public class LoginController implements Initializable {
     @FXML
     private RadioButton rbSecond;
     //endregion
-
+    //region Fields
     private static PlayerDetails playerDetails;
     private static List<PlayerDetails> playerDetailsCollection = new ArrayList<>();
     private static Map<Long, PlayerMetaData> playersMetaData = new HashMap<>();
-
+    //endregion
+    //region public static methods
     public static PlayerDetails getPlayerDetails() {
         return playerDetails;
     }
-
     public static List<PlayerDetails> getPlayerDetailsCollection() {
         return playerDetailsCollection;
     }
-
     public static Map<Long, PlayerMetaData> getPlayersMetaData() {
         return playersMetaData;
     }
+    //endregion
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

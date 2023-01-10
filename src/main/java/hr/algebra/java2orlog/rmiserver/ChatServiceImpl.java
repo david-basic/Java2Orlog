@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatServiceImpl implements ChatService {
-
     private List<String> chatHistory;
 
     public ChatServiceImpl(){

@@ -3,14 +3,8 @@ package hr.algebra.java2orlog.controllers;
 import hr.algebra.java2orlog.OrlogApplication;
 import hr.algebra.java2orlog.utils.FxmlUtils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;

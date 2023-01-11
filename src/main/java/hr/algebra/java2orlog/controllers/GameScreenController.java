@@ -17,12 +17,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.naming.NamingException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -1248,7 +1252,7 @@ public class GameScreenController implements Initializable {
         playerElement.appendChild(playerTextNode);
         moveElement.appendChild(playerElement);
 
-        Element buttonElement = xmlDocument.createElement("buttonPressed");
+        Element buttonElement = xmlDocument.createElement("buttonID");
         org.w3c.dom.Node buttonPressedTextNode = xmlDocument.createTextNode(buttonPressed);
         buttonElement.appendChild(buttonPressedTextNode);
         moveElement.appendChild(buttonElement);
@@ -1257,6 +1261,41 @@ public class GameScreenController implements Initializable {
         org.w3c.dom.Node timeStampTextNode = xmlDocument.createTextNode(timeStamp);
         timeStampElement.appendChild(timeStampTextNode);
         moveElement.appendChild(timeStampElement);
+    }
+
+    private void loadXML() {
+        try {
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+            Document xmlDocument = documentBuilder.parse(new File("potezi.xml"));
+
+            NodeList nodeList = xmlDocument.getElementsByTagName("Move");
+
+            List<Move> moveCollection = new ArrayList<>();
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                org.w3c.dom.Node moveNode = nodeList.item(i);
+
+                if (moveNode.getNodeType() == org.w3c.dom.Node.ATTRIBUTE_NODE) {
+                    Element moveElement = (Element) moveNode;
+                    String player = moveElement.getElementsByTagName("player").item(0).getTextContent();
+                    String buttonID = moveElement.getElementsByTagName("buttonID").item(0).getTextContent();
+                    LocalDateTime timeStamp = LocalDateTime.parse(moveElement.getElementsByTagName("timeStamp").item(0).getTextContent());
+
+                    Move tempMove = new Move(player, buttonID, timeStamp);
+                    moveCollection.add(tempMove);
+                }
+            }
+
+            Move lastMoveMade =moveCollection.stream().max((m1, m2) -> m1.getTimeStamp().compareTo(m2.getTimeStamp())).get();
+
+            // TODO: 11/01/2023 sad imas button id i playera kojem moras undo poteza napravit
+            System.out.println(lastMoveMade.getButtonID());
+            System.out.println(lastMoveMade.getPlayer());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void setButtonInvisibleAndTagItAsChosen(List<DiceDetails> allDice, Button clickedButton) {

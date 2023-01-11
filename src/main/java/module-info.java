@@ -3,6 +3,7 @@ module hr.algebra.java2orlog {
     requires javafx.fxml;
     requires java.rmi;
     requires java.naming;
+    requires java.xml;
 
 
     opens hr.algebra.java2orlog to javafx.fxml;

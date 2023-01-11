@@ -17,8 +17,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.naming.NamingException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -30,9 +37,11 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GameScreenController implements Initializable {
     //region Fields
@@ -201,7 +210,7 @@ public class GameScreenController implements Initializable {
         lblPlayerOneCoins.setText("0");
         lblPlayerTwoCoins.setText("0");
 
-        
+
 //        List<PlayerDetails> playerDetailsCollection = LoginController.getPlayerDetailsCollection();
 //        for (var playerDet : playerDetailsCollection) {
 ////            if (playerDet.getIsPlayerFirst()) {
@@ -246,7 +255,7 @@ public class GameScreenController implements Initializable {
 
         // TODO: 07/01/2023 ne ispisuje oba imena dobro
         Map<Long, PlayerMetaData> playersMetaDataCollection = LoginController.getPlayersMetaData();
-        for (var player : playersMetaDataCollection.values()){
+        for (var player : playersMetaDataCollection.values()) {
             if (player.getPlayerIsFirst()) {
                 lblPlayerOneName.setText(player.getPlayerName());
             } else {
@@ -268,7 +277,7 @@ public class GameScreenController implements Initializable {
     }
 
     @FXML
-    public void sendMessage(){
+    public void sendMessage() {
         try {
             stub.sendMessage(tfChatMessage.getText(), playerMetaData.getPlayerName());
 
@@ -1178,6 +1187,7 @@ public class GameScreenController implements Initializable {
         refreshChat();
 
         Button clickedButton = (Button) actionEvent.getSource();
+        saveXML(clickedButton);
 
         if (playerOneTurn) {
             setButtonInvisibleAndTagItAsChosen(playerOneAllDice, clickedButton);
@@ -1188,6 +1198,94 @@ public class GameScreenController implements Initializable {
 
             fillCenterWithSymbols(hbPlayerTwoChosenDice, playerTwoAllDice);
         }
+    }
+
+    private void saveXML(Button clickedButton) {
+        try {
+            String currentPlayerName = null;
+            if (playerOneTurn) {
+                currentPlayerName = lblPlayerOneName.getText();
+            } else {
+                currentPlayerName = lblPlayerTwoName.getText();
+            }
+            String buttonPressed = clickedButton.getId(); // TODO: 10/01/2023 check if all buttons got ids
+            String timeStamp = String.valueOf(LocalDateTime.now());
+            Path filePath = Path.of("potezi.xml");
+
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+
+            Document mainDoc = null;
+            Element rootElement = null;
+            Transformer transformer = null;
+            DOMSource source = null;
+            StreamResult result = null;
+
+            if (!Files.exists(filePath)) {
+                mainDoc = documentBuilder.newDocument();
+                rootElement = mainDoc.createElement("Move");
+
+                mainDoc.appendChild(rootElement);
+
+                appendMove(currentPlayerName, buttonPressed, timeStamp, mainDoc, rootElement);
+
+                transformer = TransformerFactory.newInstance().newTransformer();
+
+                source = new DOMSource(mainDoc);
+                result = new StreamResult(new File("potezi.xml"));
+
+            } else {
+
+                mainDoc = documentBuilder.parse(new File("potezi.xml"));
+                rootElement = mainDoc.getDocumentElement();
+
+                appendMove(currentPlayerName, buttonPressed, timeStamp, mainDoc, rootElement);
+
+                mainDoc = documentBuilder.parse(new File("potezi.xml"));
+                if (mainDoc.getDocumentElement() == null) {
+                    Element tempRoot = mainDoc.createElement("Move");
+                    mainDoc.appendChild(tempRoot);
+                }
+                mainDoc.getDocumentElement().appendChild(mainDoc.importNode(rootElement, true));
+                transformer = TransformerFactory.newInstance().newTransformer();
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+                source = new DOMSource(mainDoc);
+                result = new StreamResult(new FileWriter("potezi.xml"));
+            }
+
+            transformer.transform(source, result);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("XML file created!");
+            alert.setHeaderText("XML file was successfully created!");
+            alert.setContentText("File 'potezi.xml' was created!");
+
+            alert.showAndWait();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private static void appendMove(String player, String buttonPressed, String timeStamp, Document xmlDocument, Element rootElement) {
+        Element moveElement = xmlDocument.createElement("Move");
+        rootElement.appendChild(moveElement);
+
+        Element playerElement = xmlDocument.createElement("player");
+        org.w3c.dom.Node playerTextNode = xmlDocument.createTextNode(player);
+        playerElement.appendChild(playerTextNode);
+        moveElement.appendChild(playerElement);
+
+        Element buttonElement = xmlDocument.createElement("buttonPressed");
+        org.w3c.dom.Node buttonPressedTextNode = xmlDocument.createTextNode(buttonPressed);
+        buttonElement.appendChild(buttonPressedTextNode);
+        moveElement.appendChild(buttonElement);
+
+        Element timeStampElement = xmlDocument.createElement("timeStamp");
+        org.w3c.dom.Node timeStampTextNode = xmlDocument.createTextNode(timeStamp);
+        timeStampElement.appendChild(timeStampTextNode);
+        moveElement.appendChild(timeStampElement);
     }
 
     private void setButtonInvisibleAndTagItAsChosen(List<DiceDetails> allDice, Button clickedButton) {
@@ -1226,6 +1324,8 @@ public class GameScreenController implements Initializable {
             notEnoughCoinAlert();
             return;
         }
+
+        saveXML(clickedGodFavorBtn);
 
         if (clickedGodFavorBtn.equals(btnThorP1)) {
             playerOneCoinCount -= 8;
@@ -1423,13 +1523,7 @@ public class GameScreenController implements Initializable {
         loadAllowed = false;
     }
 
-    private void loadButtonsAndChosenButtons(
-            GridPane grid,
-            SerializableButton btn,
-            Boolean chosenFromDiceTray,
-            HBox hbCentralContainer,
-            SerializableDiceDetails diceDetails,
-            List<DiceDetails> allDice) {
+    private void loadButtonsAndChosenButtons(GridPane grid, SerializableButton btn, Boolean chosenFromDiceTray, HBox hbCentralContainer, SerializableDiceDetails diceDetails, List<DiceDetails> allDice) {
 
         for (var d : allDice) {
             if (Objects.equals(d.getDiceButton().getId(), btn.getBtnId())) {

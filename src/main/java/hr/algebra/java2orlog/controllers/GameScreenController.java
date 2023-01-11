@@ -23,7 +23,8 @@ import org.w3c.dom.Element;
 import javax.naming.NamingException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
@@ -41,7 +42,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class GameScreenController implements Initializable {
     //region Fields
@@ -1200,6 +1200,7 @@ public class GameScreenController implements Initializable {
         }
     }
 
+    // TODO: 11/01/2023
     private void saveXML(Button clickedButton) {
         try {
             String currentPlayerName = null;
@@ -1208,7 +1209,7 @@ public class GameScreenController implements Initializable {
             } else {
                 currentPlayerName = lblPlayerTwoName.getText();
             }
-            String buttonPressed = clickedButton.getId(); // TODO: 10/01/2023 check if all buttons got ids
+            String buttonPressed = clickedButton.getId();
             String timeStamp = String.valueOf(LocalDateTime.now());
             Path filePath = Path.of("potezi.xml");
 
@@ -1217,52 +1218,22 @@ public class GameScreenController implements Initializable {
 
             Document mainDoc = null;
             Element rootElement = null;
-            Transformer transformer = null;
-            DOMSource source = null;
-            StreamResult result = null;
-
             if (!Files.exists(filePath)) {
                 mainDoc = documentBuilder.newDocument();
-                rootElement = mainDoc.createElement("Move");
-
+                rootElement = mainDoc.createElement("Moves");
                 mainDoc.appendChild(rootElement);
-
-                appendMove(currentPlayerName, buttonPressed, timeStamp, mainDoc, rootElement);
-
-                transformer = TransformerFactory.newInstance().newTransformer();
-
-                source = new DOMSource(mainDoc);
-                result = new StreamResult(new File("potezi.xml"));
-
             } else {
-
                 mainDoc = documentBuilder.parse(new File("potezi.xml"));
                 rootElement = mainDoc.getDocumentElement();
-
-                appendMove(currentPlayerName, buttonPressed, timeStamp, mainDoc, rootElement);
-
-                mainDoc = documentBuilder.parse(new File("potezi.xml"));
-                if (mainDoc.getDocumentElement() == null) {
-                    Element tempRoot = mainDoc.createElement("Move");
-                    mainDoc.appendChild(tempRoot);
-                }
-                mainDoc.getDocumentElement().appendChild(mainDoc.importNode(rootElement, true));
-                transformer = TransformerFactory.newInstance().newTransformer();
-                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-                source = new DOMSource(mainDoc);
-                result = new StreamResult(new FileWriter("potezi.xml"));
             }
 
+            appendMove(currentPlayerName, buttonPressed, timeStamp, mainDoc, rootElement);
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+
+            DOMSource source = new DOMSource(mainDoc);
+            StreamResult result = new StreamResult(new File("potezi.xml"));
+
             transformer.transform(source, result);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("XML file created!");
-            alert.setHeaderText("XML file was successfully created!");
-            alert.setContentText("File 'potezi.xml' was created!");
-
-            alert.showAndWait();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }

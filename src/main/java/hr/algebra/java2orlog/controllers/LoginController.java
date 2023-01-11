@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,14 +44,17 @@ public class LoginController implements Initializable {
     private static PlayerDetails playerDetails;
     private static List<PlayerDetails> playerDetailsCollection = new ArrayList<>();
     private static Map<Long, PlayerMetaData> playersMetaData = new HashMap<>();
+
     //endregion
     //region public static methods
     public static PlayerDetails getPlayerDetails() {
         return playerDetails;
     }
+
     public static List<PlayerDetails> getPlayerDetailsCollection() {
         return playerDetailsCollection;
     }
+
     public static Map<Long, PlayerMetaData> getPlayersMetaData() {
         return playersMetaData;
     }
@@ -75,6 +80,15 @@ public class LoginController implements Initializable {
         if (playerName.equals("")) {
             lblPlayerNameError.setVisible(true);
             return;
+        }
+
+        Path filePath = Path.of("potezi.xml");
+        if (Files.exists(filePath)) {
+            try {
+                Files.delete(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         String clientPort = null;

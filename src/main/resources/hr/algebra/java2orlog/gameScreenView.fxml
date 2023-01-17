@@ -147,6 +147,7 @@
                             <MenuItem fx:id="miSaveGame" mnemonicParsing="false" onAction="#saveGame" text="Save game" />
                             <MenuItem fx:id="miLoadGame" mnemonicParsing="false" onAction="#loadGame" text="Load game" />
                               <MenuItem mnemonicParsing="false" onAction="#createDocumentation" text="Generate documentation" />
+                              <MenuItem mnemonicParsing="false" onAction="#loadXML" text="Undo move" />
                           </items>
                            <font>
                               <Font size="36.0" />

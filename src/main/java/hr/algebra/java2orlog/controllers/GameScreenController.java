@@ -17,16 +17,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.naming.NamingException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -1263,6 +1260,8 @@ public class GameScreenController implements Initializable {
         moveElement.appendChild(timeStampElement);
     }
 
+    // TODO: 11/01/2023
+    @FXML
     private void loadXML() {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -1276,25 +1275,104 @@ public class GameScreenController implements Initializable {
             for (int i = 0; i < nodeList.getLength(); i++) {
                 org.w3c.dom.Node moveNode = nodeList.item(i);
 
-                if (moveNode.getNodeType() == org.w3c.dom.Node.ATTRIBUTE_NODE) {
-                    Element moveElement = (Element) moveNode;
-                    String player = moveElement.getElementsByTagName("player").item(0).getTextContent();
-                    String buttonID = moveElement.getElementsByTagName("buttonID").item(0).getTextContent();
-                    LocalDateTime timeStamp = LocalDateTime.parse(moveElement.getElementsByTagName("timeStamp").item(0).getTextContent());
+                Element moveElement = (Element) moveNode;
+                String player = moveElement.getElementsByTagName("player").item(0).getTextContent();
+                String buttonID = moveElement.getElementsByTagName("buttonID").item(0).getTextContent();
+                LocalDateTime timeStamp = LocalDateTime.parse(moveElement.getElementsByTagName("timeStamp").item(0).getTextContent());
 
-                    Move tempMove = new Move(player, buttonID, timeStamp);
-                    moveCollection.add(tempMove);
-                }
+                Move tempMove = new Move(player, buttonID, timeStamp);
+                moveCollection.add(tempMove);
             }
 
-            Move lastMoveMade =moveCollection.stream().max((m1, m2) -> m1.getTimeStamp().compareTo(m2.getTimeStamp())).get();
+            if (!moveCollection.isEmpty()) {
+                Move lastMoveMade = moveCollection.stream().max((m1, m2) -> m1.getTimeStamp().compareTo(m2.getTimeStamp())).get();
 
-            // TODO: 11/01/2023 sad imas button id i playera kojem moras undo poteza napravit
-            System.out.println(lastMoveMade.getButtonID());
-            System.out.println(lastMoveMade.getPlayer());
+                // TODO: 11/01/2023 sad imas button id i playera kojem moras undo poteza napravit
+                System.out.println(lastMoveMade.getButtonID());
+                System.out.println(lastMoveMade.getPlayer());
+                System.out.println(lastMoveMade.getTimeStamp());
+
+                revertMove(lastMoveMade);
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void revertMove(Move lastMoveMade) {
+        String player = lastMoveMade.getPlayer();
+        String buttonID = lastMoveMade.getButtonID();
+        String p1Name = lblPlayerOneName.getText();
+        String p2Name = lblPlayerTwoName.getText();
+
+        if (!playerOneTurn && p1Name.equals(player)) {
+
+            cantRevertMoveAlert();
+
+//            playerOneTurn = true;
+//            turnCoinPlayerOne.setVisible(true);
+//            turnCoinPlayerTwo.setVisible(false);
+//            btnRollDicePlayerOne.setVisible(true);
+//            btnRollDicePlayerTwo.setVisible(false);
+//
+//            revertDice(buttonID, playerOneAllDice);
+        } else if (playerOneTurn && p2Name.equals(player)) {
+            cantRevertMoveAlert();
+
+//            playerOneTurn = false;
+//            turnCoinPlayerOne.setVisible(false);
+//            turnCoinPlayerTwo.setVisible(true);
+//            btnRollDicePlayerOne.setVisible(false);
+//            btnRollDicePlayerTwo.setVisible(true);
+//
+//            revertDice(buttonID, playerTwoAllDice);
+        } else if (playerOneTurn && p1Name.equals(player)) {
+            revertDice(buttonID, playerOneAllDice);
+        } else if (!playerOneTurn && p2Name.equals(player)) {
+            revertDice(buttonID, playerTwoAllDice);
+        }
+    }
+
+    private static void cantRevertMoveAlert() {
+        Alert cantRevertMoveAlert = new Alert(Alert.AlertType.INFORMATION);
+        cantRevertMoveAlert.setTitle("Action NOT allowed");
+        cantRevertMoveAlert.setHeaderText("Can not undo move!");
+        cantRevertMoveAlert.setContentText("Once you end your turn you can not undo moves!\nThat would be VERY unfair!");
+        cantRevertMoveAlert.showAndWait();
+    }
+
+    private void revertDice(String buttonID, List<DiceDetails> dice) {
+        for (var die : dice) {
+            if (die.getDiceButton().getId().equals(buttonID)) {
+                die.setIsChosenFromDiceTray(false);
+                die.getDiceButton().setVisible(true);
+            }
+        }
+
+        for (var d : notChosenDice) {
+            if (d.getDiceButton().getId().equals(buttonID)) {
+                d.setCanBeSentToCenter(true);
+                d.setIsChosenFromDiceTray(false);
+
+                List<Node> p1Nodes = hbPlayerOneChosenDice.getChildren().stream().toList();
+                List<Node> p2Nodes = hbPlayerTwoChosenDice.getChildren().stream().toList();
+                ImageView lastP1ImgView = (ImageView) p1Nodes.get(p1Nodes.size() - 1);
+                ImageView lastP2ImgView = (ImageView) p2Nodes.get(p2Nodes.size() - 1);
+
+                String symbol = d.getDiceSymbols().get(0).toString().trim();
+                ImageView symbolImage = new ImageView(Objects.requireNonNull(getClass().getResource("/" + symbol + ".jpg")).toExternalForm());
+
+                String p1ImgUrl = lastP1ImgView.getImage().getUrl();
+                String p2ImgUrl = lastP2ImgView.getImage().getUrl();
+                String revertedDiceImgUrl = symbolImage.getImage().getUrl();
+
+                if (p1ImgUrl.equals(revertedDiceImgUrl)) {
+                    hbPlayerOneChosenDice.getChildren().remove(lastP1ImgView);
+                } else if (p2ImgUrl.equals(revertedDiceImgUrl)) {
+                    hbPlayerTwoChosenDice.getChildren().remove(lastP2ImgView);
+                }
+            }
         }
     }
 
@@ -1335,7 +1413,8 @@ public class GameScreenController implements Initializable {
             return;
         }
 
-        saveXML(clickedGodFavorBtn);
+        // TODO: 17/01/2023 decided not to save god favors for simplicity's sake
+        //saveXML(clickedGodFavorBtn);
 
         if (clickedGodFavorBtn.equals(btnThorP1)) {
             playerOneCoinCount -= 8;

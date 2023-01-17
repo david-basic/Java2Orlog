@@ -1307,26 +1307,9 @@ public class GameScreenController implements Initializable {
         String p2Name = lblPlayerTwoName.getText();
 
         if (!playerOneTurn && p1Name.equals(player)) {
-
             cantRevertMoveAlert();
-
-//            playerOneTurn = true;
-//            turnCoinPlayerOne.setVisible(true);
-//            turnCoinPlayerTwo.setVisible(false);
-//            btnRollDicePlayerOne.setVisible(true);
-//            btnRollDicePlayerTwo.setVisible(false);
-//
-//            revertDice(buttonID, playerOneAllDice);
         } else if (playerOneTurn && p2Name.equals(player)) {
             cantRevertMoveAlert();
-
-//            playerOneTurn = false;
-//            turnCoinPlayerOne.setVisible(false);
-//            turnCoinPlayerTwo.setVisible(true);
-//            btnRollDicePlayerOne.setVisible(false);
-//            btnRollDicePlayerTwo.setVisible(true);
-//
-//            revertDice(buttonID, playerTwoAllDice);
         } else if (playerOneTurn && p1Name.equals(player)) {
             revertDice(buttonID, playerOneAllDice);
         } else if (!playerOneTurn && p2Name.equals(player)) {
